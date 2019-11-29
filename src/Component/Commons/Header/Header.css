@@ -1,0 +1,64 @@
+.navbar {
+	box-shadow: 0 8px 40px rgba(0, 0, 0, .2);
+    /* color: #fff; */
+	background-color: #fff;
+	height: 70px;
+}
+.nav-item {
+    background: none;
+}
+
+ul li:not(.init) {
+    background: none !important;
+}
+.navbar-brand img{
+	height: 35px;
+	scroll-padding-left: 70px;
+	padding-left: 100px;
+}
+.navbar-expand-lg .navbar-nav .nav-link {
+	font-weight: 600;
+	color: #2c3e50;
+}
+
+.custom_tabs .nav-link{
+	color:inherit;
+	font-family: 'Ubuntu', sans-serif;
+}
+
+.custom_tabs.nav-tabs .nav-item.show .nav-link, 
+.custom_tabs.nav-tabs .nav-link.active {
+	color: #ffffff;
+	background-color: #bb225a;
+	border-color: #bb225a #bb225a #bb225a;
+}
+
+.navbar-light .navbar-nav .nav-link {
+	text-align: center;
+}
+
+ .nav-item:hover {
+	 box-shadow: inset 0 -4px 0 #bb225a; 
+	height: 100%;
+	
+}
+
+.navbar-light .navbar-nav  a {
+	color: black;
+	font-size: small;
+	text-decoration: none;
+}
+.navbar-light .navbar-nav .nav-link a:hover {
+	text-decoration: none;
+}
+.navbar-nav {
+	margin-bottom: -15px !important;
+}
+.navbar-light {
+	padding-top: 0px !important;
+	
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}

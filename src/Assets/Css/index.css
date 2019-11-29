@@ -1,0 +1,39 @@
+body {font-family: 'Source sans Pro', sans-serif ; }
+.showbg { 
+  /* background-image: url('../../../src/Assets/images/pattern.png');   */
+  background: #fafafa; }
+.divider-space { height: 35px; }
+.divider-space-sm { height: 15px; }
+.divider-space-xl { height: 35vh; }
+.shadow-sm { box-shadow: 0 .15rem .5rem rgba(0,0,0,.175); }
+.shadow { box-shadow: 0 .5rem 1rem rgba(0,0,0,.175); } 
+.shadow-lg { box-shadow: 0 1rem 3rem rgba(0,0,0,.175); }
+.text-shadow-sm { text-shadow: 0 .15rem .5rem rgba(0,0,0,.175); }
+.text-shadow { text-shadow: 0 .5rem 1rem rgba(0,0,0,.175); } 
+.text-shadow-lg { text-shadow: 0 1rem 3rem rgba(0,0,0,.175); }
+.rounded-none { border-radius: 0 !important; }
+.rounded { border-radius: .5rem; }
+.rounded-circle { border-radius: 50%; }
+.rounded-top { border-top-left-radius: .5rem; border-top-right-radius: .5rem; }
+.rounded-left { border-top-left-radius: .5rem; border-bottom-left-radius: .5rem; }
+.rounded-bottom { border-bottom-right-radius: .5rem; border-bottom-left-radius: .5rem; }
+.rounded-right { border-top-right-radius: .5rem; border-bottom-right-radius: .5rem; }
+.border-none { border: 0px }
+.border { border: 1px solid rgba(255,255,255,.7); }
+.border-light { border: 1px solid rgba(0,0,0,.1); }
+.border-top { border-top: 1px solid rgba(0,0,0,.175) !important; }
+.border-bottom { border-bottom: 1px solid rgba(0,0,0,.175) !important; }
+.padding-sm { padding: 8px; }
+.full-height { height: 97vh; }
+#inscription { padding-bottom: 20px }
+.inscription-img, .connexion-img { background-position: bottom; background-size: cover; width: 100%; } 
+.inscription-img { background-image: url('../../../src/Assets/images/inscription.jpg'); }
+.connexion-img { background-image: url('../../../src/Assets/images/connexion.jpg'); }
+.grow { transition: all .2s ease-in-out; }
+.grow:hover { transform: scale(1.015); }
+.button-magenta { height: 35px; border: 0px; border-radius: 4px; padding-left: 10px; padding-right: 10px; }
+.list-padding { padding-left: 0 }
+.fixed-top { z-index: 1000; position: fixed; width: 100%; }
+input[type="radio"]:checked, input[type="checkbox"]:checked { background-color: #9c4170 }
+
+

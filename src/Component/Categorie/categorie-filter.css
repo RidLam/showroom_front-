@@ -1,0 +1,44 @@
+.filter {
+  padding-bottom: 30px;
+  padding-top: 20px;
+}
+.categorie-filter-list {
+  padding: 10px;
+  
+}
+
+.categorie-filter-list li {
+  list-style: none;
+  padding: 5px;
+}
+.sort-down {
+  float: right;
+}
+.categorie-filter {
+  background: #ddd;
+  padding: 7px 10px 0.09px 0px;
+  text-align: center;
+
+}
+.result-number {
+  float: right;
+}
+
+.categorie-filter-price {
+  padding: 20px;
+}
+.filter-title {
+  padding-bottom: 15px;
+}
+
+.categorie-location{
+  margin-top: 20px;
+}
+
+.categorie-price{
+  margin-top: 20px;
+}
+
+.filter-location-input {
+  padding: 10px;
+}

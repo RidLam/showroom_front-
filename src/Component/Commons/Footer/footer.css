@@ -1,0 +1,10 @@
+
+.footer_left {
+	float: left;
+}
+.footer_right {
+	float: right;
+}
+.footer_left img {
+	width: 200px;
+}
