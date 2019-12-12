@@ -4,7 +4,12 @@
 }
 .footer_right {
 	float: right;
+	padding-top: 6px;
 }
 .footer_left img {
 	width: 200px;
+}
+
+.container-fluid{
+	/* margin-top: 40px; */
 }

@@ -13,11 +13,11 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Link, NavLink as RRNavLink } from 'react-router-dom';
 import './Header.css';
 import { faPlusSquare, faHeart, faGratipay } from '@fortawesome/free-solid-svg-icons'
-import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle } from "react-icons/fa";
-
+import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit } from "react-icons/fa";
+import { AiOutlineLogout } from 'react-icons/ai';
 
 
 class Header extends Component {
@@ -35,51 +35,66 @@ class Header extends Component {
     }
 
     render() {
+        var location = this.props;
         return(
-            <Navbar color="light" light expand="md" fixed>
+            <Navbar fluid className=' fixed-top navbar-light bg-light'  color="light" light expand="md" activeKey={location.pathname}>
                 <Link className="navbar-brand" exact  to="/">
                     <img src={logo}/>
                 </Link>
                 <NavbarToggler onClick={this.setIsOpen} />
                 <Collapse isOpen={this.state.isOpen} navbar>
                 <Nav className="ml-auto justify-content-end" navbar>
-                <NavItem>
-                    <Link exact  to="/newAnnonce">
-                        <NavLink>
+
+                    <NavItem>
+                        <NavLink exact  to="/newAnnonce" activeClassName="active" tag={RRNavLink} >
                             <div>
-                                <FaPlusSquare size="1.5em"/>
+                                <FaRegPlusSquare color="#000" size="2em"/>
                             </div>
                             Déposer une annonce
                         </NavLink>
-                    </Link>
-                </NavItem>
-                <NavItem>
-                        <Link exact  to="/newAnnonce">
-                            <NavLink>
-                                <div>
-                                    <FaSearch size="1.5em"/>
-                                </div>
-                                Recherche
-                            </NavLink>
-                        </Link>
                     </NavItem>
+
                     <NavItem>
-                        <Link exact  to="/newAnnonce">
-                            <NavLink>
-                                <div>
-                                    <FaRegHeart size="1.5em"/>
-                                </div>
-                            Favorite
+                        <NavLink exact  to="/favoris" activeClassName="active" tag={RRNavLink} >
+                            <div>
+                                <FaRegHeart color="#000" size="2em"/>
+                            </div>
+                            Favoris
                         </NavLink>
-                        </Link>
-                        
                     </NavItem>
-                    <UncontrolledDropdown nav inNavbar>
+
+                    <NavItem>
+                        <NavLink exact  to="/profile" activeClassName="active" tag={RRNavLink} >
+                            <div>
+                                <FaUserEdit color="#000" size="2em"/>
+                            </div>
+                            Mon profile
+                        </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                        <NavLink exact  to="/auth/logout" activeClassName="active" tag={RRNavLink} >
+                            <div>
+                                <AiOutlineLogout color="#000" size="2em"/>
+                            </div>
+                            Logout
+                        </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                        <NavLink exact  to="/auth/login" activeClassName="active" tag={RRNavLink} >
+                            <div>
+                                <FaRegUserCircle color="#000" size="2em"/>
+                            </div>
+                            username
+                        </NavLink>
+                    </NavItem>
+                    {/* <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
                         <div>
-                            <FaRegUserCircle size="1.5em"/>
+                            <FaRegUserCircle color="#000" size="2em"/>
                         </div>
-                        Connect
+                        <Link exact  to="/auth/login">Connection</Link>
                     </DropdownToggle>
                     <DropdownMenu right>
                         <DropdownItem>
@@ -93,7 +108,7 @@ class Header extends Component {
                             <Link exact  to="/signout">Logout</Link>
                         </DropdownItem>
                     </DropdownMenu>
-                    </UncontrolledDropdown>
+                    </UncontrolledDropdown> */}
                 </Nav>
                 </Collapse>
             </Navbar>

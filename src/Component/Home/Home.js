@@ -29,7 +29,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3000/regions`)
+        axios.get(`http://localhost:3000/regions/getAll`)
         .then(res => {
             this.setState({
                 regions : res.data 
@@ -37,7 +37,7 @@ class Home extends Component {
         }).catch(error => {
             console.error(error);
         })
-        axios.get(`http://localhost:3000/categories`)
+        axios.get(`http://localhost:3000/categories/getAll`)
         .then(res => {
             this.setState({
                 categories : res.data 
@@ -62,66 +62,109 @@ class Home extends Component {
 
     render() {
         return(
-            <div>
+            <div className="body_container">
                 <section className="sec_search_home">
-                    <div className="container">
-                    <div className="row">
-                        <div className="col-12">
+                    <div className="filter-homepage">
+                    <Row>
+                        <Col xs={1}>
+                        </Col>
+                        <Col xs={9}>
                         <div className="form_frame">
-                            <div className="mbl_logo_home visible-md">
-                            {/* <img src="assets/img/logo.png" /> */}
-                            </div>
-                            <form>
-                            <div className="form_frame_inner">
-                                <div className="form-row">
-                                <div className="form-group col-md-4 col-lg-5">
-                                    <input 
-                                        type="text"
-                                        name="search_text"
-                                        className="form-control" 
-                                        onChange= {this.handleChange}
-                                        id="inputCity" 
-                                        placeholder="Que recherchez-vous ?" />
-                                </div>
-                                <div className="form-group col-md-3 col-lg-3">
-                                    <select 
-                                        id="inputState"
+                            <div className="home-filter">
+                                <strong>Donner leur une seconde vie!</strong>
+                                <FormGroup>
+                                    <Input type="text" name="title" id="title" placeholder="Que recherchez-vous ?"/>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input 
+                                        type="select"
+                                        id="categorie" 
                                         name="categorie"                                        
                                         onChange= {this.handleChange}
-                                        className="form-control">
-                                    <option hidden>Categories</option>
-                                    {this.state.categories && this.state.categories.map(categorie => {
-                                        return(
-                                            <option value={categorie.id}>{categorie.name}</option>
-                                        )
-                                    })}
-                                    </select>
-                                </div>
-                                <div className="form-group col-md-3 col-lg-3">
-                                    <select 
-                                        id="inputState"
-                                        name="region"
+                                        placeholder="Categorie">
+                                         <option hidden>Categories</option>
+                                            {this.state.categories && this.state.categories.map(categorie => {
+                                                return(
+                                                    <option value={categorie.id}>{categorie.name}</option>
+                                                )
+                                            })}
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Input 
+                                        type="select" 
+                                        name="region" 
+                                        id="region" 
+                                        name="region"                                        
                                         onChange= {this.handleChange}
-                                        className="form-control">
-                                    <option hidden>Localisation</option>
-                                    {this.state.regions && this.state.regions.map(region => {
-                                        return(
-                                            <option value={region.code}>{region.name}</option>
-                                        )
-                                    })}
-                                    </select>
-                                </div>
-                                <div className="form-group col-md-2 col-lg-1">
-                                    <button onClick={this.goCategories} className="btn">GO
-                                    
-                                    </button>
+                                        placeholder="Categorie">
+                                         <option hidden>Localisation</option>
+                                            {this.state.regions && this.state.regions.map(region => {
+                                                return(
+                                                    <option value={region.code}>{region.name}</option>
+                                                )
+                                            })}
+                                    </Input>
+                                </FormGroup>
+                                <div className="home-filter-btn">
+                                    <Button onClick={this.goCategories} className="primary">Lancer la recherhche</Button>
                                 </div>
                                 </div>
-                            </div>
-                            </form>
+                    
+                            {/* <form>
+                                <div className="form_frame_inner">
+                                    <div className="form-row">
+                                    <div className="form-group col-md-4 col-lg-5">
+                                        <input 
+                                            type="text"
+                                            name="search_text"
+                                            className="form-control" 
+                                            onChange= {this.handleChange}
+                                            id="inputCity" 
+                                            placeholder="Que recherchez-vous ?" />
+                                    </div>
+                                    <div className="form-group col-md-3 col-lg-3">
+                                        <select 
+                                            id="inputState"
+                                            name="categorie"                                        
+                                            onChange= {this.handleChange}
+                                            className="form-control">
+                                        <option hidden>Categories</option>
+                                        {this.state.categories && this.state.categories.map(categorie => {
+                                            return(
+                                                <option value={categorie.id}>{categorie.name}</option>
+                                            )
+                                        })}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-md-3 col-lg-3">
+                                        <select 
+                                            id="inputState"
+                                            name="region"
+                                            onChange= {this.handleChange}
+                                            className="form-control">
+                                        <option hidden>Localisation</option>
+                                        {this.state.regions && this.state.regions.map(region => {
+                                            return(
+                                                <option value={region.code}>{region.name}</option>
+                                            )
+                                        })}
+                                        </select>
+                                    </div>
+                                    <div className="form-group col-md-2 col-lg-1">
+                                        <button onClick={this.goCategories} className="btn">GO
+                                        
+                                        </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                </form> */}
                         </div>
-                        </div>		
+                        </Col>		
+                    </Row>
                     </div>
+                    <div className="container">
+                    
                     </div>
                 </section>
                 <section className="sec_category sec_pad_50  pb-0 d-none d-md-block d-lg-block d-xl-block">
@@ -134,7 +177,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Vetements</a>
+                                    <a href="#" >Vetements/chaussures</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
@@ -144,7 +187,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Transport</a>
+                                    <a href="#" >Poussettes/sieges</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
@@ -154,7 +197,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Mobilier</a>
+                                    <a href="#" >Ameublement</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
@@ -164,7 +207,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Jeux</a>
+                                    <a href="#" >Jeux/eveil</a>
                                 </div>
                             </Col>
                         </Row>
@@ -176,7 +219,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Puericulter</a>
+                                    <a href="#" >Soins/toillette</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
@@ -186,7 +229,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Livres</a>
+                                    <a href="#" >Livres/DVD</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
@@ -206,7 +249,7 @@ class Home extends Component {
                                 </div>
                             
                                 <div className="categorie_title">
-                                    <a href="#" >Offers</a>
+                                    <a href="#" >Offres d'emploi</a>
                                 </div>
                             </Col>
                         </Row>

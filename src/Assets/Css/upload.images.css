@@ -7,7 +7,7 @@
     overflow: hidden;
     position: relative;
     text-align: center;
-
+    width: 100%;
     vertical-align: middle;
     max-width: 100%;
     position: relative;
@@ -74,8 +74,7 @@
 }
 
 
-
-a.remImage img {
+a.remImage span {
     box-shadow: none;
     position: absolute;
     right: 7px;
@@ -84,8 +83,9 @@ a.remImage img {
     opacity: 0;
     display: block;
     transition: all .5s ease-in-out;
+    color: red;
 }
-.image-preview:hover a.remImage img {
+.image-preview:hover a.remImage span {
     opacity: 1;
     z-index: 99;
     position: absolute;

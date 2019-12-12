@@ -1,13 +1,16 @@
 import React , { Component } from 'react';
-import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Container, Row, Col, Button, Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Input, FormText } from 'reactstrap';
 import MapPolygon from '../../maps/MapPolygon';
 import { Card, CardHeader, CardFooter, CardBody,
     CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
+
 import ImagesUpload from './ImagesUpload';
 import '../../Assets/Css/upload.images.css';
-import map from '../../Assets/images/france.png';
+import map from '../../Assets/images/map.png';
 import './Annonce.css';
+import { MdMyLocation } from "react-icons/md";
+
 
 
 class NewAnnonce extends Component {
@@ -30,7 +33,7 @@ class NewAnnonce extends Component {
              region_id: '',
              categorie_id:'',
              annonceCreated: false,
-             departement_id: ''
+             departement_id: '',
             };
          this.handleLocationChange = this.handleLocationChange.bind(this);
          this.handleInputChange = this.handleInputChange.bind(this);
@@ -38,6 +41,7 @@ class NewAnnonce extends Component {
          this.getPolygon = this.getPolygon.bind(this);
          this.handleFileChange = this.handleFileChange.bind(this);
          this.addAnnonce = this.addAnnonce.bind(this);
+         this.getLocation = this.getLocation.bind(this);
     }
 
   
@@ -56,7 +60,7 @@ class NewAnnonce extends Component {
         data.append('price', price);
         data.append('adresse', adresse);
         data.append('user_id', 1);
-        data.append('type_annonce', 'professional');
+        data.append('type_annonce', '');
         data.append('commune_id', commune_id);
         data.append('categorie_id', categorie_id);
         data.append('departement_id', departement_id);
@@ -67,8 +71,7 @@ class NewAnnonce extends Component {
         }
         
         
-        console.log(data);
-        axios.post(`http://localhost:3000/upload`, data)
+        axios.post(`http://localhost:3000/annonces/add`, data)
             .then(res => {
                 this.setState({
                     annonceCreated : res.data 
@@ -91,7 +94,7 @@ class NewAnnonce extends Component {
             commune_id : commune.id,
             departement_id : commune.code_departement,
         })
-        axios.get(`http://localhost:3000/departement`, {params: {id: commune.code_departement}})
+        axios.get(`http://localhost:3000/departements/getById`, {params: {id: commune.code_departement}})
             .then(res => {
                 console.log(res.data);
                 this.setState({
@@ -104,8 +107,8 @@ class NewAnnonce extends Component {
       }
       getPolygon(polygonArray){
         var geoShape = [];
-        var jsonData = JSON.parse(polygonArray);
-        var data = jsonData[0];
+        //var jsonData = JSON.parse(polygonArray);
+        var data = polygonArray[0];
         for(var i =0; i< data.length;i++) {
             var item = data[i];
             var obj = {};
@@ -143,7 +146,7 @@ class NewAnnonce extends Component {
         var data = {code_postal: code_postal, commune_name: commune_name}
         if(event.target.value != "") {
             
-            axios.post(`http://localhost:3000/communes`, {data})
+            axios.get(`http://localhost:3000/communes/getById`, {params: {code: code_postal, name: commune_name}})
             .then(res => {
                 this.setState({
                     communes : res.data 
@@ -160,7 +163,7 @@ class NewAnnonce extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3000/categories`)
+        axios.get(`http://localhost:3000/categories/getAll`)
         .then(res => {
             this.setState({
                 categories : res.data 
@@ -169,12 +172,32 @@ class NewAnnonce extends Component {
             console.error(error);
         })
     }
+    getLocation() {
+        navigator.geolocation.watchPosition(position => {
+            var coords = {lat: position.coords.latitude, long: position.coords.longitude};
+            axios.get(`http://localhost:3000/communes/getByCode`, {params: coords})
+            .then(res => {
+                var data = res.data[0];
+                var geoshape = this.getPolygon(data.contour.coordinates);
+                this.setState({
+                    commune: data.nom + " , " + data.codesPostaux[0],
+                    lat: coords.lat,
+                    lng: coords.long ,
+                    shape : geoshape,
+                    commune_id : data.code,
+                    departement_id : data.codeDepartement, 
+                    });
+            }).catch(error => {
+                console.error(error);
+            })
+        })
+    }
+    
 
     render() {
         const mapView = () =>{
          return (
             <div className="map-view">
-                <span>Type and chose your location ,to display it on the map</span>
                 <img src={map}/>
             </div>
         )
@@ -182,25 +205,31 @@ class NewAnnonce extends Component {
         
 
         return(
-            <Container className="add_annonce">
-                <Row>
+            <Container className="">
+                <Row className="title_block">
+                    <div className="add_annonce_title">
+                        
+                    </div>
+                </Row>
+                <Row className="add_annonce_block">
                     <Col xs="12">
                     <Card>
-                        <CardHeader>Annonce Info</CardHeader>
+                        <CardHeader>Votre annonce</CardHeader>
                         <CardBody>
-                        <CardTitle>Annonce Details</CardTitle>
+                            <Col xs={9}>
+                            
+                        <CardTitle></CardTitle>
                             <Form>
                             <FormGroup row>
-                                <Label for="exampleEmail" sm={2}>Titre</Label>
                                 <Col sm={7}>
-                                <Input type="text" onChange={this.handleInputChange} name="title" id="title_id" placeholder="Title de l'annonce" />
+                                <Input type="text" onChange={this.handleInputChange} name="title" id="title_id" placeholder="Titre de l'annonce" />
                                 </Col>
                             </FormGroup>
+                           
                             <FormGroup row>
-                                <Label for="exampleSelect" sm={2}>Select</Label>
                                 <Col sm={7}>
                                 <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
-                                    <option hidden>Select categorie</option>
+                                    <option hidden>Categorie</option>
                                     {this.state.categories && this.state.categories.map(item => {
                                         return ( <option value={item.id}>{item.name}</option>)
                                     })}
@@ -208,60 +237,47 @@ class NewAnnonce extends Component {
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="exampleText" sm={2}>Description</Label>
                                 <Col sm={7}>
-                                <Input type="textarea" onChange={this.handleInputChange} name="description" id="exampleText" />
+                                <Input type="textarea" onChange={this.handleInputChange} name="description" id="exampleText" placeholder="Description" />
                                 </Col>
                             </FormGroup>
                             <FormGroup row>
-                                <Label for="examplePassword" sm={2}>Prix</Label>
                                 <Col sm={4}>
                                 <Input type="number" onChange={this.handleInputChange} name="price" id="prix" placeholder="Prix" />
                                 </Col>
                             </FormGroup>
                            
                             </Form>
+                            </Col>
                         </CardBody>
                     </Card>
                     
                     </Col>
                   
                     </Row>
-                    <Row>
+                <Row className="add_annonce_block">
                     <Col xs="12">
                         <Card>
-                            <CardHeader>Location</CardHeader>
+                            <CardHeader>Localisation</CardHeader>
                             <CardBody>
-                            <CardTitle>Select your location from list</CardTitle>
+                            <CardTitle></CardTitle>
                             <Row>
                                 <Col xs="6">
-                                <Form>
-                                    
-                                    <FormGroup row>
-                                        <Label for="locationselect" name="commune" sm={4}>Type et selectionner la localisation</Label>
-                                        <Col sm={8}>
-                                           <Input type="text" 
-                                           value={this.state.commune}
-                                           onChange={this.handleLocationChange} name="commune" id="title_id" placeholder="Title de l'annonce" autoComplete="off" />
-                                           <div className="commune-list">
-                                            {this.state.communes && this.state.communes.map(item => {
-                                                return(
-                                                    <li className="" onClick={() => this.chosenCommune(item)}>{item.name}, {item.code}</li>
-                                                )
-                                            })}
-                                            </div>
-                                        </Col>
-                                    </FormGroup>
-
-                                    
-
-                                    <FormGroup row>
-                                        <Label for="examplePassword" sm={4}>Adresse</Label>
-                                        <Col sm={8}>
-                                        <Input type="text" onChange={this.handleInputChange} name="adresse" id="adresseid" placeholder="Type ton adresse" />
-                                        </Col>
-                                    </FormGroup>
-                                    </Form>
+                                    <InputGroup>
+                                        <InputGroupAddon addonType="prepend">
+                                        <Button onClick={() => this.getLocation()}><MdMyLocation color="" size="1.2em"/></Button>
+                                        </InputGroupAddon>
+                                        <Input type="text" 
+                                                    value={this.state.commune}
+                                                    onChange={this.handleLocationChange} name="commune" id="title_id" placeholder="Ville ou code postal" autoComplete="off" />
+                                    </InputGroup>
+                                    <div className="commune-list">
+                                        {this.state.communes && this.state.communes.map(item => {
+                                            return(
+                                                <li className="" onClick={() => this.chosenCommune(item)}>{item.name}, {item.code}</li>
+                                            )
+                                        })}
+                                    </div>
                                 </Col>
                                 <Col xs="6">
                                     <div className="map">
@@ -276,19 +292,19 @@ class NewAnnonce extends Component {
                                                 mapView()
                                             }
                                         </div>
-                                     </div>
+                                        </div>
                                 </Col>
                                 </Row>
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
-                <Row>
+                <Row className="add_annonce_block">
                     <Col xs="12">
                         <Card>
-                            <CardHeader>Upload Images</CardHeader>
+                            <CardHeader>Vos photos</CardHeader>
                             <CardBody>
-                            <CardTitle>Select max three images</CardTitle>
+                            <CardTitle></CardTitle>
                             
                                 <ImagesUpload
                                     getFiles= {this.handleFileChange}
@@ -297,10 +313,9 @@ class NewAnnonce extends Component {
                         </Card>
                     </Col>
                 </Row>
-                <Row style = {{paddingTop: " 15px"}}>
-                    <Col className="text-right">
-                    <Button color="danger" style= {{marginRight : "10px"}}>Annuler</Button>
-                    <Button onClick={() => this.addAnnonce()} color="primary">Envoyer</Button>
+                <Row className="add_annonce_block">
+                    <Col className="text-right botton_block">
+                        <Button className="btn_send" onClick={() => this.addAnnonce()}>Envoyer</Button>
                     </Col>
                     
                 </Row>

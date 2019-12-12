@@ -28,11 +28,12 @@ a,a:hover{
 	display: flex;
 	min-height: 600px;
 	align-items: center;
-	justify-content: center;
+	justify-content: left;
+	
 }
 
 .form_frame_inner{
-	padding: 5px 5px;
+	padding: 5px 15px 5px 15px;
 	background: rgba(0, 0, 0, 0.58);
 	border-radius: 30px;
 	font-family: 'Ubuntu', sans-serif;
@@ -106,7 +107,7 @@ a,a:hover{
 	text-align: center;
 }
 .categorie_title a {
-	color: #BB225A;
+	color: #000;
 	text-decoration: none;
 	font-size: larger;
 }
@@ -394,3 +395,34 @@ a,a:hover{
 }
 
 
+.home-filter {
+    padding: 15px;
+	background-color: rgba(0,0,0,0.7);
+	width: 30%;
+	border-radius: 5px;
+    text-align: -webkit-center;
+}
+.home-filter .form-group{
+	padding: 15px 10px 15px 10px;
+}
+
+.home-filter-btn {
+	float: right;
+	padding: 6px;
+	width: 100%;
+}
+
+.home-filter-btn button, .home-filter-btn button:hover {
+	background-color: #bb225a;
+	width: 100%;
+}
+
+.home-filter strong {
+	padding: 20px;
+	font-size: 35px;
+	color: white;
+}
+
+.body_container {
+	margin: 70px auto;
+}

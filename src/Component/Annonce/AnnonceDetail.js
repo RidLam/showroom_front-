@@ -4,7 +4,7 @@ import { Carousel } from 'react-responsive-carousel';
 const queryString = require('query-string');
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Row, Col, Button, Container, Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import { Row, Col, Container, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import './Annonce.css';
 import './annonce-responsive.css';
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -13,6 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MapPolygon from '../../maps/MapPolygon';
 import MapCircle from '../../maps/MapCircle';
 import map from '../../Assets/images/france.png';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
+import CustomModal from '../Modal/CustomModal';
 
 
 
@@ -22,10 +24,12 @@ class AnnonceDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            annonce : {}
+            annonce : {},
+            isOpen: false
         }
         this.mouseOver = this.mouseOver.bind(this);
         this.getPolygon = this.getPolygon.bind(this);
+        this.contactSeller = this.contactSeller.bind(this);
     }
     componentDidMount(){
 
@@ -61,6 +65,12 @@ class AnnonceDetail extends Component {
         return geoShape;
       }
 
+      contactSeller() {
+          this.setState({
+              isOpen: true
+          })
+      }
+
     render() {
         const { myAnnonce } = this.props.location.state;
         const base_url = 'http://localhost:3000';
@@ -90,37 +100,20 @@ class AnnonceDetail extends Component {
                 <Row >
                     <Col xs={9} className="annonce-detail-image-preview">
                     <div className="image_preview">
-                    {/* <Carousel
-                            showArrows={false}
-                            showStatus={false}
-                            showIndicators={false}
-                            width="100%"
-                            infiniteLoop={false}
-                            axis="horizontal"
-                            verticalSwipe="standard"
-                        >
-                                {myAnnonce.images.length && myAnnonce.images.map(function(image) {
-                                    return(
-                                        <div>
-                                            <img src={base_url+ image.path} />
-                                        </div>
-                                    )
-                                })}
-                            </Carousel> */}
-                            <ImageGallery 
-                                thumbnailPosition="left"
-                                sizes="500w"
-                                showFullscreenButton={false}
-                                showPlayButton={false}
-                                showNav={false}
-                                items={
-                                    myAnnonce.images.length && myAnnonce.images.map(function(image) {
-                                        return{
-                                                original: base_url + image.path,
-                                                thumbnail: base_url + image.path
-                                            }
-                                    })
-                                } />
+                        <ImageGallery 
+                            thumbnailPosition="left"
+                            sizes="500w"
+                            showFullscreenButton={false}
+                            showPlayButton={false}
+                            showNav={false}
+                            items={
+                                myAnnonce.images.length && myAnnonce.images.map(function(image) {
+                                    return{
+                                            original: base_url + image.path,
+                                            thumbnail: base_url + image.path
+                                        }
+                                })
+                            } />
                     </div>
                     <Row>
                         <Col xs={1}>
@@ -149,9 +142,9 @@ class AnnonceDetail extends Component {
                             <div className="profile">
                                 <img src="https://images.unsplash.com/photo-1484186139897-d5fc6b908812?ixlib=rb-0.3.5&s=9358d797b2e1370884aa51b0ab94f706&auto=format&fit=crop&w=200&q=80%20500w" className="thumbnail" />
                                 <div className="check"><i className="fas fa-check" /></div>
-                                <h3 className="name">Beverly Little</h3>
+                                <h3 className="name"><a href="/store/user"> {myAnnonce.user.username}</a></h3>
                                 <p className="title">Javascript Developer</p>
-                                <Button color="primary" id="contact_btn" size="sm" block>Contacter le vendeur</Button>
+                                <Button onClick={() => this.contactSeller()} color="primary"  id="contact_btn" size="sm" block>Contacter le vendeur</Button>
                                 <Button color="secondary" id="favorite_btn" size="sm" block>Ajouter au favorie</Button>
                             </div>
                             
@@ -235,7 +228,10 @@ class AnnonceDetail extends Component {
                    
                     </Col>
                 </Row>
-                    
+                    <CustomModal
+                        isOpen={this.state.isOpen}
+                        title="Contact vendeur"
+                    />
             </Container>
         )
     }

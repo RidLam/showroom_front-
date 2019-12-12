@@ -5,6 +5,9 @@ import '../../Assets/Css/upload.images.css';
 import addImage from '../../Assets/images/add_image.png';
 import remove from '../../Assets/images/cancel.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { MdDeleteForever } from "react-icons/md";
+import { IconContext } from "react-icons";
+
 
 
 
@@ -111,7 +114,7 @@ render() {
                 <div className="image-preview">
                     <img  src={this.state.image1}/>
                     <a className="remImage" onClick={() => this.deletePreviewImage('image1')} id="delete">
-                    <img src={addImage}/>
+                      <span><MdDeleteForever clolor="red" size="2em"/></span>
 	                </a> 
                 </div>      
                 }   
@@ -131,7 +134,7 @@ render() {
                 <div className="image-preview">
                     <img  src={this.state.image2}/>
                     <a className="remImage" onClick={() => this.deletePreviewImage('image2')} id="delete">
-		                <img src={remove} style={{width:"40px",height:"40px"}}/>
+		                <span><MdDeleteForever clolor="red" size="2em"/></span>
 	                </a> 
                 </div>      
                 }                   
@@ -152,7 +155,7 @@ render() {
                 <div className="image-preview">
                     <img  src={this.state.image3}/>
                     <a className="remImage" onClick={() => this.deletePreviewImage('image3')} id="delete">
-		                <img src={remove} style={{width:"40px",height:"40px"}}/>
+		                <span><MdDeleteForever clolor="red" size="2em"/></span>
 	                </a> 
                 </div>      
                 }   
@@ -172,7 +175,7 @@ render() {
                 <div className="image-preview">
                     <img  src={this.state.image4}/>
                     <a className="remImage" onClick={() => this.deletePreviewImage('image4')} id="delete">
-		                <img src={remove} style={{width:"40px",height:"40px"}}/>
+		                <span><MdDeleteForever clolor="red" size="2em"/></span>
 	                </a>   
                 </div>      
                 }   
