@@ -398,9 +398,11 @@ a,a:hover{
 .home-filter {
     padding: 15px;
 	background-color: rgba(0,0,0,0.7);
-	width: 30%;
+	width: 22%;
 	border-radius: 5px;
-    text-align: -webkit-center;
+	text-align: -webkit-center;
+	left: 10%;
+    position: absolute;
 }
 .home-filter .form-group{
 	padding: 15px 10px 15px 10px;

@@ -15,6 +15,7 @@ import MapCircle from '../../maps/MapCircle';
 import map from '../../Assets/images/france.png';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input, Label, Form, FormGroup } from 'reactstrap';
 import CustomModal from '../Modal/CustomModal';
+import { FaRegHeart, FaHeart} from "react-icons/fa";
 
 
 
@@ -25,43 +26,48 @@ class AnnonceDetail extends Component {
         super(props);
         this.state = {
             annonce : {},
-            isOpen: false
+            isOpen: false,
+            annonceExist: false,
+            coords : {}
         }
         this.mouseOver = this.mouseOver.bind(this);
-        this.getPolygon = this.getPolygon.bind(this);
+        this.getShape = this.getShape.bind(this);
         this.contactSeller = this.contactSeller.bind(this);
     }
     componentDidMount(){
-
-
-        
-    }
-    componentDidUpdate(prevProps) {
         var  _id = this.props.match.params.id;
-        axios.get(`http://localhost:3000/getAnnoneById`, {params: {id: _id}})
+        axios.get(`http://localhost:3000/annonces/getById`, {params: {id: _id}})
         .then(res => {
+            var coords = this.getShape(res.data[0].commune.geo_point);
             this.setState({
-                annonce : res.data 
+                annonce : res.data[0] ,
+                annonceExist : true,
+                coords: coords
                 });
+                console.log(res)
         }).catch(error => {
             console.error(error);
         })
+        
     }
+    
+    
     mouseOver(event) {
         console.log(event)
     }
-    getPolygon(polygonArray){
-        var geoShape = [];
-        var jsonData = JSON.parse(polygonArray);
-        var data = jsonData[0];
-        for(var i =0; i< data.length;i++) {
-            var item = data[i];
-            var obj = {};
-            obj['lat'] = item[1];
-            obj['lng'] = item[0];
-            geoShape.push(obj)
+    getShape(polygonArray){
+         var jsonData = JSON.parse(polygonArray);
+         var geoShape = {lat: jsonData[0], lng: jsonData[1]};
+
+        // var data = jsonData[0];
+        // for(var i =0; i< data.length;i++) {
+        //     var item = data[i];
+        //     var obj = {};
+        //     obj['lat'] = item[1];
+        //     obj['lng'] = item[0];
+        //     geoShape.push(obj)
             
-        }
+        // }
         return geoShape;
       }
 
@@ -72,11 +78,11 @@ class AnnonceDetail extends Component {
       }
 
     render() {
-        const { myAnnonce } = this.props.location.state;
+        const  myAnnonce  = this.state.annonce;
+        var {coords} = this.state;
+        var isCoords = Object.keys(coords).length > 0 ? true : false;
         const base_url = 'http://localhost:3000';
         console.log(myAnnonce)
-        var shape = this.getPolygon(myAnnonce.commune.geo_polygon);
-       
         const mapView = () =>{
             return (
                <div className="map-view">
@@ -86,49 +92,50 @@ class AnnonceDetail extends Component {
            )
             }
         return(
-           
             <Container className="annonce-detail">
                 <Row>
                     <Breadcrumb tag="nav" listTag="div" className="breadcrump">
                         <BreadcrumbItem tag="a" href="#">Home</BreadcrumbItem>
-                        <BreadcrumbItem tag="a" href="#">{myAnnonce.commune.name}</BreadcrumbItem>
-                        <BreadcrumbItem tag="a" href="#">{myAnnonce.categorie.name}</BreadcrumbItem>
-                        <BreadcrumbItem active tag="span">{myAnnonce.title}</BreadcrumbItem>
+                        <BreadcrumbItem tag="a" href="#">{myAnnonce.commune && myAnnonce.commune.commune_name}</BreadcrumbItem>
+                        <BreadcrumbItem tag="a" href="#">{myAnnonce.categorie && myAnnonce.categorie.name}</BreadcrumbItem>
+                        <BreadcrumbItem tag="span">{myAnnonce && myAnnonce.title}</BreadcrumbItem>
                     </Breadcrumb>
                 </Row>
                   
                 <Row >
+
                     <Col xs={9} className="annonce-detail-image-preview">
-                    <div className="image_preview">
-                        <ImageGallery 
-                            thumbnailPosition="left"
-                            sizes="500w"
-                            showFullscreenButton={false}
-                            showPlayButton={false}
-                            showNav={false}
-                            items={
-                                myAnnonce.images.length && myAnnonce.images.map(function(image) {
-                                    return{
-                                            original: base_url + image.path,
-                                            thumbnail: base_url + image.path
-                                        }
-                                })
-                            } />
-                    </div>
-                    <Row>
-                        <Col xs={1}>
-                        </Col>
-                        <Col xs={8}>
+                   <Row>
+                        <Col xs={10}>
                         <div className="annonce-detail-title">
-                                        <h4>{myAnnonce.title} addition to that descriptio title</h4>
-                                    </div>
+                            <div className="annonce-title">
+                                <h4>{ myAnnonce.title} Mercedes classe C 250 AMG</h4>
+                            </div>
+                            <div className="annonce-date">
+                                <h6>15/12/2019 à 21h12</h6>
+                            </div>
+                        </div>
                         </Col> 
-                        <Col xs={3}>
-                                <div className="annonce-detail-price">
-                                        <h3>{myAnnonce.price}€</h3>
-                                    </div>
+                        <Col xs={2} >
+                        <div className="annonce-price">
+                                <h3>{ myAnnonce.price}€</h3>
+                            </div>
                         </Col>
                         </Row>
+                    <ImageGallery 
+                        thumbnailPosition="bottom"
+                        //sizes="500w"
+                        showFullscreenButton={false}
+                        showPlayButton={false}
+                        showNav={true}
+                        items={
+                            myAnnonce.images && myAnnonce.images.length && myAnnonce.images.map(function(image) {
+                                return{
+                                        original: base_url + image.path,
+                                        thumbnail: base_url + image.path
+                                    }
+                            })
+                        } />
                     </Col>
                     <Col xs={3}>
                     <div>
@@ -142,10 +149,11 @@ class AnnonceDetail extends Component {
                             <div className="profile">
                                 <img src="https://images.unsplash.com/photo-1484186139897-d5fc6b908812?ixlib=rb-0.3.5&s=9358d797b2e1370884aa51b0ab94f706&auto=format&fit=crop&w=200&q=80%20500w" className="thumbnail" />
                                 <div className="check"><i className="fas fa-check" /></div>
-                                <h3 className="name"><a href="/store/user"> {myAnnonce.user.username}</a></h3>
-                                <p className="title">Javascript Developer</p>
-                                <Button onClick={() => this.contactSeller()} color="primary"  id="contact_btn" size="sm" block>Contacter le vendeur</Button>
-                                <Button color="secondary" id="favorite_btn" size="sm" block>Ajouter au favorie</Button>
+                                <h4 className="name"><a href="/store/user"><strong>{myAnnonce.user && myAnnonce.user.username}</strong> </a><span>PRO</span></h4>
+                                <Button id="favorite_btn" size="sm" block>Visiter la boutique</Button>
+
+                                <Button onClick={() => this.contactSeller()}   id="contact_btn" size="sm" block>Contacter le vendeur</Button>
+                                <Button id="favorite_btn" size="sm" block><FaRegHeart className="favorite_detail" onClick={() =>this.handleFavorite(annonce, 'delete')} color="#bb225a" size="1.3em"/>Ajouter au favoris</Button>
                             </div>
                             
                             </div>
@@ -154,20 +162,60 @@ class AnnonceDetail extends Component {
                 </Row>
                 
                 <Row className="annonce-detail-description">
-                    <Col md={8}>
+                    <Col md={9}>
                         <div className="product_description">
                         <h4 className="title has_border">Description</h4>
                         <p>{myAnnonce.description}</p>
                         </div>
                     </Col>
-                    <Col md={4}>
-                        <div className="map_frame">
-                        <h4 className="title has_border">Localization</h4>
-                            {shape ?
-                                <MapPolygon
-                                    shape= {shape}
-                                    height="200px"
-                                    width="300px"
+                    <Col md={3}>
+                        
+                    </Col>
+                </Row>
+                <Row className="annonce-detail-description">
+                    <Col md={9}>
+                       <Row>
+                           <Col xs={6}>
+                               <div>
+                                   <label>Date d'achat :</label>
+                                   <h6>12/12/2019</h6>
+                               </div>
+                           </Col>
+                           <Col xs={6}>
+                               <div>
+                                   <label>Facture :</label>
+                                   <h6>Oui</h6>
+                               </div>
+                           </Col>
+                       </Row>
+                       <Row>
+                           <Col xs={6}>
+                               <div>
+                                   <label>Garantie :</label>
+                                   <h6>Non</h6>
+                               </div>
+                           </Col>
+                           <Col xs={6}>
+                               <div>
+                                   <label>Etat de produit :</label>
+                                   <h6>Tres bon etat</h6>
+                               </div>
+                           </Col>
+                       </Row>
+                    </Col>
+                    <Col md={3}>
+                        
+                    </Col>
+                </Row>
+                <Row >
+                    <Col md={9}>
+                    <div className="map_frame">
+                        <h4 className="title has_border">Localisation</h4>
+                            {isCoords ?
+                                <MapCircle
+                                    coords= {coords}
+                                    height="300px"
+                                    width="700px"
                                 />
                                 :
                                 mapView()
@@ -175,56 +223,17 @@ class AnnonceDetail extends Component {
                             }
                         </div>
                     </Col>
+                    <Col md={3}>
+                       
+                    </Col>
                 </Row>
                 <Row className="annonce-detail-profile1">
-                    <Col xs={8}>
+                    <Col xs={9}>
                     <div className="related_product">
-                        <h4 className="title has_border">Autres annonces du vendeur</h4>
-                        <div className="row">
-                            <div className="col-md-3 col-lg-3 col-12">
-                            <div className="product_box">
-                                <div className="prd_img">
-                                <a href="#"><img src="" /></a>
-                                </div>
-                                <div className="prd_details">
-                                <h4><span><a href="#">Title de l'annonce</a></span></h4>
-                                </div>
-                            </div>
-                            </div>
-                            <div className="col-md-3 col-lg-3 col-12">
-                            <div className="product_box">
-                                <div className="prd_img">
-                                <a href="#"><img src="" /></a>
-                                </div>
-                                <div className="prd_details">
-                                <h4><span><a href="#">Title de l'annonce</a></span></h4>
-                                </div>
-                            </div>
-                            </div>
-                            <div className="col-md-3 col-lg-3 col-12">
-                            <div className="product_box">
-                                <div className="prd_img">
-                                <a href="#"><img src="" /></a>
-                                </div>
-                                <div className="prd_details">
-                                <h4><span><a href="#">Title de l'annonce</a></span></h4>
-                                </div>
-                            </div>
-                            </div>
-                            <div className="col-md-3 col-lg-3 col-12">
-                            <div className="product_box">
-                                <div className="prd_img">
-                                <a href="#"><img src="" /></a>
-                                </div>
-                                <div className="prd_details">
-                                <h4><span><a href="#">Title de l'annonce</a></span></h4>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
+                        
                         </div>
                     </Col>
-                    <Col xs={4}>
+                    <Col xs={3}>
                    
                     </Col>
                 </Row>

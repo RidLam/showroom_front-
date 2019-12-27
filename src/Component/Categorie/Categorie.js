@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import './Categorie.css';
-import paca from '../../Assets/images/paca.png';
-import pays_de_la_loire from '../../Assets/images/pays-de-la-loire.png';
-import corse from '../../Assets/images/corse.png';
-import outre_mer from '../../Assets/images/outre-mer.png';
-import bretagne from '../../Assets/images/bretagne.png';
-import FilterView from './FilterView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import { Route } from 'react-router-dom';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText, ButtonGroup } from 'reactstrap';
-import AnnonceDetail from '../Annonce/AnnonceDetail';
 import { FaRegHeart, FaHeart} from "react-icons/fa";
 import noImage from '../../Assets/images/no-image.png';
-import categorie from '../../Assets/images/categorie-vetement.jpg';
 import SearchForm from './SearchForm';
-
+import { GET_REGION } from '../Commons/reducers/region/RegionActions';
+import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
+import NoResultFound from '../notFound/NoResultFound';
 const queryString = require('query-string');
 const moment = require('moment');
 moment.locale('fr');
@@ -28,6 +22,8 @@ class Categorie extends Component {
         this.state = {
             annonces: [],
             isFavorite: false,
+            categorieSlide : 'categorie-vetement.jpg',
+            categorieSlideName: 'All catégorie',
             regions: [],
             categories: [],
             favorite: []
@@ -54,22 +50,7 @@ class Categorie extends Component {
         }).catch(error => {
             console.error(error);
         });
-        axios.get(`http://localhost:3000/regions/getAll`)
-        .then(res => {
-            this.setState({
-                regions : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
-        axios.get(`http://localhost:3000/categories/getAll`)
-        .then(res => {
-            this.setState({
-                categories : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
+        
         var myFavorite = localStorage.getItem('myFavorite');
         var favoriteArr = [];
         if(myFavorite) {
@@ -83,6 +64,8 @@ class Categorie extends Component {
         }
 
     }
+
+    
     
     annonceDetail(annonce) {
         console.log("clicked");
@@ -125,25 +108,30 @@ class Categorie extends Component {
     }
     filterValue(value) {
         console.log(value);
+        this.setState({
+            categorieSlide: value.categorie.image_name,
+            categorieSlideName: value.categorie.name
+        })
     }
 
     render() {
         const base_urrl = "http://localhost:3000";
+        const { categorieSlide, categorieSlideName } = this.state;
+        const { regions } = this.props;
         return(
             <div className="body_container">
-                <Row>
                     <div className="categorie-slide">
+                        <img src={base_urrl + "/images/categorieSlides/" + categorieSlide}></img>
                         <div className="categorie-slide-title">
                             <span>
-                                <strong>Vetements & chaussures</strong>
+                                <strong>{categorieSlideName}</strong>
                                 <p>Il y a actuellement <span>2745</span> en ligne.</p>
                             </span>
                         </div>
                     </div>
-                </Row>
                 <SearchForm
                     getFilterValue={this.filterValue}
-                    regions= {this.state.regions}
+                    regions= {regions}
                 />
              <div className="container">
                 <Row>
@@ -195,7 +183,7 @@ class Categorie extends Component {
                                                         <div className="sch-name-description">
                                                             <Row>
                                                             <span>
-                                                                {/* {annonce.commune.name} | {annonce.commune.code} */}
+                                                                {annonce.commune.commune_name} | {annonce.commune.postale_code}
                                                                 </span>
                                                             </Row>
                                                             <Row>
@@ -219,6 +207,9 @@ class Categorie extends Component {
                                     </div>
                                 )
                             })}
+                            {this.state.annonces.length == 0 && 
+                                <NoResultFound/>
+                            }
                             
                         
                     </div>
@@ -235,7 +226,19 @@ class Categorie extends Component {
     }
 }
 
+const mapStateToProps = function(state) {
+    return {
+        categories : state.categorieReducer.categories,
+        regions : state.regionReducer.regions
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    console.log(GET_CATEGORIE);
+    return {
+        getCategorie: dispatch({type: GET_CATEGORIE}),
+        getRegions: dispatch({type: GET_REGION})
+      }
+}
 
 
-
-export default  Categorie;
+export default connect(mapStateToProps, mapDispatchToProps)(Categorie);

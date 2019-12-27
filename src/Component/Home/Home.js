@@ -1,14 +1,11 @@
 import React , { Component } from 'react';
-import prd1 from '../../Assets/images/announces/prd1.jpg';
-import prd2 from '../../Assets/images/announces/prd2.jpg';
-import prd3 from '../../Assets/images/announces/prd3.jpg';
-import prd4 from '../../Assets/images/announces/prd4.jpg';
-
+import { connect } from 'react-redux';
 import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import './home.css';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-
+import { GET_REGION } from '../Commons/reducers/region/RegionActions';
+import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
 
 
 
@@ -29,22 +26,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3000/regions/getAll`)
-        .then(res => {
-            this.setState({
-                regions : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
-        axios.get(`http://localhost:3000/categories/getAll`)
-        .then(res => {
-            this.setState({
-                categories : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
+        
     }
     goCategories () {
         var params = '';
@@ -61,14 +43,12 @@ class Home extends Component {
     }
 
     render() {
+        var { categories , regions} = this.props;
         return(
             <div className="body_container">
                 <section className="sec_search_home">
                     <div className="filter-homepage">
-                    <Row>
-                        <Col xs={1}>
-                        </Col>
-                        <Col xs={9}>
+                    
                         <div className="form_frame">
                             <div className="home-filter">
                                 <strong>Donner leur une seconde vie!</strong>
@@ -81,9 +61,10 @@ class Home extends Component {
                                         id="categorie" 
                                         name="categorie"                                        
                                         onChange= {this.handleChange}
+                                        onFocus= {() =>this.props.getCategories()}   
                                         placeholder="Categorie">
                                          <option hidden>Categories</option>
-                                            {this.state.categories && this.state.categories.map(categorie => {
+                                            {categories && categories.map(categorie => {
                                                 return(
                                                     <option value={categorie.id}>{categorie.name}</option>
                                                 )
@@ -95,11 +76,12 @@ class Home extends Component {
                                         type="select" 
                                         name="region" 
                                         id="region" 
-                                        name="region"                                        
+                                        name="region" 
+                                        onFocus= {() =>this.props.getRegionAll()}                                      
                                         onChange= {this.handleChange}
                                         placeholder="Categorie">
                                          <option hidden>Localisation</option>
-                                            {this.state.regions && this.state.regions.map(region => {
+                                            {regions && regions.map(region => {
                                                 return(
                                                     <option value={region.code}>{region.name}</option>
                                                 )
@@ -111,57 +93,8 @@ class Home extends Component {
                                 </div>
                                 </div>
                     
-                            {/* <form>
-                                <div className="form_frame_inner">
-                                    <div className="form-row">
-                                    <div className="form-group col-md-4 col-lg-5">
-                                        <input 
-                                            type="text"
-                                            name="search_text"
-                                            className="form-control" 
-                                            onChange= {this.handleChange}
-                                            id="inputCity" 
-                                            placeholder="Que recherchez-vous ?" />
-                                    </div>
-                                    <div className="form-group col-md-3 col-lg-3">
-                                        <select 
-                                            id="inputState"
-                                            name="categorie"                                        
-                                            onChange= {this.handleChange}
-                                            className="form-control">
-                                        <option hidden>Categories</option>
-                                        {this.state.categories && this.state.categories.map(categorie => {
-                                            return(
-                                                <option value={categorie.id}>{categorie.name}</option>
-                                            )
-                                        })}
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-3 col-lg-3">
-                                        <select 
-                                            id="inputState"
-                                            name="region"
-                                            onChange= {this.handleChange}
-                                            className="form-control">
-                                        <option hidden>Localisation</option>
-                                        {this.state.regions && this.state.regions.map(region => {
-                                            return(
-                                                <option value={region.code}>{region.name}</option>
-                                            )
-                                        })}
-                                        </select>
-                                    </div>
-                                    <div className="form-group col-md-2 col-lg-1">
-                                        <button onClick={this.goCategories} className="btn">GO
-                                        
-                                        </button>
-                                    </div>
-                                    </div>
-                                </div>
-                                </form> */}
+                            
                         </div>
-                        </Col>		
-                    </Row>
                     </div>
                     <div className="container">
                     
@@ -173,6 +106,7 @@ class Home extends Component {
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="vetements" className="bg_div">
+                                        
                                     </div>
                                 </div>
                             
@@ -265,5 +199,18 @@ class Home extends Component {
         )
     }
 }
-
-export default Home;
+const mapStateToProps = function(state) {
+    return {
+        categories : state.categorieReducer.categories,
+        regions : state.regionReducer.regions,
+        userDetails : state.userDetailReducer.userDetails
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    console.log(GET_CATEGORIE);
+    return {
+        getCategorie: dispatch({type: GET_CATEGORIE}),
+        getRegions: dispatch({type: GET_REGION})
+      }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

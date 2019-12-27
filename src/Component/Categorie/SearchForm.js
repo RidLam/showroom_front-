@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import  {Row, Col, InputGroup, InputGroupAddon, Button, Input, FormGroup, Label, InputGroupText  } from 'reactstrap';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import './searchForm.css';
+import { GET_REGION } from '../Commons/reducers/region/RegionActions';
+import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
+import { GET_DEPARTEMENT_BY_ID } from '../Commons/reducers/depertement/DepartementActions';
 
 
 
@@ -36,6 +40,9 @@ class SearchForm extends Component {
     handleChange(event) {
         var name = event.target.name;
         var value = event.target.value;
+        if(name == "categorie") {
+            value = this.props.categories[value - 1];
+        }
         this.setState({
             [name]: value,
             filter: {
@@ -44,9 +51,10 @@ class SearchForm extends Component {
             }
         })
     }
+   
     advancedSearch() {
         this.setState({
-            displayAdvancedSearch : !this.state.displayAdvancedSearch
+            displayAdvancedSearch : !displayAdvancedSearch
         })
     }
     handleAdvancedSearch(event) {
@@ -56,39 +64,16 @@ class SearchForm extends Component {
         })
     }
     componentDidMount() {
-        // axios.get(`http://localhost:3000/regions`)
-        // .then(res => {
-        //     this.setState({
-        //         regions : res.data 
-        //         });
-        // }).catch(error => {
-        //     console.error(error);
-        // })
-        axios.get(`http://localhost:3000/categories/getAll`)
-        .then(res => {
-            this.setState({
-                categories : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
+
     }
     handleRegionChange(event) {
-        var region = event.target.value;
-        if(region != null) {
-            axios.get(`http://localhost:3000/departements/getById`, {params: {id: region}})
-            .then(res => {
-                this.setState({
-                    departements : res.data 
-                    });
-            }).catch(error => {
-                console.error(error);
-            })
-        }
+        var region_id = event.target.value;
+        this.props.getDepartementById(region_id);
     }
 
     render() {
-        var { regions } = this.props;
+        var { regions , categories, departements} = this.props;
+        var { filter } = this.state;
         return(
            <div className="search-container">
                <Row className="filter-row">
@@ -113,16 +98,16 @@ class SearchForm extends Component {
                             onChange= {this.handleChange}
                             placeholder="Categorie">
                             <option hidden>Categories</option>
-                                {this.state.categories && this.state.categories.map(categorie => {
+                                {categories && categories.map((item, index) => {
                                     return(
-                                        <option value={categorie.id}>{categorie.name}</option>
+                                        <option key={index} value={item.id}>{item.name}</option>
                                     )
                                 })}
                         </Input>
                     </FormGroup>
                    </Col>
                    <Col xs={2} className="search-btn">
-                        <Button onClick={() => this.search(this.state.filter)}>Lancere la recherche</Button>
+                        <Button onClick={() => this.search(filter)}>Lancere la recherche</Button>
                    </Col>
                </Row>
                     <Row className="filter-row">
@@ -139,7 +124,7 @@ class SearchForm extends Component {
                                         <option hidden>Select region</option>
                                             {regions && regions.map(region => {
                                                 return(
-                                                    <option value={region.code}>{region.name}</option>
+                                                    <option key={region.id} value={region.code}>{region.name}</option>
                                                 )
                                             })}
                                     </Input>
@@ -154,9 +139,9 @@ class SearchForm extends Component {
                                         onChange= {this.handleChange}
                                         placeholder="departement">
                                         <option hidden>Select departement</option>
-                                            {this.state.departements && this.state.departements.map(item => {
+                                            {departements && departements.map(item => {
                                                 return(
-                                                    <option value={item.code}>{item.name}</option>
+                                                    <option key={item.id} value={item.departement_code}>{item.departement_name}</option>
                                                 )
                                             })}
                                     </Input>
@@ -214,5 +199,19 @@ class SearchForm extends Component {
     }
 }
 
+const mapStateToProps = function(state) {
+    return {
+        categories : state.categorieReducer.categories,
+        regions : state.regionReducer.regions,
+        departements: state.departementReducer.departements
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    return {
+        getCategorie: dispatch({type: GET_CATEGORIE}),
+        getRegions: dispatch({type: GET_REGION}),
+        getDepartementById: id => dispatch({type: GET_DEPARTEMENT_BY_ID, payload: id})
+      }
+}
 
-export default SearchForm;
+export default connect(mapStateToProps,mapDispatchToProps)(SearchForm);

@@ -18,22 +18,16 @@ class MapCircle extends React.Component {
     
 
   render() {
-    const {shape, height, width} = this.props;
+    const {shape, height, width, coords} = this.props;
     const polygonPoints = shape;
-    const polygonOptions = {
-    style: {
-        fillColor: "#FFFFCC",
-        strokeColor: "red",
-        lineWidth: 5
-    }
-    };
+    
     
     
     const circleOptions = {
                 style: {
                     strokeColor: "rgba(255, 0, 0, 1)", // Color of the perimeter
-                    lineWidth: 2,
-                    fillColor: "#BB225A" // Color of the circle
+                    lineWidth: 1,
+                    fillColor: "rgba(187,34,90,0.1)" // Color of the circle
                 }
             };
     
@@ -53,20 +47,21 @@ class MapCircle extends React.Component {
                 >
                 <HMap
                     style={{
-                    height: "300px",
-                    width: "500px",
+                    height: height,
+                    width: width,
                     
                     }}
-                    zoom={20}
                     mapOptions={{ 
-                        center: { lat: 52.5321472, lng: 13.3935785 }, 
+                        center: coords, 
                         bounds: true,
-                        autoColor: true
+                        autoColor: true,
+                        zoom: 12
                     }}
                 >
                     <HMapCircle
-                        coords={this.state.circleCoords} 
+                        coords={coords} 
                         options={circleOptions} 
+                        radius={1400}
                         />
                 </HMap>
                 </HPlatform>

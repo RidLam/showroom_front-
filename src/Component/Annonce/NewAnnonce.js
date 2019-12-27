@@ -10,6 +10,11 @@ import '../../Assets/Css/upload.images.css';
 import map from '../../Assets/images/map.png';
 import './Annonce.css';
 import { MdMyLocation } from "react-icons/md";
+import MapCircle from '../../maps/MapCircle';
+import Select from 'react-select';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import LoadAsyncSelect from '../Commons/Select/LoadAsyncSelect';
 
 
 
@@ -34,6 +39,10 @@ class NewAnnonce extends Component {
              categorie_id:'',
              annonceCreated: false,
              departement_id: '',
+             coords: '',
+             options: [],
+             currentCoords: '',
+             hideFields : false
             };
          this.handleLocationChange = this.handleLocationChange.bind(this);
          this.handleInputChange = this.handleInputChange.bind(this);
@@ -42,14 +51,21 @@ class NewAnnonce extends Component {
          this.handleFileChange = this.handleFileChange.bind(this);
          this.addAnnonce = this.addAnnonce.bind(this);
          this.getLocation = this.getLocation.bind(this);
+         this.success = this.success.bind(this);
     }
 
   
     handleInputChange(event) {
         var name = event.target.name;
         var data = event.target.value;
+        if(name == 'categorie_id') {
+            if(data == 1 || data == 7) {
+                this.setState({hideFields: true})
+            }else {
+                this.setState({hideFields: false})
+            }
+        }
         this.setState({[name]: data})
-        console.log(this.state);
     }
 
     addAnnonce() {
@@ -127,42 +143,26 @@ class NewAnnonce extends Component {
           console.log(this.state.images);
     }
      
-    handleLocationChange(event) {
-        var indata ;
-        var code_postal = '';
-        var commune_name = '';
-        if(event.target) {
-            indata = event.target.value;
-            this.setState({
-                commune: event.target.value
-            })
-        }
-        
-        if(isNaN(indata)) {
-            commune_name = indata;
-        }else {
-            code_postal = indata;
-        }
-        var data = {code_postal: code_postal, commune_name: commune_name}
-        if(event.target.value != "") {
-            
-            axios.get(`http://localhost:3000/communes/getById`, {params: {code: code_postal, name: commune_name}})
-            .then(res => {
-                this.setState({
-                    communes : res.data 
-                    });
-            }).catch(error => {
-                console.error(error);
-            })
-
-    
-        
-        }else {
-            this.setState({communes:[]})
-        }
+    handleLocationChange(selected) {
+        console.log(selected);
+        var location = JSON.parse(selected.geo_point);
+        var coords = {lat: location[0], lng: location[1]};
+        this.setState({coords: coords});
     }
+    success(position) {
+        const latitude  = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        var coords = {lat: latitude, lng: longitude};
+        this.setState({
+            currentCoords: coords
+        })
+      }
+      error() {
+        console.log('Unable to retrieve your location');
+      }
 
     componentDidMount() {
+        navigator.geolocation.getCurrentPosition(this.success, this.error);
         axios.get(`http://localhost:3000/categories/getAll`)
         .then(res => {
             this.setState({
@@ -172,25 +172,10 @@ class NewAnnonce extends Component {
             console.error(error);
         })
     }
-    getLocation() {
-        navigator.geolocation.watchPosition(position => {
-            var coords = {lat: position.coords.latitude, long: position.coords.longitude};
-            axios.get(`http://localhost:3000/communes/getByCode`, {params: coords})
-            .then(res => {
-                var data = res.data[0];
-                var geoshape = this.getPolygon(data.contour.coordinates);
-                this.setState({
-                    commune: data.nom + " , " + data.codesPostaux[0],
-                    lat: coords.lat,
-                    lng: coords.long ,
-                    shape : geoshape,
-                    commune_id : data.code,
-                    departement_id : data.codeDepartement, 
-                    });
-            }).catch(error => {
-                console.error(error);
-            })
-        })
+    getLocation(myLocation) {
+        console.log(myLocation);
+        var coords = {lat: myLocation.centre.coordinates[1], lng: myLocation.centre.coordinates[0]};
+        this.setState({coords: coords});
     }
     
 
@@ -203,7 +188,7 @@ class NewAnnonce extends Component {
         )
          }
         
-
+         var {shape, coords,communes, currentCoords, hideFields} = this.state;
         return(
             <Container className="">
                 <Row className="title_block">
@@ -216,45 +201,102 @@ class NewAnnonce extends Component {
                     <Card>
                         <CardHeader>Votre annonce</CardHeader>
                         <CardBody>
-                            <Col xs={9}>
+                            <Row>
+                            <Col xs={6}>
                             
-                        <CardTitle></CardTitle>
-                            <Form>
-                            <FormGroup row>
-                                <Col sm={7}>
-                                <Input type="text" onChange={this.handleInputChange} name="title" id="title_id" placeholder="Titre de l'annonce" />
+                                <CardTitle></CardTitle>
+                                <Form>
+                                <FormGroup>
+                                    <label>Titre de l'annonce :</label>
+                                    <Input type="text" onChange={this.handleInputChange} name="title" id="title_id" placeholder="" />
+                                </FormGroup>
+                            
+                                <FormGroup>
+                                <label>Categories :</label>
+                                    <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
+                                        <option hidden></option>
+                                        {this.state.categories && this.state.categories.map(item => {
+                                            return ( <option value={item.id}>{item.name}</option>)
+                                        })}
+                                        </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                <label>Description :</label>
+                                    <Input type="textarea" rows="5" onChange={this.handleInputChange} name="description" id="exampleText" placeholder="" />
+                                </FormGroup>
+                                <FormGroup>
+                                <Row>
+                                    <Col xs={8}>
+                                        <label>Prix :</label>
+                                        <Input type="number" onChange={this.handleInputChange} name="price" id="prix" placeholder="" />
+                                        </Col>
+                                    </Row>
+                                </FormGroup>
+                                <FormGroup>
+                                    <Row>
+                                        <Col xs={8}>
+                                             <label>Téléphone :</label>
+                                            <Input type="text"  onChange={this.handleInputChange} name="price" id="prix" placeholder="" />
+                                        </Col>
+                                    </Row>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                    <Input type="checkbox" />{' '}
+                                             Masquer le numéro de téléphone dans l'annonce
+                                    </Label>
+                                </FormGroup>
+                            
+                                </Form>
                                 </Col>
-                            </FormGroup>
-                           
-                            <FormGroup row>
-                                <Col sm={7}>
-                                <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
-                                    <option hidden>Categorie</option>
-                                    {this.state.categories && this.state.categories.map(item => {
-                                        return ( <option value={item.id}>{item.name}</option>)
-                                    })}
+                                <Col xs={6} style={{display: hideFields ? 'none' : 'block' }}>
+                            
+                                <CardTitle></CardTitle>
+                                <Form>
+                                <label>Date d'achat :</label>
+                                <FormGroup>
+                                <DatePicker
+                                    placeholderText=""
+                                    isClearable
+                                    //selected={this.state.startDate}
+                                    //onChange={this.handleChange}
+                                />
+                                </FormGroup>
+                            
+                                <FormGroup>
+                                <label>Facture disponible:</label>
+                                    <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
+                                        <option >Disponible</option>
+                                        <option >Non disponible</option>
                                     </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                <label>Etat de produit:</label>
+                                    <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
+                                        <option></option>
+                                        <option >Neuf</option>
+                                        <option >Bon etat</option>
+                                        <option >Etat moyen</option>
+                                    </Input>
+                                </FormGroup>
+                                <FormGroup>
+                                <label>Garantie :</label>
+                                <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
+                                        <option></option>
+                                        <option >Oui</option>
+                                        <option >Non</option>
+                                    </Input>
+                                </FormGroup>
+                            
+                                </Form>
                                 </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Col sm={7}>
-                                <Input type="textarea" onChange={this.handleInputChange} name="description" id="exampleText" placeholder="Description" />
-                                </Col>
-                            </FormGroup>
-                            <FormGroup row>
-                                <Col sm={4}>
-                                <Input type="number" onChange={this.handleInputChange} name="price" id="prix" placeholder="Prix" />
-                                </Col>
-                            </FormGroup>
-                           
-                            </Form>
-                            </Col>
-                        </CardBody>
-                    </Card>
-                    
+                                </Row>
+                            </CardBody>
+                        </Card>
                     </Col>
+                    
                   
-                    </Row>
+                </Row>
                 <Row className="add_annonce_block">
                     <Col xs="12">
                         <Card>
@@ -263,33 +305,35 @@ class NewAnnonce extends Component {
                             <CardTitle></CardTitle>
                             <Row>
                                 <Col xs="6">
-                                    <InputGroup>
-                                        <InputGroupAddon addonType="prepend">
-                                        <Button onClick={() => this.getLocation()}><MdMyLocation color="" size="1.2em"/></Button>
-                                        </InputGroupAddon>
-                                        <Input type="text" 
-                                                    value={this.state.commune}
-                                                    onChange={this.handleLocationChange} name="commune" id="title_id" placeholder="Ville ou code postal" autoComplete="off" />
-                                    </InputGroup>
-                                    <div className="commune-list">
-                                        {this.state.communes && this.state.communes.map(item => {
-                                            return(
-                                                <li className="" onClick={() => this.chosenCommune(item)}>{item.name}, {item.code}</li>
-                                            )
-                                        })}
-                                    </div>
+                                    <LoadAsyncSelect
+                                        options={communes}
+                                        selectedOption={this.handleLocationChange}
+                                        currentLocation={this.getLocation}
+                                    />
                                 </Col>
                                 <Col xs="6">
                                     <div className="map">
                                         <div className="map_container">
-                                            {this.state.shape != ''?
-                                            <MapPolygon 
-                                                shape= {this.state.shape}
-                                                height="300px"
-                                                width="500px"
+                                            {shape != '' ?
+                                                <MapPolygon
+                                                    shape= {shape}
+                                                    height="300px"
+                                                    width="500px"
                                                 />
-                                                :
-                                                mapView()
+                                                :coords != '' ?
+                                                <MapCircle
+                                                    coords= {coords}
+                                                    height="300px"
+                                                    width="500px"
+                                                />
+                                                :currentCoords != '' ?
+                                                    <MapCircle
+                                                        coords= {currentCoords}
+                                                        height="300px"
+                                                        width="500px"
+                                                    />
+                                                    :
+                                                    'Error we cannot get you location'
                                             }
                                         </div>
                                         </div>

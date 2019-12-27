@@ -2,22 +2,20 @@
     background-image: url('../../Assets/images/store_cover.jpg');
     height: 400px;
     width: 100%;
-    display: table;
 }
 
 .profile_avatar {
-    height: 70px;
-    width: 70px;
-    border-radius: 50px;
+    width: 130px;
     background-color: #ddd;
     display: inline-flex;
     vertical-align: middle;
-    max-width: 100%;
-    position: relative;
-    float: left;
+    position: absolute;
+    bottom: 6%;
+    left: 17%;
     padding: 0;
     text-align: center;
     cursor: pointer;
+
 }
 .profile_avatar h4 {
     padding: 25% 0 0 10%;
@@ -28,7 +26,6 @@
     float: left;
     width: 100%;
     height: 100%;
-    border-radius: 50px;
     background-position: 50% 50%;
     background-repeat: no-repeat;
     background-size: cover;

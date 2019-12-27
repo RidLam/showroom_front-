@@ -1,5 +1,5 @@
 import React , {Component } from 'react';
-import profile from '../../../Assets/images/profile.png';
+import { connect } from 'react-redux';
 import logo from '../../../Assets/images/logo.png';
 import {
     Collapse,
@@ -18,6 +18,7 @@ import './Header.css';
 import { faPlusSquare, faHeart, faGratipay } from '@fortawesome/free-solid-svg-icons'
 import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit } from "react-icons/fa";
 import { AiOutlineLogout } from 'react-icons/ai';
+import { LOGOUT_USER } from '../../Commons/reducers/userDetail/UserDetailActions';
 
 
 class Header extends Component {
@@ -34,10 +35,11 @@ class Header extends Component {
         })
     }
 
+
     render() {
-        var location = this.props;
+        var {location, userDetails} = this.props;
         return(
-            <Navbar fluid className=' fixed-top navbar-light bg-light'  color="light" light expand="md" activeKey={location.pathname}>
+            <Navbar fluid className=' fixed-top navbar-light bg-light'  color="light" light expand="md" >
                 <Link className="navbar-brand" exact  to="/">
                     <img src={logo}/>
                 </Link>
@@ -48,7 +50,7 @@ class Header extends Component {
                     <NavItem>
                         <NavLink exact  to="/newAnnonce" activeClassName="active" tag={RRNavLink} >
                             <div>
-                                <FaRegPlusSquare color="#000" size="2em"/>
+                                <FaRegPlusSquare color="#000" size="1.5em"/>
                             </div>
                             Déposer une annonce
                         </NavLink>
@@ -57,42 +59,64 @@ class Header extends Component {
                     <NavItem>
                         <NavLink exact  to="/favoris" activeClassName="active" tag={RRNavLink} >
                             <div>
-                                <FaRegHeart color="#000" size="2em"/>
+                                <FaRegHeart color="#000" size="1.5em"/>
                             </div>
                             Favoris
                         </NavLink>
                     </NavItem>
 
+                    {userDetails.success &&
+                    <NavItem>
+                        <NavLink exact  to="/myAnnonces" activeClassName="active" tag={RRNavLink} >
+                            <div>
+                                <FaUserEdit color="#000" size="1.5em"/>
+                            </div>
+                            Mes annonces
+                        </NavLink>
+                    </NavItem>
+                    }
+                    {userDetails.success &&
                     <NavItem>
                         <NavLink exact  to="/profile" activeClassName="active" tag={RRNavLink} >
                             <div>
-                                <FaUserEdit color="#000" size="2em"/>
+                                <FaUserEdit color="#000" size="1.5em"/>
                             </div>
                             Mon profile
                         </NavLink>
                     </NavItem>
-
+                    }
+                    {userDetails.success &&
                     <NavItem>
-                        <NavLink exact  to="/auth/logout" activeClassName="active" tag={RRNavLink} >
+                        <NavLink exact onClick={this.props.logout}  activeClassName="active" >
                             <div>
-                                <AiOutlineLogout color="#000" size="2em"/>
+                                <AiOutlineLogout color="#000" size="1.5em"/>
                             </div>
-                            Logout
+                            Déconnection
                         </NavLink>
                     </NavItem>
-
-                    <NavItem>
-                        <NavLink exact  to="/auth/login" activeClassName="active" tag={RRNavLink} >
-                            <div>
-                                <FaRegUserCircle color="#000" size="2em"/>
-                            </div>
-                            username
-                        </NavLink>
-                    </NavItem>
+                    }
+                    {userDetails.success ?
+                        <NavItem>
+                            <NavLink>
+                                <div>
+                                    <FaRegUserCircle color="#000" size="1.5em"/>
+                                </div>
+                                 {userDetails.userDetails.lastname }
+                            </NavLink>
+                        </NavItem>
+                        :
+                        <NavItem>
+                            <NavLink exact  to="/auth/login" activeClassName="active" tag={RRNavLink} >
+                                <div>
+                                    <FaRegUserCircle color="#000" size="1.5em"/>
+                                </div>
+                                Connection
+                            </NavLink>
+                        </NavItem>}
                     {/* <UncontrolledDropdown nav inNavbar>
                     <DropdownToggle nav caret>
                         <div>
-                            <FaRegUserCircle color="#000" size="2em"/>
+                            <FaRegUserCircle color="#000" size="1.5em"/>
                         </div>
                         <Link exact  to="/auth/login">Connection</Link>
                     </DropdownToggle>
@@ -116,5 +140,15 @@ class Header extends Component {
     }
 }
 
+const mapStateToProps = function(state) {
+    return {
+        userDetails : state.userDetailReducer.userDetails
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    return {
+        logout : () => dispatch({type: LOGOUT_USER})
+      }
+}
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

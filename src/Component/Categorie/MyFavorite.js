@@ -100,16 +100,14 @@ class MyFavorite extends Component {
         const base_urrl = "http://localhost:3000";
         return(
             <div className="body_container">
-                <Row>
-                    <div className="categorie-slide">
-                        <div className="categorie-slide-title">
-                            <span>
-                                <strong>Mes favoris</strong>
-                                <p>Vous avez  <span>{this.state.annonces.length}</span> annonces en favoris.</p>
-                            </span>
-                        </div>
+                <div className="categorie-slide">
+                    <div className="categorie-slide-title">
+                        <span>
+                            <strong>Mes favoris</strong>
+                            <p>Vous avez  <span>{this.state.annonces.length}</span> annonces en favoris.</p>
+                        </span>
                     </div>
-                </Row>
+                </div>
              <div className="container">
                 <Row>
                     <Col xs={8}>

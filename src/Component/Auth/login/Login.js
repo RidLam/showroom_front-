@@ -6,7 +6,8 @@ import FacebookLogin from 'react-facebook-login';
 import { FaFacebookF } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-
+import { connect } from 'react-redux';
+import { GET_USERDETAIL } from '../../Commons/reducers/userDetail/UserDetailActions';
 
 
 
@@ -29,7 +30,7 @@ class Login extends Component {
     this.handleAnnonceType = this.handleAnnonceType.bind(this);
     this.responseFacebook = this.responseFacebook.bind(this);
     this.handleInputchange = this.handleInputchange.bind(this);
-    this.login = this.login.bind(this);
+    this.log_in = this.log_in.bind(this);
     }
     handleAnnonceType(event){
         console.log(event.target);
@@ -44,8 +45,8 @@ class Login extends Component {
             [name]: value
         })
     }
-    login() {
-        var {password, email } = this.state;
+    log_in() {
+        var {password, email, emailInputInvalid, passwordInputInvalid } = this.state;
         this.setState({
             emailError: null,
             passwordError: null,
@@ -60,19 +61,22 @@ class Login extends Component {
         if(password == "") {
             this.setState({passwordError: 'Password est requis', passwordInputInvalid : true});
         }
-        if(emailInputInvalid && passwordInputInvalid) {
-            axios.post(`http://localhost:3000/auth/login`, {email: email, password: password})
-            .then(res => {
-                console.log(res.data);
-                if(res.data.success) {
+        if(!emailInputInvalid && !passwordInputInvalid) {
+            var user = {email: email, password: password};
+            this.props.login(user);
+            
+            // axios.post(`http://localhost:3000/auth/login`, {email: email, password: password})
+            // .then(res => {
+            //     console.log(res.data);
+            //     if(res.data.success) {
                     
-                }else {
-                    this.setState({
-                        message: res.data.message
-                    })
-                }
-            })
-            .catch(error => {console.log(error); })
+            //     }else {
+            //         this.setState({
+            //             message: res.data.message
+            //         })
+            //     }
+            // })
+            // .catch(error => {console.log(error); })
         }
         
     }
@@ -87,7 +91,7 @@ class Login extends Component {
         var last_name = response.last_name;
         const data = new FormData();
         data.append('email', email);
-        
+        console.log(response);
         axios.post(`http://localhost:3000/users/getByEmail`, {email: email})
         .then(res => {
             if(res.data.length == 0) {
@@ -107,6 +111,9 @@ class Login extends Component {
         const icon = <FaFacebookF color="#fff" size="1.2em"/>;
         return(
                 <Row className="body_container">
+                    {this.props.userDetails && this.props.userDetails.success &&
+                        this.props.history.push('/')
+                    }
                     <Col xs={1}></Col>
                     <Col xs={3} className="register_left">
                     <div className="register_form">
@@ -131,21 +138,21 @@ class Login extends Component {
                         </FormGroup>
 
                         <FormGroup  className="login_botton">
-                            <Button type="button" onClick={() => this.login()}>Se connecter</Button>
+                            <Button type="button" onClick={() => this.log_in()}>Se connecter</Button>
                         </FormGroup>
                         <div className="forget_password">
-                            <a href="#">Mot de passe oublié?</a>
+                            <a href="/recoverPassword">Mot de passe oublié?</a>
                         </div>
                         <p>Ou</p>
                         <FormGroup  className="facebook_login">
                         <FacebookLogin
                             appId="482248032399115"
-                            autoLoad={true}
+                            autoLoad={false}
                             icon={icon}
                             size="small"
                             fields="name,email,picture,first_name,last_name"
                             textButton="Facebook"
-                            //onClick={this.responseFacebook}
+                            onClick={this.responseFacebook}
                             callback={() => this.responseFacebook}
                              />
                         
@@ -168,5 +175,15 @@ class Login extends Component {
     }
 }
 
+const mapStateToProps = function(state) {
+    return {
+        userDetails : state.userDetailReducer.userDetails
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    return {
+        login : user => dispatch({type: GET_USERDETAIL, payload: user})
+      }
+}
 
-export default Login;
+export default connect(mapStateToProps,mapDispatchToProps)(Login);

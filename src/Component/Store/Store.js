@@ -85,21 +85,16 @@ class Store extends Component {
         const base_urrl = "http://localhost:3000";
         return(
             <div className="body_container">
-                <Row>
-                    <div className="store-slide">
-                        <div className="store-slide-profile">
-                            <Row>
-                            <Col xs={3}></Col>
-                                <Col xs={2}>
-                                    <div className="profile_avatar">
-                                        <img src={profile_pic}></img>
-                                        <h4>Username</h4>
-                                    </div>
-                                </Col>
-                           </Row>
+                <div className="store-slide">
+                    <div className="store-slide-profile">
+                        <div className="profile_avatar">
+                            <img src={profile_pic}></img>
+                        </div>
+                        <div className="profile_avatar">
+                            <h4>Username</h4>
                         </div>
                     </div>
-                </Row>
+                </div>
              <div className="container">
                 <Row>
                     <Col xs={8}>
@@ -150,7 +145,8 @@ class Store extends Component {
                                                         <div className="sch-name-description">
                                                             <Row>
                                                             <span>
-                                                                {annonce.commune.name} | {annonce.commune.code}</span>
+                                                            {annonce.commune.commune_name} | {annonce.commune.postale_code}
+                                                            </span>
                                                             </Row>
                                                             <Row>
                                                                 <div className="sch-description">

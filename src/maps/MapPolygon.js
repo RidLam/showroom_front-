@@ -57,11 +57,12 @@ class MapPolygon extends React.Component {
                     width: width,
                     
                     }}
-                    zoom={22}
+                    
                     mapOptions={{ 
                         //center: { lat: 52.5321472, lng: 13.3935785 }, 
                         bounds: true,
-                        autoColor: true
+                        autoColor: true,
+                        zoom: 12
                     }}
                 >
                     <HMapPolyLine 
