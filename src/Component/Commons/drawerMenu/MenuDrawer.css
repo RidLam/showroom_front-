@@ -1,0 +1,173 @@
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
+
+@media (min-width: 1281px) {
+    .nav-drawer {
+        display: none;
+    }
+    
+    
+}
+
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .nav-drawer {
+        display: none;
+    }
+  
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .nav-drawer {
+        display: none;
+    }
+  
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+
+  @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+	.nav-drawer {
+        display: none;
+    }
+	
+  }
+  
+  /* 
+	##Device = Low Resolution Tablets, Mobiles (Landscape)
+	##Screen = B/w 481px to 767px
+  */
+  
+  @media (min-width: 481px) and (max-width: 767px) {
+	.nav-drawer {
+        background-color: #ddd;
+        width: 100%;
+        height: 55px;
+        position: fixed;
+        z-index: 12;
+       
+    }
+
+    .menu-header {
+        padding: 10px;
+    }
+    .menu-items {
+        background-color: #ddd;
+        width: 77%;
+        height: -webkit-fill-available;
+        position: fixed;
+        z-index: 12;
+        top: 54px; 
+        padding: 20px;
+    }
+
+    .display-drawer {
+        background-color: rgba(0, 0, 0, 0.7);;
+        width: 100%;
+        height: -webkit-fill-available;
+        position: fixed;
+        z-index: 12;
+        top: 69px;
+    }
+    .hide-drawer {
+        display: none;
+    }
+    .menu-drawer-logo {
+        background-image: url('../../../Assets/images/logo-mobile.png');
+        height: 32px;
+        background-size: auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .menu-drawer-items-list a{
+        padding-left: 5px;
+        top: 3px;
+    }
+    .menu-drawer-icon {
+        position: relative;
+        top: -3px;
+        padding-right: 10px;
+    }
+    .menu-drawer-search {
+        float: right;
+    }
+	
+  }
+  
+  /* 
+	##Device = Most of the Smartphones Mobiles (Portrait)
+	##Screen = B/w 320px to 479px
+  */
+  
+  @media (min-width: 320px) and (max-width: 480px) {
+	.nav-drawer {
+        background-color: #ddd;
+        width: 100%;
+        height: 55px;
+        position: fixed;
+        z-index: 12;
+       
+    }
+
+    .menu-header {
+        padding: 10px;
+    }
+    .menu-items {
+        background-color: #ddd;
+        width: 77%;
+        height: -webkit-fill-available;
+        position: fixed;
+        z-index: 12;
+        top: 54px; 
+        padding: 20px;
+    }
+
+    .display-drawer {
+        background-color: rgba(0, 0, 0, 0.7);;
+        width: 100%;
+        height: -webkit-fill-available;
+        position: fixed;
+        z-index: 12;
+        top: 69px;
+    }
+    .hide-drawer {
+        display: none;
+    }
+    .menu-drawer-logo {
+        background-image: url('../../../Assets/images/logo-mobile.png');
+        height: 32px;
+        background-size: auto;
+        background-position: center center;
+        background-repeat: no-repeat;
+    }
+    .menu-drawer-items-list a{
+        padding-left: 5px;
+        top: 3px;
+    }
+    .menu-drawer-icon {
+        position: relative;
+        top: -3px;
+        padding-right: 10px;
+    }
+    .menu-drawer-search {
+        float: right;
+    }
+	
+  }

@@ -15,6 +15,9 @@ import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import LoadAsyncSelect from '../Commons/Select/LoadAsyncSelect';
+import { connect } from 'react-redux';
+import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
+import { GET_USERDETAIL } from '../Commons/reducers/userDetail/UserDetailActions';
 
 
 
@@ -52,6 +55,12 @@ class NewAnnonce extends Component {
          this.addAnnonce = this.addAnnonce.bind(this);
          this.getLocation = this.getLocation.bind(this);
          this.success = this.success.bind(this);
+         this.getUser = this.getUser.bind(this);
+
+        // this.getUser();
+         navigator.geolocation.getCurrentPosition(this.success, this.error);
+         //this.props.getCategorie();
+
     }
 
   
@@ -161,22 +170,29 @@ class NewAnnonce extends Component {
         console.log('Unable to retrieve your location');
       }
 
-    componentDidMount() {
-        navigator.geolocation.getCurrentPosition(this.success, this.error);
-        axios.get(`http://localhost:3000/categories/getAll`)
-        .then(res => {
-            this.setState({
-                categories : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        })
-    }
+    // componentDidMount() {
+    //     // navigator.geolocation.getCurrentPosition(this.success, this.error);
+    //     // axios.get(`http://localhost:3000/categories/getAll`)
+    //     // .then(res => {
+    //     //     this.setState({
+    //     //         categories : res.data 
+    //     //         });
+    //     // }).catch(error => {
+    //     //     console.error(error);
+    //     // })
+    // }
     getLocation(myLocation) {
         console.log(myLocation);
         var coords = {lat: myLocation.centre.coordinates[1], lng: myLocation.centre.coordinates[0]};
         this.setState({coords: coords});
     }
+
+    getUser() {
+        var uuid = localStorage.getItem('id_session');
+        if(uuid) {
+          this.props.getUserDetail({uuid});
+        }
+      }
     
 
     render() {
@@ -187,7 +203,7 @@ class NewAnnonce extends Component {
             </div>
         )
          }
-        
+        var { categories } = this.props;
          var {shape, coords,communes, currentCoords, hideFields} = this.state;
         return(
             <Container className="">
@@ -215,7 +231,7 @@ class NewAnnonce extends Component {
                                 <label>Categories :</label>
                                     <Input type="select" onChange={this.handleInputChange} name="categorie_id" id="exampleSelect">
                                         <option hidden></option>
-                                        {this.state.categories && this.state.categories.map(item => {
+                                        {categories && categories.map(item => {
                                             return ( <option value={item.id}>{item.name}</option>)
                                         })}
                                         </Input>
@@ -369,4 +385,18 @@ class NewAnnonce extends Component {
     }
 }
 
-export default NewAnnonce;
+const mapStateToProps = function(state) {
+    return {
+        userDetails : state.userDetailReducer.userDetails,
+        categories : state.categorieReducer.categories,
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    return {
+        logout : () => dispatch({type: LOGOUT_USER}),
+        getUserDetail : user => dispatch({type: GET_USERDETAIL, action: user}),
+        getCategorie: dispatch({type: GET_CATEGORIE}),
+      }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewAnnonce);

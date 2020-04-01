@@ -16,9 +16,11 @@ import {
 import { Link, NavLink as RRNavLink } from 'react-router-dom';
 import './Header.css';
 import { faPlusSquare, faHeart, faGratipay } from '@fortawesome/free-solid-svg-icons'
-import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit } from "react-icons/fa";
+import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit,FaList } from "react-icons/fa";
 import { AiOutlineLogout } from 'react-icons/ai';
 import { LOGOUT_USER } from '../../Commons/reducers/userDetail/UserDetailActions';
+import { GET_USERDETAIL } from '../../Commons/reducers/userDetail/UserDetailActions';
+import MenuDrawer from '../drawerMenu/MenuDrawer';
 
 
 class Header extends Component {
@@ -28,17 +30,32 @@ class Header extends Component {
             isOpen : false
         }
         this.setIsOpen = this.setIsOpen.bind(this);
+        this.getUser = this.getUser.bind(this);
+        this.logout = this.logout.bind(this);
+        this.getUser();
     }
     setIsOpen() {
         this.setState({
             isOpen : !this.state.isOpen
         })
     }
-
+    getUser() {
+        var uuid = localStorage.getItem('id_session');
+        if(uuid) {
+          this.props.getUserDetail({uuid});
+        }
+      }
+      logout() {
+          localStorage.removeItem('id_session');
+          this.props.logout();
+          window.location.reload();
+      }
+      
 
     render() {
         var {location, userDetails} = this.props;
         return(
+            <div>
             <Navbar fluid className=' fixed-top navbar-light bg-light'  color="light" light expand="md" >
                 <Link className="navbar-brand" exact  to="/">
                     <img src={logo}/>
@@ -52,7 +69,7 @@ class Header extends Component {
                             <div>
                                 <FaRegPlusSquare color="#000" size="1.5em"/>
                             </div>
-                            Déposer une annonce
+                            <span className="navbar-item-title">Déposer une annonce</span>
                         </NavLink>
                     </NavItem>
 
@@ -61,17 +78,19 @@ class Header extends Component {
                             <div>
                                 <FaRegHeart color="#000" size="1.5em"/>
                             </div>
-                            Favoris
+                            
+                            <span className="navbar-item-title">Favoris</span>
                         </NavLink>
                     </NavItem>
 
                     {userDetails.success &&
                     <NavItem>
-                        <NavLink exact  to="/myAnnonces" activeClassName="active" tag={RRNavLink} >
+                        <NavLink exact  to="/mesAnnonces" activeClassName="active" tag={RRNavLink} >
                             <div>
-                                <FaUserEdit color="#000" size="1.5em"/>
+                                <FaList color="#000" size="1.5em"/>
                             </div>
-                            Mes annonces
+                            <span className="navbar-item-title">Mes annonces</span>
+
                         </NavLink>
                     </NavItem>
                     }
@@ -81,17 +100,17 @@ class Header extends Component {
                             <div>
                                 <FaUserEdit color="#000" size="1.5em"/>
                             </div>
-                            Mon profile
+                            <span className="navbar-item-title">Mon profile</span>
                         </NavLink>
                     </NavItem>
                     }
                     {userDetails.success &&
                     <NavItem>
-                        <NavLink exact onClick={this.props.logout}  activeClassName="active" >
+                        <NavLink exact onClick={() => this.logout()}  activeClassName="active" >
                             <div>
                                 <AiOutlineLogout color="#000" size="1.5em"/>
                             </div>
-                            Déconnection
+                            <span className="navbar-item-title">Déconnection</span>
                         </NavLink>
                     </NavItem>
                     }
@@ -101,7 +120,7 @@ class Header extends Component {
                                 <div>
                                     <FaRegUserCircle color="#000" size="1.5em"/>
                                 </div>
-                                 {userDetails.userDetails.lastname }
+                                <span className="navbar-item-title">{userDetails.user.lastname }</span>
                             </NavLink>
                         </NavItem>
                         :
@@ -110,7 +129,7 @@ class Header extends Component {
                                 <div>
                                     <FaRegUserCircle color="#000" size="1.5em"/>
                                 </div>
-                                Connection
+                                <span className="navbar-item-title">Connection</span>
                             </NavLink>
                         </NavItem>}
                     {/* <UncontrolledDropdown nav inNavbar>
@@ -136,18 +155,24 @@ class Header extends Component {
                 </Nav>
                 </Collapse>
             </Navbar>
+            <MenuDrawer/>
+            </div>
         )
     }
 }
 
 const mapStateToProps = function(state) {
     return {
-        userDetails : state.userDetailReducer.userDetails
+        userDetails : state.userDetailReducer.userDetails,
+        isAuthenticated : state.userDetailReducer.isAuthenticated
+
     }
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        logout : () => dispatch({type: LOGOUT_USER})
+        logout : () => dispatch({type: LOGOUT_USER}),
+        getUserDetail : user => dispatch({type: GET_USERDETAIL, action: user}),
+
       }
 }
 

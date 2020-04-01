@@ -6,6 +6,8 @@ import './searchForm.css';
 import { GET_REGION } from '../Commons/reducers/region/RegionActions';
 import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
 import { GET_DEPARTEMENT_BY_ID } from '../Commons/reducers/depertement/DepartementActions';
+import { SEARCH_ANNONCE } from '../Commons/reducers/annonce/MyAnnonceActions';
+
 
 
 
@@ -34,6 +36,50 @@ class SearchForm extends Component {
     }
 
     search(value){
+        var params = '';
+        if(value.title) {
+            if(params == '') {
+                params += '?title=' + value.title;
+            }else {
+                params += '&title=' + value.title;
+            }
+        }
+        if(value.categorie && value.categorie.id) {
+            if(params == '') {
+                params += '?categorie=' + value.categorie.id;
+            }else {
+                params += '&categorie=' + value.categorie.id;
+            }
+        }
+        if(value.departement) {
+            if(params == '') {
+                params += '?departement=' + value.departement;
+            }else {
+                params += '&departement=' + value.departement;
+            }
+        }
+        if(value.minPrice) {
+            if(params == '') {
+                params += '?minPrice=' + value.minPrice;
+            }else {
+                params += '&minPrice=' + value.minPrice;
+            }
+        }
+        if(value.maxPrice) {
+            if(params == '') {
+                params += '?maxPrice=' + value.maxPrice;
+            }else {
+                params += '&maxPrice=' + value.maxPrice;
+            }
+        }
+        if(value.sortby) {
+            if(params == '') {
+                params += '?sortby=' + value.sortby;
+            }else {
+                params += '&sortby=' + value.sortby;
+            }
+        }
+        this.props.history.push('/annonces/search' + params);
         this.props.getFilterValue(value);
     }
 
@@ -63,9 +109,7 @@ class SearchForm extends Component {
             displayAdvancedSearch : checked
         })
     }
-    componentDidMount() {
-
-    }
+    
     handleRegionChange(event) {
         var region_id = event.target.value;
         this.props.getDepartementById(region_id);
@@ -97,7 +141,7 @@ class SearchForm extends Component {
                             name="categorie"                                        
                             onChange= {this.handleChange}
                             placeholder="Categorie">
-                            <option hidden>Categories</option>
+                            <option>Toutes les categories</option>
                                 {categories && categories.map((item, index) => {
                                     return(
                                         <option key={index} value={item.id}>{item.name}</option>
@@ -121,7 +165,7 @@ class SearchForm extends Component {
                                         name="region"                                        
                                         onChange= {this.handleRegionChange}
                                         placeholder="Region">
-                                        <option hidden>Select region</option>
+                                        <option>Toutes region</option>
                                             {regions && regions.map(region => {
                                                 return(
                                                     <option key={region.id} value={region.code}>{region.name}</option>
@@ -138,7 +182,7 @@ class SearchForm extends Component {
                                         name="departement"                                        
                                         onChange= {this.handleChange}
                                         placeholder="departement">
-                                        <option hidden>Select departement</option>
+                                        <option>Toutes les departement</option>
                                             {departements && departements.map(item => {
                                                 return(
                                                     <option key={item.id} value={item.departement_code}>{item.departement_name}</option>
@@ -185,7 +229,8 @@ class SearchForm extends Component {
                                         onChange={this.handleChange}
                                         id="sortby" 
                                         placeholder="Trier par">
-                                        <option hidden>Trier par :</option>
+                                        <option hidden>Trier par:</option>
+                                        <option >Toutes</option>
                                         <option value="price">Prix</option>
                                         <option value="newest">Nouveaux</option>
                                         <option value="bestMatch">Best match</option>
@@ -210,7 +255,8 @@ const mapDispatchToProps = function(dispatch) {
     return {
         getCategorie: dispatch({type: GET_CATEGORIE}),
         getRegions: dispatch({type: GET_REGION}),
-        getDepartementById: id => dispatch({type: GET_DEPARTEMENT_BY_ID, payload: id})
+        getDepartementById: id => dispatch({type: GET_DEPARTEMENT_BY_ID, payload: id}),
+        getAnnonces: params => dispatch({type: SEARCH_ANNONCE, payload: params})
       }
 }
 

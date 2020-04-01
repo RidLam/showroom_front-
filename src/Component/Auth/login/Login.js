@@ -7,7 +7,7 @@ import { FaFacebookF } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { GET_USERDETAIL } from '../../Commons/reducers/userDetail/UserDetailActions';
+import { GET_USERDETAIL, LOGIN_USER } from '../../Commons/reducers/userDetail/UserDetailActions';
 
 
 
@@ -64,19 +64,6 @@ class Login extends Component {
         if(!emailInputInvalid && !passwordInputInvalid) {
             var user = {email: email, password: password};
             this.props.login(user);
-            
-            // axios.post(`http://localhost:3000/auth/login`, {email: email, password: password})
-            // .then(res => {
-            //     console.log(res.data);
-            //     if(res.data.success) {
-                    
-            //     }else {
-            //         this.setState({
-            //             message: res.data.message
-            //         })
-            //     }
-            // })
-            // .catch(error => {console.log(error); })
         }
         
     }
@@ -110,67 +97,70 @@ class Login extends Component {
     render() {
         const icon = <FaFacebookF color="#fff" size="1.2em"/>;
         return(
-                <Row className="body_container">
-                    {this.props.userDetails && this.props.userDetails.success &&
+            <div className="login_container">
+                {this.props.userDetails && this.props.userDetails.success &&
                         this.props.history.push('/')
                     }
-                    <Col xs={1}></Col>
-                    <Col xs={3} className="register_left">
-                    <div className="register_form">
-                        
+                <div className="floatleft">
+               
+                    <div className="login_left">
+                                <div className="login_form">
+                            
 
-                        <FormGroup>
-                            <Input  
-                                type="email" onChange={this.handleInputchange} name="email"  placeholder="Email"
-                                invalid={this.state.emailInputInvalid}
-                            />
-                            {/* <FormFeedback tooltip></FormFeedback> */}
-                            {this.state.emailError != "" ? <FormText className="error_message"><span>{this.state.emailError}</span></FormText> : ''}
-                        </FormGroup>
+                            <FormGroup>
+                                <Input  
+                                    type="email" onChange={this.handleInputchange} name="email"  placeholder="Email"
+                                    invalid={this.state.emailInputInvalid}
+                                />
+                                {/* <FormFeedback tooltip></FormFeedback> */}
+                                {this.state.emailError != "" ? <FormText className="error_message"><span>{this.state.emailError}</span></FormText> : ''}
+                            </FormGroup>
 
-                        <FormGroup>
-                            <Input  
-                                type="password" onChange={this.handleInputchange} name="password"  placeholder="Mot de passe"
-                                invalid={this.state.passwordInputInvalid}
-                            />
-                            {/* <FormFeedback tooltip></FormFeedback> */}
-                            {this.state.passwordError != "" ? <FormText className="error_message"><span>{this.state.passwordError}</span></FormText> : ''}
-                        </FormGroup>
+                            <FormGroup>
+                                <Input  
+                                    type="password" onChange={this.handleInputchange} name="password"  placeholder="Mot de passe"
+                                    invalid={this.state.passwordInputInvalid}
+                                />
+                                {/* <FormFeedback tooltip></FormFeedback> */}
+                                {this.state.passwordError != "" ? <FormText className="error_message"><span>{this.state.passwordError}</span></FormText> : ''}
+                            </FormGroup>
 
-                        <FormGroup  className="login_botton">
-                            <Button type="button" onClick={() => this.log_in()}>Se connecter</Button>
+                            <FormGroup  className="login_botton">
+                                <Button type="button" className="btn_save" onClick={() => this.log_in()}>Se connecter</Button>
+                            </FormGroup>
+                            <div className="forget_password">
+                                <a href="/recoverPassword">Mot de passe oublié?</a>
+                            </div>
+                            <div className="or_facebook">
+                                <p>Ou</p>
+                            </div>
+                            <FormGroup  className="facebook_login">
+                            <FacebookLogin
+                                appId="482248032399115"
+                                autoLoad={false}
+                                icon={icon}
+                                size="small"
+                                fields="name,email,picture,first_name,last_name"
+                                textButton="Facebook"
+                                onClick={this.responseFacebook}
+                                callback={() => this.responseFacebook}
+                                />
+                            
                         </FormGroup>
-                        <div className="forget_password">
-                            <a href="/recoverPassword">Mot de passe oublié?</a>
+                        <FormGroup  className="btn_create_account">
+                                <Link  exact  to="/auth/register">
+                                    <Button>Creer un compte </Button>
+                                </Link>
+                        </FormGroup>
                         </div>
-                        <p>Ou</p>
-                        <FormGroup  className="facebook_login">
-                        <FacebookLogin
-                            appId="482248032399115"
-                            autoLoad={false}
-                            icon={icon}
-                            size="small"
-                            fields="name,email,picture,first_name,last_name"
-                            textButton="Facebook"
-                            onClick={this.responseFacebook}
-                            callback={() => this.responseFacebook}
-                             />
-                        
-                       </FormGroup>
-                       <FormGroup  className="btn_create_account">
-                            <Link  exact  to="/auth/register">
-                                <Button>Creer un compte </Button>
-                            </Link>
-                       </FormGroup>
+                        </div>
+                
+                </div>
+                <div className="floatright">
+                    <div className="login_image">
                     </div>
-                    </Col>
-                    <Col xs={1}></Col>
-                    <Col xs={7}>
-                        <div className="register_image">
-                            <img src={login_picture}></img>
-                        </div>
-                    </Col>
-                </Row>
+                </div>
+            </div>   
         )
     }
 }
@@ -182,7 +172,8 @@ const mapStateToProps = function(state) {
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        login : user => dispatch({type: GET_USERDETAIL, payload: user})
+        login : user => dispatch({type: LOGIN_USER, payload: user}),
+        actions: dispatch({type: 'login_USER_EMPTY_MESSAGE'})
       }
 }
 

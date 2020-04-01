@@ -16,12 +16,14 @@ class Footer extends Component {
                 <div className="divider-space-sm" />
                     <Container>
                         <Row>
-                            <Col xs={6}>
+                            <Col md={6}>
                                 <div className="footer_left">
-                                    <img src={logo} alt="Logo Showroombaby"  />
+                                    <div className="logo-footer">
+
+                                    </div>
                                 </div>
                             </Col>
-                            <Col xs={6}>
+                            <Col md={6}>
                                 <div className="footer_right">
                                     <h6><a routerlink="mentions">Mentions légales</a> | <a routerlink="rgpd">Données Personnelles</a></h6>
                                 </div>

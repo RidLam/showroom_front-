@@ -1,0 +1,111 @@
+.profile_block {
+    margin-top: 4%;
+    padding-top: 8%;
+}
+
+.button_block {
+    float: right;
+}
+
+.image_avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    display: table;
+    padding-top: 3%;
+    border: #ddd solid 1px;
+}
+.image_avatar h1 {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+.avatar {
+    position: relative;
+    text-align: -webkit-center;
+    padding-bottom: 20%;
+}
+.avatar span {
+    background: #ddd;
+    position: absolute;
+    left: 3%;
+    bottom: 3%;
+    padding: 4px 8px 4px 8px;
+    border-radius: 50%;
+    border: cornflowerblue solid 2px;
+    cursor: pointer;
+}
+.avatar button {
+    width: 45%;
+    background: transparent;
+    border: #ddd solid 2px;
+    margin-top: 15px;
+    color: black;
+}
+
+.modal_body {
+    text-align: -webkit-center;
+}
+
+.profile_pic {
+    justify-content: center;
+}
+
+.image_avatar img {
+    width: 80%;
+}
+
+.edit_profile_sidebar button {
+    width: 100%;
+    margin-top: 10px;
+    background-color: transparent;
+    color: black;
+}
+
+.edit_profile_sidebar ul {
+    display: inline-grid !important;
+    padding-top: 5px;
+}
+
+.edit_profile_sidebar ul li:hover{
+    background-color: #9C4170  !important;
+    cursor: pointer;
+    border-radius: 5px;
+    color: white;
+    width: 100%;
+}
+.edit_profile_sidebar ul li a {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+}
+
+.edit_profile_sidebar ul li a:hover {
+    text-decoration: none;
+    color: white;
+}
+
+.btn_cancel {
+    background-color: transparent !important;
+    color: black !important;
+}
+.btn_save {
+    background-color: #9C4170 !important;
+}
+.btn_save:hover {
+    border: #9C4170 solid 1px  !important;
+    background-color: transparent !important;
+    color: #9C4170 !important;
+}
+
+.edit_profile_sidebar {
+    position: fixed;
+}
+
+.profile_block {
+    position: relative;
+    top: 4%;
+}

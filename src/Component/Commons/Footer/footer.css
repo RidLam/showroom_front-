@@ -1,15 +1,147 @@
+/* 
+  ##Device = Desktops
+  ##Screen = 1281px to higher resolution desktops
+*/
 
-.footer_left {
-	float: left;
-}
-.footer_right {
-	float: right;
-	padding-top: 6px;
-}
-.footer_left img {
-	width: 200px;
+@media (min-width: 1281px) {
+  
+    /* .footer_left {
+		float: left;
+	}
+	.footer_right {
+		float: right;
+		padding-top: 6px;
+	}
+	.footer_left img {
+		width: 200px;
+	} */
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		height: 32px;
+		background-size: auto;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+    
 }
 
-.container-fluid{
-	/* margin-top: 40px; */
+/* 
+  ##Device = Laptops, Desktops
+  ##Screen = B/w 1025px to 1280px
+*/
+
+@media (min-width: 1025px) and (max-width: 1280px) {
+  
+	/* .footer_left {
+		float: left;
+	}
+	.footer_right {
+		float: right;
+		padding-top: 6px;
+	}
+	.footer_left img {
+		width: 200px;
+	} */
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		height: 32px;
+		background-size: auto;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+  
 }
+
+/* 
+  ##Device = Tablets, Ipads (portrait)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) {
+	
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		height: 32px;
+		background-size: auto;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+  
+  
+}
+
+/* 
+  ##Device = Tablets, Ipads (landscape)
+  ##Screen = B/w 768px to 1024px
+*/
+
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		height: 32px;
+		background-size: auto;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+  
+  
+}
+
+/* 
+  ##Device = Low Resolution Tablets, Mobiles (Landscape)
+  ##Screen = B/w 481px to 767px
+*/
+
+@media (min-width: 481px) and (max-width: 767px) {
+  
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		background-size: cover;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+  
+}
+
+/* 
+  ##Device = Most of the Smartphones Mobiles (Portrait)
+  ##Screen = B/w 320px to 479px
+*/
+
+@media (min-width: 320px) and (max-width: 480px) {
+	.logo-footer{
+		background-image: url('../../../Assets/images/logo-mobile.png');
+		background-size: cover;
+	}
+	.footer_right {
+		text-align: center !important;
+		padding-top: 6px;
+		float: none;
+	}
+  
+  
+}
+

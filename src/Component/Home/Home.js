@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import { GET_REGION } from '../Commons/reducers/region/RegionActions';
 import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
+import { GET_USERDETAIL } from '../Commons/reducers/userDetail/UserDetailActions';
 
 
 
@@ -17,7 +18,7 @@ class Home extends Component {
         this.state= {
             regions: [],
             categories: [],
-            search_text: '',
+            title: '',
             categorie: '',
             region: ''
         }
@@ -30,10 +31,29 @@ class Home extends Component {
     }
     goCategories () {
         var params = '';
-        params += '?title=' + this.state.search_text;
-        params += '&categorie=' + this.state.categorie;
-        params += '&location=' + this.state.region;
-        this.props.history.push('/categories' + params);
+        if(this.state.title) {
+            if(params == '') {
+                params += '?title=' + this.state.title;
+            }else {
+                params += '&title=' + this.state.title;
+            }
+        }
+        if(this.state.categorie) {
+            if(params == '') {
+                params += '?categorie=' + this.state.categorie;
+            }else {
+                params += '&categorie=' + this.state.categorie;
+            }
+        }
+        if(this.state.region) {
+            if(params == '') {
+                params += '?region=' + this.state.region;
+            }else {
+                params += '&region=' + this.state.region;
+            }
+        }
+        
+        this.props.history.push('/annonces/search' + params);
     }
     
     handleChange(event) {
@@ -45,7 +65,7 @@ class Home extends Component {
     render() {
         var { categories , regions} = this.props;
         return(
-            <div className="body_container">
+            <div className="home_page_container">
                 <section className="sec_search_home">
                     <div className="filter-homepage">
                     
@@ -53,7 +73,7 @@ class Home extends Component {
                             <div className="home-filter">
                                 <strong>Donner leur une seconde vie!</strong>
                                 <FormGroup>
-                                    <Input type="text" name="title" id="title" placeholder="Que recherchez-vous ?"/>
+                                    <Input type="text" onChange= {this.handleChange} name="title" id="title" placeholder="Que recherchez-vous ?"/>
                                 </FormGroup>
                                 <FormGroup>
                                     <Input 
@@ -103,45 +123,42 @@ class Home extends Component {
                 <section className="sec_category sec_pad_50  pb-0 d-none d-md-block d-lg-block d-xl-block">
                     <Container>
                         <Row>
-                            <Col xs='3'>
+                            <Col md='3'>
                                 <div  className="category_box">
                                     <div id="vetements" className="bg_div">
-                                        
+                                        <div className="categorie-title">
+                                            <a href="#"> Vetements/chaussures</a>
+                                        </div>
                                     </div>
                                 </div>
                             
-                                <div className="categorie_title">
-                                    <a href="#" >Vetements/chaussures</a>
-                                </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="transport" className="bg_div">
+                                        <div className="categorie-title">
+                                            <a href="#">Poussettes/sieges</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Poussettes/sieges</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="mobilier" className="bg_div">
+                                        <div className="categorie-title">
+                                            <a href="#">Ameublement</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Ameublement</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="juex" className="bg_div">
+                                        
+                                        <div className="categorie-title">
+                                            <a href="#">Jeux/eveil</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Jeux/eveil</a>
                                 </div>
                             </Col>
                         </Row>
@@ -149,41 +166,40 @@ class Home extends Component {
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="puericulter" className="bg_div">
+                                        <div className="categorie-title">
+                                            <a href="#">Soins/toillette</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Soins/toillette</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="dvd" className="bg_div">
+                                       
+                                        <div className="categorie-title">
+                                            <a href="#"> Livres/DVD</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Livres/DVD</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="services" className="bg_div">
+                                        
+                                        <div className="categorie-title">
+                                            <a href="#">Services</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Services</a>
                                 </div>
                             </Col>
                             <Col xs='3'>
                                 <div  className="category_box">
                                     <div id="offers" className="bg_div">
+                                        
+                                        <div className="categorie-title">
+                                            <a href="#">Offres d'emploi</a>
+                                        </div>
                                     </div>
-                                </div>
-                            
-                                <div className="categorie_title">
-                                    <a href="#" >Offres d'emploi</a>
                                 </div>
                             </Col>
                         </Row>
@@ -207,7 +223,6 @@ const mapStateToProps = function(state) {
     }
   }
 const mapDispatchToProps = function(dispatch) {
-    console.log(GET_CATEGORIE);
     return {
         getCategorie: dispatch({type: GET_CATEGORIE}),
         getRegions: dispatch({type: GET_REGION})

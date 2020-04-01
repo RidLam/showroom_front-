@@ -1,5 +1,12 @@
 
-.body {
-  padding-top: 4%;
-  padding-bottom: 5%;
+.container_top {
+    position: relative;
+    top: 15%;
+    height: 0px;
+}
+
+.container_bottom {
+    position: relative;
+    bottom: 4%;
+    height: 70px;
 }

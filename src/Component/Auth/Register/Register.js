@@ -1,8 +1,9 @@
 import React , { Component } from 'react';
+import { connect } from 'react-redux';
 import { Col, Button, Form, FormGroup, Label, Input, FormText ,Container, Row } from 'reactstrap';
 import './register.css';
 import regiter_picture from '../../../Assets/images/inscription.jpg';
-
+import { REGISTER_USER } from '../../Commons/reducers/userDetail/UserDetailActions';
 
 
 class Register extends Component {
@@ -18,18 +19,25 @@ class Register extends Component {
             username: '',
             password: '',
             siret: '',
+            type: '',
+            company: '',
             emailInputInvalid: '',
             firstnameInputInvalid: '',
             lastnameInputInvalid: '',
             usernameInputInvalid: '',
             passwordInputInvalid: '',
             siretInputInvalid: '',
+            typeInputInvalid: '',
+            companyInputInvalid: '',
             emailError: '',
             firstnameError: '',
             lastnameError: '',
             usernameError: '',
             passwordError: '',
             siretError: '',
+            typeError: '',
+            companyError: '',
+            isValid: null
         }
 
     this.handleUserType = this.handleUserType.bind(this);
@@ -50,7 +58,7 @@ class Register extends Component {
         })
     }
     addUSer() {
-        var {password, email,firstname, lastname,password,siret,username, emailInputInvalid, passwordInputInvalid, firstnameInputInvalid,lastnameInputInvalid,siretInputInvalid } = this.state;
+        var {password, email,firstname, lastname,password,siret,username, type, company, isValid, emailInputInvalid, passwordInputInvalid, firstnameInputInvalid,lastnameInputInvalid,siretInputInvalid,typeInputInvalid } = this.state;
         this.setState({
             emailError: null,
             passwordError: null,
@@ -58,33 +66,53 @@ class Register extends Component {
             lastnameError: null,
             usernameError: null,
             siretError: null,
+            typeError: null,
+            companyError: null,
             firstnameInputInvalid:false,
             lastnameInputInvalid: false,
             usernameInputInvalid: false,
             siretInputInvalid: false,
             emailInputInvalid: false,
-            passwordInputInvalid: false
+            passwordInputInvalid: false,
+            typeInputInvalid: false,
+            companyInputInvalid: false,
+            isValid: true
+
         })
         if(email == "") {
-            this.setState({emailError: 'Email est requis', emailInputInvalid : true});
+            this.setState({emailError: 'Email est requis', emailInputInvalid : true, isValid: false});
         }else if(!this.validateEmail(email)) {
-            this.setState({emailError: 'Email est invalid', emailInputInvalid : true});
+            this.setState({emailError: 'Email est invalid', emailInputInvalid : true, isValid: false});
         }
         if(password == "") {
-            this.setState({passwordError: 'Password est requis', passwordInputInvalid : true});
+            this.setState({passwordError: 'Password est requis', passwordInputInvalid : true, isValid: false});
         }
         if(firstname == "") {
-            this.setState({firstnameError: 'Prénom est requis', firstnameInputInvalid : true});
+            this.setState({firstnameError: 'Prénom est requis', firstnameInputInvalid : true, isValid: false});
         }
         if(lastname == "") {
-            this.setState({lastnameError: 'Nom est requis', lastnameInputInvalid : true});
-        }
-        if(siret == "") {
-            this.setState({siretError: 'N° siret est requis', siretInputInvalid : true});
+            this.setState({lastnameError: 'Nom est requis', lastnameInputInvalid : true, isValid: false});
         }
         if(username == "") {
-            this.setState({usernameError: "Nom d'utilisateur est requis", usernameInputInvalid : true});
+            this.setState({usernameError: "Nom d'utilisateur est requis", usernameInputInvalid : true, isValid: false});
         }
+        if(type == "") {
+            this.setState({typeError: "Type d'utilisateur est requis", typeInputInvalid : true, isValid: false});
+        }
+        if(type == "professional" && company == "") {
+            this.setState({companyError: "Nom d'entreprise est requis", companyInputInvalid : true, isValid: false});
+        }
+        if(type == "professional" && siret == "") {
+            this.setState({siretError: 'N° siret est requis', siretInputInvalid : true, isValid: false});
+        }
+        var newUSer = {type, firstname, lastname,email,password, username};
+        if(type) {
+            newUSer = { ...newUSer, company, siret};
+        }
+        if(isValid) {
+           this.props.register(newUSer);
+        }
+        
     }
     validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -92,16 +120,20 @@ class Register extends Component {
         return isValid;
     }
     render() {
-        var {emailInputInvalid, passwordInputInvalid, firstnameInputInvalid,lastnameInputInvalid,siretInputInvalid,usernameInputInvalid } = this.state;
+        var {emailInputInvalid, passwordInputInvalid, firstnameInputInvalid,lastnameInputInvalid,siretInputInvalid,usernameInputInvalid, typeInputInvalid, companyInputInvalid } = this.state;
 
         return(
-                <Row className="body_container">
-                    <Col xs={1}></Col>
-                    <Col xs={3} className="register_left">
-                    <div className="register_form">
-                        <FormGroup row>
+            <div className="login_container">
+			{this.props.userDetails && this.props.userDetails.success &&
+					this.props.history.push('/')
+				}
+	<div className="floatleft">
+
+		<div className="login_left">
+			<div className="register_form">
+                        {/* <FormGroup row>
                                 <Col sm={4}>
-                                    <Label for="exampleEmail">Vous etes: </Label>
+                                    <Label for="exampleEmail">Vous etes:  :</Label>
                                 </Col>
                                 <Col sm={6}>
                                 <FormGroup tag="fieldset">
@@ -111,7 +143,7 @@ class Register extends Component {
                                             <Label check>
                                                 <Input onChange= {this.handleUserType} value="particulier" type="radio" name="radio1"/>{' '}
                                                 Particulier
-                                            </Label>
+                                             :</Label>
                                             </FormGroup>
                                         </Col>
                                         <Col sm={6}>
@@ -119,82 +151,106 @@ class Register extends Component {
                                             <Label check>
                                                 <Input onChange= {this.handleUserType} value="professional" type="radio" name="radio1" />{' '}
                                                 Professionnel
-                                            </Label>
+                                             :</Label>
                                             </FormGroup>
                                         </Col>
                                     </Row>
                                     </FormGroup>
                                 </Col>
-                            </FormGroup>
-                            {this.state.annonceType == 'professional' && 
+                            </FormGroup> */}
+
+                            {/* <FormGroup>
+                                <label>Vous etes  :</label>
+                                <Input  
+                                    type="select" name="type" onChange={this.handleInputChange}
+                                    invalid={typeInputInvalid}
+                                >
+                                    <option hidden>Selectionner le type</option>
+                                    <option value="individual">Particulier</option>
+                                    <option value="professional">Professional</option>
+                                    </Input>
+                                
+                                {this.state.typeError != "" ? <FormText className="error_message"><span>{this.state.typeError}</span></FormText> : ''}
+                            </FormGroup> */}
+
+                            {/* {this.state.type == 'professional' && 
                                 <FormGroup>
+                                    <label>N° siret :</label>
                                     <Input  
                                         type="text" onChange={this.handleInputChange} name="siret" id="title_id" placeholder="N° siret"
                                         invalid={siretInputInvalid}
                                     />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
+                                    
                                     {this.state.siretError != "" ? <FormText className="error_message"><span>{this.state.siretError}</span></FormText> : ''}
                                 </FormGroup>
-                            }
+                            } */}
+                            {/* {this.state.type == 'professional' && 
                                 <FormGroup>
+                                    <label>Nom de l'entreprise :</label>
+                                    <Input  
+                                        type="text" onChange={this.handleInputChange} name="company" id="title_id" placeholder="Nm de l'entreprise"
+                                        invalid={companyInputInvalid}
+                                    />
+                                    
+                                    {this.state.companyError != "" ? <FormText className="error_message"><span>{this.state.companyError}</span></FormText> : ''}
+                                </FormGroup>
+                            } */}
+                                <FormGroup>
+                                    <label>Nom :</label>
                                     <Input  
                                         type="text" name="lastname" onChange={this.handleInputChange}  placeholder="Nom"
                                         invalid={lastnameInputInvalid}
                                     />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
+                                    
                                     {this.state.lastnameError != "" ? <FormText className="error_message"><span>{this.state.lastnameError}</span></FormText> : ''}
                                 </FormGroup>
                                 <FormGroup>
+                                    <label>Prénom :</label>
                                     <Input  
                                         type="text" name="firstname" onChange={this.handleInputChange}  placeholder="Prénom"
                                         invalid={firstnameInputInvalid}
                                     />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
+                                    
                                     {this.state.firstnameError != "" ? <FormText className="error_message"><span>{this.state.firstnameError}</span></FormText> : ''}
                                 </FormGroup>
                                 <FormGroup>
+                                    <label>Email :</label>
                                     <Input  
                                         type="email" name="email" onChange={this.handleInputChange}  placeholder="Email"
                                         invalid={emailInputInvalid}
                                     />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
+                                    
                                     {this.state.emailError != "" ? <FormText className="error_message"><span>{this.state.emailError}</span></FormText> : ''}
-                                </FormGroup>
-                                <FormGroup>
-                                    <Input  
-                                        type="text" name="username" onChange={this.handleInputChange}  placeholder="Nom d'utilisateur"
-                                        invalid={usernameInputInvalid}
-                                    />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
-                                    {this.state.usernameError != "" ? <FormText className="error_message"><span>{this.state.usernameError}</span></FormText> : ''}
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <Input  
-                                        type="password" name="password" onChange={this.handleInputChange}  placeholder="Mot de passe"
-                                        invalid={passwordInputInvalid}
-                                    />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
-                                    {this.state.passwordError != "" ? <FormText className="error_message"><span>{this.state.passwordError}</span></FormText> : ''}
                                 </FormGroup>
         
                         <FormGroup>
                             <div className="register_botton">
-                            <Button onClick={() => this.addUSer()}>Envoyer</Button>
+                            <Button className="btn_save" onClick={() => this.addUSer()}>Envoyer</Button>
                             </div>
                         </FormGroup>
                     </div>
-                    </Col>
-                    <Col xs={1}></Col>
-                    <Col xs={7}>
-                        <div className="register_image">
-                            <img src={regiter_picture}></img>
-                        </div>
-                    </Col>
-                </Row>
+			</div>
+
+		</div>
+		<div className="floatright">
+			<div className="register_image">
+			</div>
+		</div>
+	</div> 
         )
     }
 }
 
+const mapStateToProps = function(state) {
+    return {
+        inserted : state.userDetailReducer.inserted,
+        message: state.userDetailReducer.message
+    }
+  }
+const mapDispatchToProps = function(dispatch) {
+    return {
+        register : user => dispatch({type: REGISTER_USER, payload: user})
+      }
+}
 
-export default Register;
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

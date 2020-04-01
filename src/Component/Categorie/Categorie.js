@@ -10,6 +10,7 @@ import SearchForm from './SearchForm';
 import { GET_REGION } from '../Commons/reducers/region/RegionActions';
 import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
 import NoResultFound from '../notFound/NoResultFound';
+import { SEARCH_ANNONCE } from '../Commons/reducers/annonce/MyAnnonceActions';
 const queryString = require('query-string');
 const moment = require('moment');
 moment.locale('fr');
@@ -31,26 +32,10 @@ class Categorie extends Component {
         this.annonceDetail = this.annonceDetail.bind(this);
         this.handleFavorite = this.handleFavorite.bind(this);
         this.filterValue = this.filterValue.bind(this);
-    }
+        this.searchAnnonce = this.searchAnnonce.bind(this);
 
-    componentDidMount() {
-        var query = queryString.parse(location.search);
-        var param = {};
-        for(var par in query) {
-            if(query[par] != '') {
-                param[par] = query[par];
-            }
-        }
-        
-        axios.get(`http://localhost:3000/annonces/getAll`, {params: param})
-        .then(res => {
-            this.setState({
-                annonces : res.data 
-                });
-        }).catch(error => {
-            console.error(error);
-        });
-        
+
+        this.searchAnnonce();
         var myFavorite = localStorage.getItem('myFavorite');
         var favoriteArr = [];
         if(myFavorite) {
@@ -62,10 +47,20 @@ class Categorie extends Component {
                 favorite: favoriteArr
             })
         }
-
     }
 
     
+
+    searchAnnonce() {
+        var query = queryString.parse(location.search);
+        var param = {};
+        for(var par in query) {
+            if(query[par] != '') {
+                param[par] = query[par];
+            }
+        }
+        this.props.getAnnonces(param);
+    }
     
     annonceDetail(annonce) {
         console.log("clicked");
@@ -107,17 +102,19 @@ class Categorie extends Component {
         })
     }
     filterValue(value) {
-        console.log(value);
-        this.setState({
-            categorieSlide: value.categorie.image_name,
-            categorieSlideName: value.categorie.name
-        })
+        if(value.categorie) {
+            this.setState({
+                categorieSlide: value.categorie.image_name,
+                categorieSlideName: value.categorie.name
+            })
+        }
+        this.searchAnnonce();
     }
 
     render() {
         const base_urrl = "http://localhost:3000";
         const { categorieSlide, categorieSlideName } = this.state;
-        const { regions } = this.props;
+        const { regions, annonces } = this.props;
         return(
             <div className="body_container">
                     <div className="categorie-slide">
@@ -125,13 +122,14 @@ class Categorie extends Component {
                         <div className="categorie-slide-title">
                             <span>
                                 <strong>{categorieSlideName}</strong>
-                                <p>Il y a actuellement <span>2745</span> en ligne.</p>
+                                    <p>Il y a actuellement <span>{annonces && annonces.length}</span> en ligne.</p>
                             </span>
                         </div>
                     </div>
                 <SearchForm
                     getFilterValue={this.filterValue}
                     regions= {regions}
+                    history= {this.props.history}
                 />
              <div className="container">
                 <Row>
@@ -140,7 +138,7 @@ class Categorie extends Component {
                     <div className="tab-pane" id="tab6">
                         <div className="sch-product-list">
 
-                            {this.state.annonces.length > 0 && this.state.annonces.map(annonce =>{
+                            {annonces.length > 0 && annonces.map(annonce =>{
                                 return(
                                     <div className="list-annonce">
                                         <div className="sch-product-item">
@@ -207,17 +205,99 @@ class Categorie extends Component {
                                     </div>
                                 )
                             })}
-                            {this.state.annonces.length == 0 && 
-                                <NoResultFound/>
-                            }
+                            {/* {annonces && annonces.length == 0 && 
+                            this.props.history.push('/notResultFound')
+                            } */}
                             
                         
                     </div>
                 </div>
                     </Col>
                     <Col xs={3}>
-                        <p>test</p>
+                        <div className="sidebar">
+
+                        </div>
                     </Col>
+                </Row>
+                
+                <Row>
+                <div className="tab-pane-mobile" id="tab6-mobile">
+                        <div className="sch-product-list">
+
+                            {annonces.length > 0 && annonces.map(annonce =>{
+                                return(
+                                    <div className="list-annonce">
+                                        <div className="sch-product-item">
+                                            <Row>
+                                                <Col xs={4}>
+                                                        {annonce.images.length ?
+                                                          <div className="sch-product-images">
+                                                              <img className="sch-img-1" src={base_urrl + annonce.images[0].path} />
+                                                                <div className="sch-product-new-label">
+                                                                <span>
+                                                                {annonce.images.length} <FontAwesomeIcon icon="image"/> 
+                                                                </span>
+                                                                </div>
+                                                          </div>
+                                                        :
+                                                        <div className="sch-product-images">
+                                                            <img className="sch-img-1" src={noImage} />
+                                                        </div>  
+                                                        }
+                                                </Col>
+                                                <Col xs={8}>
+                                                <div className="sch-product-info">
+                                                        <Row>
+                                                            <Col xs={9}>
+                                                                <div className="sch-title">
+                                                                  <a onClick={() => this.annonceDetail(annonce)}>{annonce.title}</a> 
+                                                                </div>
+                                                            </Col>
+                                                            <Col xs={3}>
+                                                                <div className="sch-favorite">
+                                                                   {this.state.favorite.indexOf(annonce.id) >= 0 ?
+                                                                     <FaHeart onClick={() =>this.handleFavorite(annonce, 'delete')} size="1.1em"/> :  <FaRegHeart onClick={() =>this.handleFavorite(annonce, 'add')} size="1em"/> 
+                                                                    }
+                                                                </div>
+                                                            </Col>
+                                                        </Row>
+                                                        <div className="sch-price">
+                                                            {annonce.price} €
+                                                        </div>
+                                                        <div className="sch-name-description">
+                                                            <Row>
+                                                            <span>
+                                                                {annonce.commune.commune_name} | {annonce.commune.postale_code}
+                                                                </span>
+                                                            </Row>
+                                                            <Row>
+                                                                <div className="sch-description">
+                                                                    {annonce.categorie.name} 
+                                                                </div>
+                                                            </Row>
+                                                            <Row>
+                                                                <div className="sch-description">
+                                                                    {moment(annonce.createdAt).format('l')} à {moment(annonce.createdAt).format('LT')}
+                                                                </div>
+                                                            </Row>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                </Col>
+                                            </Row>
+                                        
+                                        
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            {/* {annonces && annonces.length == 0 && 
+                            this.props.history.push('/notResultFound')
+                            } */}
+                            
+                        
+                    </div>
+                </div>
                 </Row>
                 
             </div>
@@ -229,14 +309,15 @@ class Categorie extends Component {
 const mapStateToProps = function(state) {
     return {
         categories : state.categorieReducer.categories,
-        regions : state.regionReducer.regions
+        regions : state.regionReducer.regions,
+        annonces: state.annonceReducer.annonces
     }
   }
 const mapDispatchToProps = function(dispatch) {
-    console.log(GET_CATEGORIE);
     return {
         getCategorie: dispatch({type: GET_CATEGORIE}),
-        getRegions: dispatch({type: GET_REGION})
+        getRegions: dispatch({type: GET_REGION}),
+        getAnnonces: params => dispatch({type: SEARCH_ANNONCE, payload: params})
       }
 }
 
