@@ -94,6 +94,7 @@
 }
 .btn_save {
     background-color: #9C4170 !important;
+    width: 100%;
 }
 .btn_save:hover {
     border: #9C4170 solid 1px  !important;

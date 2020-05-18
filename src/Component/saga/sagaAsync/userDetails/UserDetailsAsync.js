@@ -71,13 +71,13 @@ export function* loginUserAsync(action) {
      });
       const res = yield response.json();
       if(res.success) {
-         localStorage.setItem("_id", res.token);
-         localStorage.setItem("id_session", res.userDetails.uuid);
-         yield put({type: "GET_USERDETAIL", action:{uuid: res.userDetails.uuid, token: res.token, success: res.success}});
+         window.sessionStorage.setItem("user", JSON.stringify(res.user));
+         window.sessionStorage.setItem("session_token", JSON.stringify({token: res.token, refreshToken: res.refreshToken}));
+         yield put({type: "GET_USERDETAIL_SUCCESS", payload: res});
       }
       
    } catch (e) {
-      yield put({type: "LOGIN_USER_ERROR", message: e.message});
+      yield put({type: "GET_USERDETAIL_ERROR", message: e.message});
    }
 }
 

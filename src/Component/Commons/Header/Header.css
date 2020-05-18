@@ -357,7 +357,7 @@
   */
   
   @media (min-width: 481px) and (max-width: 767px) {
-	.navbar-light {display: none !important}
+	/* .navbar-light {display: none !important} */
 	
 	
   }
@@ -368,7 +368,7 @@
   */
   
   @media (min-width: 320px) and (max-width: 480px) {
-	.navbar-light {display: none !important}
+	/* .navbar-light {display: none !important} */
 	
 	
   }

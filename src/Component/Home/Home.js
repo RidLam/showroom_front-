@@ -7,9 +7,11 @@ import { Redirect } from 'react-router-dom';
 import { GET_REGION } from '../Commons/reducers/region/RegionActions';
 import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
 import { GET_USERDETAIL } from '../Commons/reducers/userDetail/UserDetailActions';
+import ApiClient from '../Api/ApiClient';
+import * as homeReducer from './HomeReducer';
 
 
-
+var client = new ApiClient();
 
 class Home extends Component {
 
@@ -24,10 +26,13 @@ class Home extends Component {
         }
         this.goCategories = this.goCategories.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        
     }
 
-    componentDidMount() {
-        
+    UNSAFE_componentWillMount() {
+       this.props.getAllCategories();
+       this.props.getAllRegions();
+       
     }
     goCategories () {
         var params = '';
@@ -81,7 +86,7 @@ class Home extends Component {
                                         id="categorie" 
                                         name="categorie"                                        
                                         onChange= {this.handleChange}
-                                        onFocus= {() =>this.props.getCategories()}   
+                                        onFocus= {() =>this.props.getAllCategories()}   
                                         placeholder="Categorie">
                                          <option hidden>Categories</option>
                                             {categories && categories.map(categorie => {
@@ -97,7 +102,7 @@ class Home extends Component {
                                         name="region" 
                                         id="region" 
                                         name="region" 
-                                        onFocus= {() =>this.props.getRegionAll()}                                      
+                                        onFocus= {() =>this.props.getAllRegions()}                                      
                                         onChange= {this.handleChange}
                                         placeholder="Categorie">
                                          <option hidden>Localisation</option>
@@ -217,15 +222,15 @@ class Home extends Component {
 }
 const mapStateToProps = function(state) {
     return {
-        categories : state.categorieReducer.categories,
-        regions : state.regionReducer.regions,
+        categories : state.homeReducer.categories,
+        regions : state.homeReducer.regions,
         userDetails : state.userDetailReducer.userDetails
     }
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        getCategorie: dispatch({type: GET_CATEGORIE}),
-        getRegions: dispatch({type: GET_REGION})
+        getAllCategories: () => dispatch({type: 'API_CALL', payload : homeReducer.getCategories()}),
+        getAllRegions: () => dispatch({type: 'API_CALL', payload : homeReducer.getRegions()}),
       }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

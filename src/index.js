@@ -8,14 +8,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import router from './Component/Commons/Router/router';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react'
-import store, { history } from './Component/redux/store/Store';
+import { createBrowserHistory } from 'history';
+import {ConnectedRouter} from 'connected-react-router';
+import configureStore from './Component/redux/store/Store';
 
-
+const browserHistory = createBrowserHistory();
+const store = configureStore(browserHistory);
 ReactDOM.render(
     <BrowserRouter Route = {router}>
         <Provider store={store}>
-            <App />
+            <App history={browserHistory}/>
         </Provider>
     </BrowserRouter>
 , document.getElementById('root'));

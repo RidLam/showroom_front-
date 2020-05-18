@@ -1,29 +1,53 @@
 import React, { Component } from 'react';
 import { Row, Col, Button} from 'reactstrap';
 import { MdClose, MdMenu } from "react-icons/md";
-import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit,FaList, FaHome, FaHeart, FaUserCircle } from "react-icons/fa";
+import { FaRegHeart, FaPlusSquare, FaSearch, FaRegUserCircle, FaRegPlusSquare, FaUserEdit,FaList, FaHome, FaHeart, FaUserCircle, FaLastfmSquare } from "react-icons/fa";
 import { AiOutlineHome, AiOutlineLogin } from "react-icons/ai";
 import { FiSearch } from "react-icons/fi";
 
 import logo from '../../../Assets/images/logo-mobile.png';
 
 import './MenuDrawer.css';
+import MobileFilter from '../../Categorie/MobileFilter';
+
+
 class MenuDrawer extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showDrawer : false
+            showDrawer : false,
+            showMobileFilter: false,
+            showSearchIcon: false
         }
 
     this.toggleDrawer = this.toggleDrawer.bind(this);
+    this.toggleFilter = this.toggleFilter.bind(this);
+    }
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.showSearchIcon) {
+            this.setState({
+                showSearchIcon: nextProps.showSearchIcon
+            })
+        }
     }
 
     toggleDrawer() {
+        console.log(this.props.location);
+
         this.setState({
             showDrawer : !this.state.showDrawer
         })
     }
+    toggleFilter() {
+        this.setState({
+            showMobileFilter : !this.state.showMobileFilter
+        })
+    }
+    getCurrentLOcation() {
+        return window.location.pathname == "/annonces/search" ? true : false;
+     }
     render() {
+        var showSearchIcon = this.getCurrentLOcation()
         return(
             <div className="nav-drawer">
                 <div className="menu-header">
@@ -44,11 +68,13 @@ class MenuDrawer extends Component {
                                 
                             </div>
                         </Col>
-                        <Col xs={1}>
-                            <div className="menu-drawer-search">
-                                <FiSearch  color="#000" size="1.5em" onClick={() => this.toggleDrawer()}/>
+                        {/* <Col xs={1}>
+                           {showSearchIcon &&
+                             <div className="menu-drawer-search">
+                                <FiSearch  color="#000" size="1.5em" onClick={() => this.toggleFilter()}/>
                             </div>
-                        </Col>
+                           }
+                        </Col> */}
                     </Row>
                 </div>
                 <div className= {this.state.showDrawer ? 'display-drawer' : 'hide-drawer'}>
@@ -63,6 +89,9 @@ class MenuDrawer extends Component {
                         </ul>
                     </div>
                 </div>
+                {/* <div className={this.state.showMobileFilter ? 'display-mobile-filter': 'hide-mobile-filter'}>
+                    <MobileFilter/>
+                </div> */}
             </div>
         )
     }

@@ -1,6 +1,7 @@
 import React , {Component } from 'react';
 import { connect } from 'react-redux';
 import logo from '../../../Assets/images/logo.png';
+import { browserHistory } from 'react-router-dom'
 import {
     Collapse,
     Navbar,
@@ -27,12 +28,12 @@ class Header extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen : false
+            isOpen : false,
+            user: {}
         }
         this.setIsOpen = this.setIsOpen.bind(this);
         this.getUser = this.getUser.bind(this);
         this.logout = this.logout.bind(this);
-        this.getUser();
     }
     setIsOpen() {
         this.setState({
@@ -40,9 +41,12 @@ class Header extends Component {
         })
     }
     getUser() {
-        var uuid = localStorage.getItem('id_session');
-        if(uuid) {
-          this.props.getUserDetail({uuid});
+        var user = window.sessionStorage.getItem('user');
+        if(user) {
+            user = JSON.parse(user);
+            this.setState({
+                user
+            })
         }
       }
       logout() {
@@ -50,8 +54,17 @@ class Header extends Component {
           this.props.logout();
           window.location.reload();
       }
-      
+    UNSAFE_componentWillReceiveProps(nexProps, nextState) {
+        console.log(nexProps);
+    }
+    
+      componentWillMount() {
+          var pathname = window.location.pathname;
+          localStorage.setItem('barowserHistory', pathname);
+          console.log(browserHistory)
+      }
 
+      
     render() {
         var {location, userDetails} = this.props;
         return(

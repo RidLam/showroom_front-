@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import './404.css';
-import kid_crying from '../../Assets/images/kid_crying.jpg';
+import kid_crying from '../../Assets/images/kid_crying.png';
 import { Container,Col, Row, Button} from 'reactstrap';
 
 class NotFound extends Component {

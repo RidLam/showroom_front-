@@ -108,6 +108,12 @@
     .menu-drawer-search {
         float: right;
     }
+    .display-mobile-filter {
+        display: inline;
+    }
+    .hide-mobile-filter {
+      display: none;
+  }
 	
   }
   
@@ -169,5 +175,12 @@
     .menu-drawer-search {
         float: right;
     }
+
+    .display-mobile-filter {
+        display: inline;
+    }
+    .hide-mobile-filter {
+      display: none;
+  }
 	
   }

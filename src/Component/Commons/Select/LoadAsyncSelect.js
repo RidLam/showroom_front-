@@ -73,7 +73,7 @@ class LoadAsyncSelect extends Component {
         }
     }
     getSelectedOption(option) {
-        var label = option.commune_name + ' , ' + option.postale_code;
+        var label = option.nom_complet + '(' + option.code_postal + ')';
         this.setState({commune: label, openSelect: false, communes: []});
         this.props.selectedOption(option);
     }
@@ -91,7 +91,7 @@ class LoadAsyncSelect extends Component {
                     lat: coords.lat,
                     lng: coords.long ,
                     coords: coords,
-                    commune_id : data.code,
+                    commune_id : data.code_INSEE,
                     departement_id : data.codeDepartement, 
                     });
             }).catch(error => {
@@ -112,7 +112,7 @@ class LoadAsyncSelect extends Component {
             <div>
                 <InputGroup>
                     <InputGroupAddon addonType="prepend">
-                    <Button onClick={() => this.getMyLocation()}><MdMyLocation color="" size="1.2em"/></Button>
+                    {/* <Button onClick={() => this.getMyLocation()}><MdMyLocation color="" size="1.2em"/></Button> */}
                     </InputGroupAddon>
                     <Input  
                         placeholder="Ville ou code postal"
@@ -127,11 +127,16 @@ class LoadAsyncSelect extends Component {
                     {communes.length > 0 &&
                         <div tabIndex={-1} role="menu" aria-hidden="false" className="dropdown-menu show">
                             {communes.map(commune => {
-                                return (<li key={commune.id} onClick={() => this.getSelectedOption(commune)}>{commune.commune_name}, {commune.postale_code}</li>)
+                                return (<li key={commune.id} onClick={() => this.getSelectedOption(commune)}>{commune.nom_complet}({commune.code_postal})</li>)
                                 }) 
                             
                             }
                         </div>
+                        // :openSelect && !communes.length ?
+                        // <div tabIndex={-1} role="menu" aria-hidden="false" className="dropdown-menu show">
+                        //     <li>No data to load</li>
+                        // </div>
+                        // : null
                     }
                 </InputGroup>
                    

@@ -5,7 +5,6 @@ import {GET_USERDETAIL_PENDING, GET_USERDETAIL_SUCCESS, GET_USERDETAIL_ERROR, LO
 
 const initialState = {
     pending: false,
-    userDetails: [],
     error: null,
     inserted: null,
     message: null,
@@ -24,8 +23,7 @@ export default function userDetailReducer(state = initialState, action) {
             return {
                 ...state,
                 pending: false,
-                userDetails: action.userDetails,
-                isAuthenticated: true
+                isAuthenticated: action.payload.success
             }
         case GET_USERDETAIL_ERROR:
             return {
@@ -71,7 +69,6 @@ export default function userDetailReducer(state = initialState, action) {
             return {
                 ...state,
                 pending: false,
-                userDetails: []
             }
         case UPDATE_USER_SUCCESS:
             return {

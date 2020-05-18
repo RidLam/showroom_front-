@@ -1,10 +1,9 @@
 import React , { Component } from 'react';
 import { Container, Row, Col, Button, Form, FormGroup, Label, InputGroup, InputGroupAddon, InputGroupText, Input, FormText } from 'reactstrap';
 import MapPolygon from '../../maps/MapPolygon';
-import { Card, CardHeader, CardFooter, CardBody,
-    CardTitle, CardText } from 'reactstrap';
+import { Card, CardHeader, CardFooter, CardBody,CardTitle, CardText } from 'reactstrap';
 import axios from 'axios';
-
+import { Switch, Route, Redirect  } from 'react-router-dom';
 import ImagesUpload from './ImagesUpload';
 import '../../Assets/Css/upload.images.css';
 import map from '../../Assets/images/map.png';
@@ -154,9 +153,14 @@ class NewAnnonce extends Component {
      
     handleLocationChange(selected) {
         console.log(selected);
-        var location = JSON.parse(selected.geo_point);
-        var coords = {lat: location[0], lng: location[1]};
-        this.setState({coords: coords});
+        //var location = JSON.parse(selected.geo_point);
+        var coords = {lat: selected.latitude, lng: selected.longitude};
+        this.setState({
+            coords: coords,
+            commune_id : selected.id,
+            region_id : selected.departement.region.code,
+            departement_id : selected.departement.departement_code
+        });
     }
     success(position) {
         const latitude  = position.coords.latitude;
@@ -167,7 +171,7 @@ class NewAnnonce extends Component {
         })
       }
       error() {
-        console.log('Unable to retrieve your location');
+        console.log('Unable to get your location');
       }
 
     // componentDidMount() {
@@ -181,6 +185,10 @@ class NewAnnonce extends Component {
     //     //     console.error(error);
     //     // })
     // }
+
+    componentWillUpdate(nextProps, nextState) {
+       
+      }
     getLocation(myLocation) {
         console.log(myLocation);
         var coords = {lat: myLocation.centre.coordinates[1], lng: myLocation.centre.coordinates[0]};

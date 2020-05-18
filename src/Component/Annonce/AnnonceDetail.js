@@ -8,6 +8,7 @@ import { Row, Col, Container, Breadcrumb, BreadcrumbItem} from 'reactstrap';
 import './Annonce.css';
 import './annonce-responsive.css';
 import "react-image-gallery/styles/css/image-gallery.css";
+import Avatar from '@material-ui/core/Avatar';
 import ImageGallery from 'react-image-gallery';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import MapPolygon from '../../maps/MapPolygon';
@@ -193,13 +194,14 @@ class AnnonceDetail extends Component {
                     <div>
        
                             <div className="wrapper">
-                            <div className="top-icons">
-                                <i className="fas fa-long-arrow-alt-left" />
-                                <i className="fas fa-ellipsis-v" />
-                                <i className="far fa-heart" />
-                            </div>
+                            
                             <div className="profile">
-                                <img src="https://images.unsplash.com/photo-1484186139897-d5fc6b908812?ixlib=rb-0.3.5&s=9358d797b2e1370884aa51b0ab94f706&auto=format&fit=crop&w=200&q=80%20500w" className="thumbnail" />
+                                <div className="cover">
+                                  <div className="avatar">
+                                  <Avatar>H</Avatar>
+                                  <Avatar>M</Avatar>
+                                  </div>
+                                </div>
                                 <div className="check"><i className="fas fa-check" /></div>
                                 <h4 className="name"><a href="/store/user"><strong>{myAnnonce.user && myAnnonce.user.username}</strong> </a><span>PRO</span></h4>
                                 <Button id="favorite_btn" size="sm" block>Visiter la boutique</Button>

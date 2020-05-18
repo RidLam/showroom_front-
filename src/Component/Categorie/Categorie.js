@@ -11,6 +11,9 @@ import { GET_REGION } from '../Commons/reducers/region/RegionActions';
 import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
 import NoResultFound from '../notFound/NoResultFound';
 import { SEARCH_ANNONCE } from '../Commons/reducers/annonce/MyAnnonceActions';
+import * as categorieReducer from './CategorieReducer';
+import * as homeReducer from '../Home/HomeReducer';
+import MobileFilter from './MobileFilter';
 const queryString = require('query-string');
 const moment = require('moment');
 moment.locale('fr');
@@ -38,18 +41,21 @@ class Categorie extends Component {
         this.searchAnnonce();
         var myFavorite = localStorage.getItem('myFavorite');
         var favoriteArr = [];
-        if(myFavorite) {
-            myFavorite = JSON.parse(myFavorite);
-            for(var fav in myFavorite) {
-                favoriteArr.push(myFavorite[fav].id);
-            }
-            this.setState({
-                favorite: favoriteArr
-            })
-        }
+        // if(myFavorite) {
+        //     myFavorite = JSON.parse(myFavorite);
+        //     for(var fav in myFavorite) {
+        //         favoriteArr.push(myFavorite[fav].id);
+        //     }
+        //     this.setState({
+        //         favorite: favoriteArr
+        //     })
+        // }
     }
 
-    
+    UNSAFE_componentWillMount() {
+        this.props.getAllCategories();
+        this.props.getAllRegions();
+    }
 
     searchAnnonce() {
         var query = queryString.parse(location.search);
@@ -59,7 +65,7 @@ class Categorie extends Component {
                 param[par] = query[par];
             }
         }
-        this.props.getAnnonces(param);
+        this.props.getAnnonces();
     }
     
     annonceDetail(annonce) {
@@ -97,16 +103,16 @@ class Categorie extends Component {
             }
         }
         
-        this.setState({
-            favorite : newFavorite
-        })
+        // this.setState({
+        //     favorite : newFavorite
+        // })
     }
     filterValue(value) {
         if(value.categorie) {
-            this.setState({
-                categorieSlide: value.categorie.image_name,
-                categorieSlideName: value.categorie.name
-            })
+            // this.setState({
+            //     categorieSlide: value.categorie.image_name,
+            //     categorieSlideName: value.categorie.name
+            // })
         }
         this.searchAnnonce();
     }
@@ -117,15 +123,25 @@ class Categorie extends Component {
         const { regions, annonces } = this.props;
         return(
             <div className="body_container">
-                    <div className="categorie-slide">
-                        <img src={base_urrl + "/images/categorieSlides/" + categorieSlide}></img>
-                        <div className="categorie-slide-title">
-                            <span>
-                                <strong>{categorieSlideName}</strong>
-                                    <p>Il y a actuellement <span>{annonces && annonces.length}</span> en ligne.</p>
-                            </span>
-                        </div>
+                <div className="mobile-filter-block">
+                    {/* <Row>
+                        <Input 
+                            type="text" 
+                            name="title" 
+                            onChange={this.handleChange}
+                            id="title" 
+                            placeholder="Que recherchez-vous ?"/>
+                    </Row> */}
+                </div>
+                <div className="categorie-slide">
+                    <img src={base_urrl + "/images/categorieSlides/" + categorieSlide}></img>
+                    <div className="categorie-slide-title">
+                        <span>
+                            <strong>{categorieSlideName}</strong>
+                                <p>Il y a actuellement <span>{annonces && annonces.length}</span> en ligne.</p>
+                        </span>
                     </div>
+                </div>
                 <SearchForm
                     getFilterValue={this.filterValue}
                     regions= {regions}
@@ -181,7 +197,7 @@ class Categorie extends Component {
                                                         <div className="sch-name-description">
                                                             <Row>
                                                             <span>
-                                                                {annonce.commune.commune_name} | {annonce.commune.postale_code}
+                                                                {annonce.commune.nom_complet} | {annonce.commune.code_postal}
                                                                 </span>
                                                             </Row>
                                                             <Row>
@@ -301,12 +317,14 @@ class Categorie extends Component {
                 </Row>
                 
             </div>
+            {/* <MobileFilter/> */}
             </div>    
         )
     }
 }
 
 const mapStateToProps = function(state) {
+    debugger
     return {
         categories : state.categorieReducer.categories,
         regions : state.regionReducer.regions,
@@ -314,10 +332,11 @@ const mapStateToProps = function(state) {
     }
   }
 const mapDispatchToProps = function(dispatch) {
+    debugger
     return {
-        getCategorie: dispatch({type: GET_CATEGORIE}),
-        getRegions: dispatch({type: GET_REGION}),
-        getAnnonces: params => dispatch({type: SEARCH_ANNONCE, payload: params})
+        getAllCategories: () =>  dispatch({type: 'API_CALL', payload : homeReducer.getCategories()}),
+        getAllRegions: () => dispatch({type: 'API_CALL', payload : homeReducer.getRegions()}),
+        getAnnonces: () => dispatch({type: 'API_CALL', payload : categorieReducer.getAnnonces()}),
       }
 }
 

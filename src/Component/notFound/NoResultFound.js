@@ -1,6 +1,6 @@
 import React , { Component } from 'react';
 import './noResultFound.css';
-import kid_crying from '../../Assets/images/kid_crying.jpg';
+import kid_crying from '../../Assets/images/kid_crying.png';
 import { Container,Col, Row, Button} from 'reactstrap';
 
 class NoResultFound extends Component {
