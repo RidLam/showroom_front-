@@ -1,0 +1,84 @@
+
+
+.detail-card {
+    -webkit-box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    border-radius: 5px;
+}
+.detail-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    background-color: #E62460;
+    padding: 2%;
+   
+}
+.detail-no-image {
+    background-image: url('../../Assets//images/no-image.png');
+    width: 100%;
+    height: 400px;
+    background-size: contain;      
+    background-position: center center; 
+    background-repeat: no-repeat;
+
+}
+
+/** Sidebar css */
+.sidebar {
+    width: 100%;
+    height: auto;
+    -webkit-box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    -moz-box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    box-shadow: 4px 0px 6px 0px rgba(0,0,0,0.6);
+    border-radius: 5px;
+
+}
+.sidebar-header {
+    height: 10%;
+    background-color: saddlebrown;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    position: relative;
+}
+.sidebar-header img {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    
+}
+.sidebar-profile{
+    position: absolute;
+    left: 35%;
+    display: inline-block;
+    bottom: 0%;
+}
+.sidebar-image > .sidebar-profile > img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: inherit;
+}
+
+.sidebar-profile-name {
+    text-align: center;
+    padding: 2%;
+}
+.sidebar-btn-contact {
+    width: 100%;
+    padding: 2%;
+}
+.sidebar-btn-contact button {
+    width: 100%;
+}
+.sidebar-btn-favoris {
+    width: 100%;
+    padding: 2%;
+}
+.sidebar-btn-favoris button {
+    width: 100%;
+}

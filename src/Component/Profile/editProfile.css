@@ -57,6 +57,9 @@
 .image_avatar img {
     width: 80%;
 }
+.edit-profile {
+    margin-top: 8%;
+}
 
 .edit_profile_sidebar button {
     width: 100%;
@@ -67,13 +70,12 @@
 
 .edit_profile_sidebar ul {
     display: inline-grid !important;
-    padding-top: 5px;
+    padding-top: 1%;
 }
 
 .edit_profile_sidebar ul li:hover{
     background-color: #9C4170  !important;
     cursor: pointer;
-    border-radius: 5px;
     color: white;
     width: 100%;
 }
@@ -104,9 +106,15 @@
 
 .edit_profile_sidebar {
     position: fixed;
+    width: 14%;
+    background-color:  #ddd;
 }
 
 .profile_block {
     position: relative;
     top: 4%;
+}
+
+.personal-info .change-email .change-password {
+    margin-top: 3%;
 }

@@ -1,13 +1,10 @@
 import React , { Component } from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Container, Row, FormFeedback ,UncontrolledAlert } from 'reactstrap';
 import './forgetPAssword.css';
-import login_picture from '../../../Assets/images/connexion.jpg';
-import FacebookLogin from 'react-facebook-login';
 import { FaFacebookF } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { RESET_PASSWORD } from '../../Commons/reducers/Mailing/SendMailActions';
+import * as userReducer from '../login/UserReducer';
+import Alert from '@material-ui/lab/Alert';
+import ForgetPasswordForm from './ForgetPasswordForm';
 
 
 
@@ -65,41 +62,29 @@ class ForgetPassword extends Component {
     }
     
     render() {
-        const icon = <FaFacebookF color="#fff" size="1.2em"/>;
+        const { recoverPassword, success, message } = this.props;
         return(
             <div className="reset_password_container">
-			{this.props.userDetails && this.props.userDetails.success &&
-					this.props.history.push('/')
-                            }
                 <div className="floatleft_reset_password">
                 
                     <div className="reset_password_left">
-                    {this.props.success != null && this.props.success == true &&
-                        <UncontrolledAlert  color="success">
-                            {this.props.message}
-                        </UncontrolledAlert >
+                    {success == false &&
+                         <Alert variant="filled" severity="error">
+                            {message}
+                        </Alert>
                     }
-                    {this.props.success != null && this.props.success == false &&
-                        <UncontrolledAlert  color="danger">
-                            {this.props.message}
-                        </UncontrolledAlert >
+                    {success == true && 
+                        <Alert variant="filled" severity="success">
+                            {message}
+                        </Alert>
                     }
                         <div className="reset_password_form">
-                            <FormGroup>
-                                <Input  
-                                    type="email" onChange={this.handleInputchange} name="email"  placeholder="Email"
-                                    invalid={this.state.emailInputInvalid}
-                                />
-                                {/* <FormFeedback tooltip></FormFeedback> */}
-                                {this.state.emailError != "" ? <FormText className="error_message"><span>{this.state.emailError}</span></FormText> : ''}
-                            </FormGroup>
-
-                            
-
-                            <FormGroup  className="login_botton">
-                                <Button type="button" className="btn_save" onClick={() => this.getMyPassword()}>Réinitialiser le mot de passe</Button>
-                            </FormGroup>
-                        
+                            <ForgetPasswordForm 
+                                recoverPassword={recoverPassword}
+                            />
+                             <div className="forget_password">
+                                <a href="/auth/login">Page login</a>
+                            </div>
                         </div>
                     </div>
                 </div> 
@@ -114,14 +99,13 @@ class ForgetPassword extends Component {
 
 const mapStateToProps = function(state) {
     return {
-        userDetails : state.userDetailReducer.userDetails,
-        success: state.sendMailReducer.success,
-        message: state.sendMailReducer.message
+        success: state.userReducer.success,
+        message: state.userReducer.message
     }
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        recoverPassword : email => dispatch({type: RESET_PASSWORD, payload: email})
+        recoverPassword : (user) => dispatch({type: 'API_CALL', payload : userReducer.forgetPassword(user)}),
       }
 }
 

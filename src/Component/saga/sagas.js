@@ -37,13 +37,29 @@ export function* watchAll() {
 
 export function* callApi(action) {
   try {
-     //call(fetch, 'http://localhost:3000/categories/getAll')
-     const response = yield client[action.payload.api.type](action.payload.api.path, {data: action.payload.data}) ;
+     var param ={};
+     if(action.payload.data) {
+       param.data = action.payload.data;
+     }
+     if(action.payload.params) {
+       param.params = action.payload.params;
+     }
+     const response = yield client[action.payload.api.type](action.payload.api.path, param) ;
      //const categories = yield response.json();
+      if(action.payload.next) {
+        if(response.success) {
+          next(action.payload.next);
+        }
+      }
+
      yield put({type: action.payload.types[1], payload:{response}});
   } catch (e) {
      yield put({type:  action.payload.types[2], payload: {error: e.message}});
   }
+}
+
+function next(action) {
+  
 }
 
 /*

@@ -1,0 +1,6 @@
+.loading {
+    height: calc(100vh - 100px);
+    position: relative;
+    top: 40%;
+    left: 40%;
+}

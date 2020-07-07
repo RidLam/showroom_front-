@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { RESET_PASSWORD } from '../../Commons/reducers/Mailing/SendMailActions';
+import ResetPasswordForm from './ResetPasswordForm';
+import Alert from '@material-ui/lab/Alert';
+import * as userReducer from '../login/UserReducer';
 
 
 
@@ -73,50 +76,28 @@ class ResetPassword extends Component {
     
     render() {
         const icon = <FaFacebookF color="#fff" size="1.2em"/>;
+        const { changePassword, message, success, match } = this.props;
         return(
             <div className="change_password_container">
-			{this.props.userDetails && this.props.userDetails.success &&
-					this.props.history.push('/')
-				}
                 <div className="floatleft_change_password">
-                {this.props.success &&
-                    <UncontrolledAlert  color="success">
-                        {this.props.message}
-                    </UncontrolledAlert >
-                }
                     <div className="change_password_left">
+                    {message && message != undefined &&
+                        <Alert variant="filled" severity={success ? "success" : "error"}>
+                            {message}
+                        </Alert>
+                    }
                     <div className="register_form">
-                                    
+                        <ResetPasswordForm
+                            changePassword={changePassword}
+                            match={match}
+                        />   
 
-                                    <FormGroup>
-                                        <label>Nouveaux mot de passe</label>
-                                        <Input  
-                                            type="password" onChange={this.handleInputchange} name="newPassword"  placeholder=""
-                                            invalid={this.state.newPasswordInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.newPasswordError != "" ? <FormText className="error_message"><span>{this.state.newPasswordError}</span></FormText> : ''}
-                                    </FormGroup>
-
-                                    <FormGroup>
-                                        <label>Confirme mot de passe</label>
-                                        <Input  
-                                            type="password" onChange={this.handleInputchange} name="confirmePassword"  placeholder=""
-                                            invalid={this.state.confirmePAsswordInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.confirmePasswordError != "" ? <FormText className="error_message"><span>{this.state.confirmePasswordError}</span></FormText> : ''}
-                                    </FormGroup>
-                                    
-
-                                    <FormGroup  className="login_botton">
-                                        <Button className="btn_save" type="button" onClick={() => this.getMyPassword()}>Envoyer</Button>
-                                    </FormGroup>
-                                    <div className="forget_password">
-                                        <a href="#">Page login</a>
-                                    </div>
                                 
-                                </div>
+                        <div className="forget_password">
+                            <a href="/auth/login">Page login</a>
+                        </div>
+                    
+                    </div>
                     </div>
                     
                 </div> 
@@ -131,14 +112,14 @@ class ResetPassword extends Component {
 
 const mapStateToProps = function(state) {
     return {
-        userDetails : state.userDetailReducer.userDetails,
-        success: state.sendMailReducer.success,
-        message: state.sendMailReducer.message
+        userDetails : state.userReducer.userDetails,
+        success: state.userReducer.success,
+        message: state.userReducer.message
     }
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        recoverPassword : newPassword => dispatch({type: RESET_PASSWORD, payload: newPassword})
+        changePassword : (user) => dispatch({type: 'API_CALL', payload : userReducer.resetPassword(user)})
       }
 }
 

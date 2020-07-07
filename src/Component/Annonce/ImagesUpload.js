@@ -32,11 +32,12 @@ class UploadImages extends Component{
 
     handleFileUpload(event) {
         event.preventDefault();
+        
         var file = event.target.files[0];
         var name = event.target.name;
         this.previewFiles(file, name)
-       
-        this.props.getFiles(event.target.files);
+       file.index = name;
+        this.props.getFiles(file);
     }
     previewFiles(file, name) {
       
@@ -48,11 +49,13 @@ class UploadImages extends Component{
       
             reader.addEventListener("load", function () {
               var image = new Image();
+              var _image = {};
               //image.height = 100;
               image.title = file.name;
               image.src = reader.result;
               //preview.appendChild( image );
               if(name == 'image1') {
+                _image.index = 1;
                 this.setState({image1: reader.result});
 
               }
@@ -61,6 +64,7 @@ class UploadImages extends Component{
 
               }
               if(name == 'image3') {
+              
                 this.setState({image3: reader.result});
 
               }
@@ -94,6 +98,7 @@ class UploadImages extends Component{
           if(image == 'image4') {
             this.setState({image4: null});
           }
+          this.props.removeFile(image);
       }
 
 render() {

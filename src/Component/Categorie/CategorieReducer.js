@@ -3,10 +3,6 @@ export const GET_ANNONCE_PENDING = 'GET_ANNONCE_PENDING';
 export const GET_ANNONCE_SUCCESS = 'GET_ANNONCE_SUCCESS';
 export const GET_ANNONCE_ERROR = 'GET_ANNONCE_ERROR';
 
-export const SEARCH_ANNONCE = 'SEARCH_ANNONCE';
-export const SEARCH_ANNONCE_SUCCESS = 'SEARCH_ANNONCE_SUCCESS';
-export const SEARCH_ANNONCE_ERROR = 'SEARCH_ANNONCE_ERROR';
-
 export const GET_ANNONCE_BY_ID = 'GET_ANNONCE_BY_ID';
 export const GET_ANNONCE_BY_ID_SUCCESS = 'GET_ANNONCE_BY_ID_SUCCESS';
 export const GET_ANNONCE_BY_ID_ERROR = 'GET_ANNONCE_BY_ID_ERROR';
@@ -43,18 +39,7 @@ export default function annonceReducer(state = initialState, action) {
                 pending: false,
                 error: action.payload.error
             }
-        case SEARCH_ANNONCE_SUCCESS:
-            return {
-                ...state,
-                pending: false,
-                annonces: action.annonces
-            }
-        case SEARCH_ANNONCE_ERROR:
-            return {
-                ...state,
-                pending: false,
-                error: action.message
-            }
+        
         case GET_ANNONCE_BY_ID_SUCCESS:
             return {
                 ...state,
@@ -85,10 +70,24 @@ export default function annonceReducer(state = initialState, action) {
 }
 
 
-export function getAnnonces() {
+export function getAnnonces(values) {
     return {
         types: [GET_ANNONCE_PENDING, GET_ANNONCE_SUCCESS, GET_ANNONCE_ERROR],
         api:  {type: 'get',path: 'annonces/getAll'},
-        data: {}
+        data:  {}
       };
 }
+
+
+
+
+function objectToParams(object) {
+    let str = '';
+    for (const key in object) {
+      if (str !== '') {
+        str += '&';
+      }
+      str += key + '=' + encodeURIComponent(object[key]);
+    }
+    return str;
+  }

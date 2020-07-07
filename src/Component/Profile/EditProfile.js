@@ -1,5 +1,5 @@
 import React , { Component } from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Container, Row } from 'reactstrap';
+import { Col, Button, Form, FormGroup, Label, Input, FormText, Row } from 'reactstrap';
 import './editProfile.css';
 import { Card, CardHeader, CardFooter, CardBody,CardTitle, CardText } from 'reactstrap';
 import { Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledAlert } from 'reactstrap';
@@ -11,6 +11,12 @@ import avatar from '../../Assets/images/man.png';
 import { HashLink as Link } from 'react-router-hash-link';
 import { NavLink as RRNavLink } from 'react-router-dom';
 import { FaRegHeart} from "react-icons/fa";
+import Grid from '@material-ui/core/Grid';
+import Alert from '@material-ui/lab/Alert';
+import Container from '@material-ui/core/Container';
+import * as userReducer from '../Auth/login/UserReducer';
+
+
 import {
     Collapse,
     Navbar,
@@ -23,6 +29,10 @@ import {
     DropdownToggle,
     DropdownMenu,
     DropdownItem } from 'reactstrap';
+
+import EditProfileInfoPerso from './EditProfileInfoPerso';
+import EditProfileEmail from './EditProfileEmail';
+import EditProfilePassword from './EditProfilePassword';
 
 
 class EditProfile extends Component {
@@ -53,7 +63,7 @@ class EditProfile extends Component {
 
             preview: null,
             src: '',
-            user: this.props.userDetails.userDetails
+            user: {}
         }
 
     this.handleUserType = this.handleUserType.bind(this);
@@ -92,7 +102,7 @@ class EditProfile extends Component {
     
     updateUSerInfoPerso() {
         var {username, phone, preview, gender, usernameInputInvalid, phoneInputInvalid } = this.state;
-        var currentUser = this.props.userDetails.user;
+        var currentUser = {};
         this.setState({
             usernameError: null,
             usernameInputInvalid: false,
@@ -120,7 +130,7 @@ class EditProfile extends Component {
 
     updateUSerPassword() {
         var {oldPassword, newPassword, confirmPassword } = this.state;
-        var currentUser = this.props.userDetails.user;
+        var currentUser = {};
         this.setState({
             oldPasswordError: null,
             oldPasswordInputInvalid: false,
@@ -155,7 +165,7 @@ class EditProfile extends Component {
     }
 
     componentDidMount() {
-        var currentUser = this.props.userDetails.user;
+        var currentUser = {};
         if(currentUser) {
             this.setState({
                 username: currentUser.username,
@@ -216,226 +226,44 @@ class EditProfile extends Component {
 
     render() {
         var {isOpen,usernameInputInvalid, phoneInputInvalid } = this.state;
-        var user = this.props.userDetails.user;
-         
+        var user = {};
+         var { changeEmail, changeInfo, changePassword, message, success } = this.props;
         return(
-            <Container>
-                <Row className="profile_block">
-                    <Col xs="3">
-                        <div className="edit_profile_sidebar">
+            <Container maxWidth="lg" className="edit-profile">
+                <Grid container spacing={6}>
+                <Grid item xs={12} sm={3}>
+                    <div className="edit_profile_sidebar">
                         <ul>
                             <li>
                                 <Link activeClassName="active" tag={RRNavLink} to="/profile#personal-info" scroll={el => this.scrollWithOffset(el, 150)}>Infos personnel</Link>
                             </li>
                             <li ref="_change_password">
-                                <Link activeClassName="active" tag={RRNavLink} to="/profile#change-password" scroll={el => this.scrollWithOffset(el, 10)}>Change de passe</Link>
+                                <Link activeClassName="active" tag={RRNavLink} to="/profile#change-password" scroll={el => this.scrollWithOffset(el, 60)}>Change de passe</Link>
                             </li>
                             <li>
                                 <Link activeClassName="active" tag={RRNavLink} to="/profile#change-email" scroll={el => this.scrollWithOffset(el, 0)}>Change email</Link>
                             </li>
                         </ul>
-                        </div>
-                        
-                    </Col>
-                    <Col xs="9">
-                        {this.props.success != null && this.props.success == true &&
-                            <UncontrolledAlert  color="success">
-                                {this.props.message}
-                            </UncontrolledAlert >
-                        }
-                        {this.props.success != null && this.props.success == false &&
-                            <UncontrolledAlert  color="danger">
-                                {this.props.message}
-                            </UncontrolledAlert >
-                        }
-                        <Card id="personal-info">
-                        <CardHeader>Mes informations personnel</CardHeader>
-                        <CardBody>
-                            <Row>
-                            <Col xs="12">
-                            
-                                <CardTitle></CardTitle>
-                               
-                                    <div className="avatar">
-                                        {this.state.preview != null ?
-                                        <Row className="profile_pic"><img src={this.state.preview} alt="Preview" /></Row>
-                                        :user && user.avatar ?
-                                        <Row className="profile_pic"><img src={user.avatar} alt="Preview" /></Row>
-                                        :
-                                        <Row className="profile_pic">
-                                            <div className="image_avatar">
-                                                {/* <h1>{user && user.firstname.charAt(0).toUpperCase()}{user && user.lastname.charAt(0).toUpperCase()}</h1> */}
-                                                <img src={avatar}></img>
-                                            </div>
-                                        </Row>
-                                        }
-                                        <Button color="secondary" onClick={()=> this.openModal()}>Changer la photo</Button>
-                                    </div>
-                                
-                                    {/* <img src={this.state.preview} alt="Preview" /> */}
-                                 
-                                <FormGroup>
-                                    <label>Nom d'utilisateur</label>
-                                    <Input  
-                                        type="text" onChange={this.handleInputChange} name="username" value={this.state.username}  placeholder="Nom d'utilisateur"
-                                        invalid={this.state.usernameInputInvalid}
-                                    />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
-                                    {this.state.usernameError != "" ? <FormText className="error_message"><span>{this.state.usernameError}</span></FormText> : ''}
-                                </FormGroup>
-                            
-                                <FormGroup>
-                                <label>Email :</label>
-                                    <Input type="text" onChange={this.handleInputChange} value={user && user.email} name="categorie_id" id="exampleSelect" disabled/>
-                                </FormGroup>
-
-                                {user && user.type_user == 'professional' &&
-                                    <FormGroup>
-                                    <label>Nom de l'entreprise :</label>
-                                        <Input type="text" onChange={this.handleInputChange} value='Google' name="categorie_id" id="exampleSelect" disabled/>
-                                    </FormGroup>
-                                }
-                                
-                                <FormGroup>
-                                    <Row>
-                                    <Col xs={8}>
-                                        <label>Téléphone</label>
-                                        <Input  
-                                            type="text" onChange={this.handleInputChange} value={this.state.phone} name="phone"  placeholder="Téléphone"
-                                            invalid={this.state.phoneInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.phoneError != "" ? <FormText className="error_message"><span>{this.state.phoneError}</span></FormText> : ''}
-                                    </Col>
-                                    </Row>
-                                </FormGroup>
-                                
-                                <div className="button_block">
-                                    <Button className="btn_cancel"   >Annuler</Button>{' '}
-                                    <Button className="btn_save" onClick= {() => this.updateUSerInfoPerso()}  >Envoyer</Button>
-                                </div>
-                                
-                                
-                            
-                                </Col>
-                               
-                                </Row>
-                            </CardBody>
-                        </Card>
-                       <br/>
-                        <Card id="change-password">
-                            <CardHeader>Changement de mot de passe </CardHeader>
-                            <CardBody>
-                                <Row>
-                                <Col xs="12">
-                                
-                                    <CardTitle></CardTitle>
-                                    
-
-                                    <FormGroup>
-                                        <label>Ancien mot de passe</label>
-                                        <Input  
-                                            type="password" onChange={this.handleInputChange} name="oldPassword"  placeholder=""
-                                            invalid={this.state.oldpasswordInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.oldPasswordError != "" ? <FormText className="error_message"><span>{this.state.oldPasswordError}</span></FormText> : ''}
-                                    </FormGroup>
-
-                                    <FormGroup>
-                                        <label>Nouveaux mot de passe</label>
-                                        <Input  
-                                            type="password" onChange={this.handleInputChange} name="newPassword"  placeholder=""
-                                            invalid={this.state.newPasswordInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.newPasswordError != "" ? <FormText className="error_message"><span>{this.state.newPasswordError}</span></FormText> : ''}
-                                    </FormGroup>
-
-                                    <FormGroup>
-                                        <label>Confirme mot de passe</label>
-                                        <Input  
-                                            type="password" onChange={this.handleInputChange} name="confirmPassword"  placeholder=""
-                                            invalid={this.state.confirmPasswordInputInvalid}
-                                        />
-                                        {/* <FormFeedback tooltip></FormFeedback> */}
-                                        {this.state.confirmPasswordError != "" ? <FormText className="error_message"><span>{this.state.confirmPasswordError}</span></FormText> : ''}
-                                    </FormGroup>
-
-                                    <div className="button_block">
-                                        <Button className="btn_cancel"  >Annuler</Button>{' '}
-                                        <Button className="btn_save" onClick= {() => this.updateUSerPassword()}  >Envoyer</Button>
-                                    </div>
-                                    
-                                    
-                                
-                                    </Col>
-                                    
-                                    </Row>
-                                </CardBody>
-                        </Card>
-                        <br/>
-                        <Card id="change-email">
-                        <CardHeader>Changement d'email </CardHeader>
-                        <CardBody>
-                            <Row>
-                            <Col xs="12">
-                            
-                                <CardTitle></CardTitle>
-                               
-
-                                <FormGroup>
-                                    <label>Email</label>
-                                    <Input  
-                                        type="email" onChange={this.handleInputchange} name="change_email"  placeholder=""
-                                        invalid={false}
-                                    />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
-                                    {/* {this.state.oldPasswordError != "" ? <FormText className="error_message"><span>{this.state.oldPasswordError}</span></FormText> : ''} */}
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <label>Confirme email</label>
-                                    <Input  
-                                        type="email" onChange={this.handleInputchange} name="confirme_email"  placeholder=""
-                                        invalid={false}
-                                    />
-                                    {/* <FormFeedback tooltip></FormFeedback> */}
-                                    {/* {this.state.newPasswordError != "" ? <FormText className="error_message"><span>{this.state.newPasswordError}</span></FormText> : ''} */}
-                                </FormGroup>
-
-                                <div className="button_block">
-                                    <Button className="btn_cancel"   >Annuler</Button>{' '}
-                                    <Button className="btn_save" onClick= {() => this.updateUSer()}  >Evnoyer</Button>
-                                </div>
-                                
-                                
-                            
-                                </Col>
-                               
-                                </Row>
-                            </CardBody>
-                        </Card>
-                    </Col>
-                    <Modal isOpen={isOpen} >
-                        <ModalHeader>Changement photo de profile</ModalHeader>
-                        <ModalBody>
-                            <div className="modal_body">
-                                <Avatar
-                                    width={250}
-                                    height={250}
-                                    onCrop={this.onCrop}
-                                    onClose={this.onClose}
-                                    src={this.state.src}
-                                    />
-                            </div>
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="primary"  onClick={()=> this.handleCloseModal()}>Annuler</Button>{' '}
-                            <Button color="secondary"  onClick={()=> this.saveProfilePic()}>Enregistrer</Button>
-                        </ModalFooter>
-                    </Modal>
-                </Row>
+                    </div>
+                </Grid>
+                <Grid item xs={12} sm={7} style={{marginBottom: '5%'}}>
+                    {message  &&
+                        <Alert variant="filled" severity={success ? "success" : "error"}>
+                            {message}
+                        </Alert>
+                    }
+                    <EditProfileInfoPerso 
+                        changeInfo={changeInfo}
+                    />
+                    <EditProfilePassword 
+                        changePassword={changePassword}
+                    />
+                    <EditProfileEmail 
+                        changeEmail={changeEmail}
+                    />
+                </Grid>
+               
+            </Grid>
             </Container>
         )
     }
@@ -444,13 +272,17 @@ class EditProfile extends Component {
 const mapStateToProps = function(state) {
     return {
         userDetails : state.userDetailReducer.userDetails,
-        success: state.userDetailReducer.success,
-        message: state.userDetailReducer.message
+        success: state.userReducer.success,
+        message: state.userReducer.message
     }
   }
 const mapDispatchToProps = function(dispatch) {
     return {
-        updateUser: (user, field) => dispatch({type: UPDATE_USER, payload: {user, field}})
+        updateUser: (user, field) => dispatch({type: UPDATE_USER, payload: {user, field}}),
+        changeEmail: email => dispatch({type: 'API_CALL', payload : userReducer.changeEmail(email)}),
+        changePassword: user => dispatch({type: 'API_CALL', payload : userReducer.changePassword(user)}),
+        changeInfo: user => dispatch({type: 'API_CALL', payload : userReducer.changeInfo(user)}),
+
       }
 }
 

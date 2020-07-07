@@ -27,7 +27,10 @@ export default class ApiClient {
     
             if (method === 'get' && data) {
               request.send(data);
-            }else if(method === 'post' && data){
+            }else if(method === 'post' && data && params && params.type === 'multipart/form-data'){
+              //request.set('Content-Type', 'multipart/form-data');
+              request.send(data);
+            } else if(method === 'post' && data){
               request.set('X-CSRF-TOKEN', 'token');
               request.set('Content-Type', 'application/json');
               request.send(JSON.stringify(data));
@@ -35,12 +38,8 @@ export default class ApiClient {
                 request.set('X-CSRF-TOKEN', 'token');
                 request.set('Content-Type', 'application/json');
                 request.send(JSON.stringify(data));
-            } else if(method === 'post' && data && params && params.type === 'multipart/form-data'){
-                request.set('X-CSRF-TOKEN', document.getElementsByName('_csrf')[0].content);
-                request.send(data);
             } else if (method === 'post' && data) {
-              data = data + '&_csrf=' + document.getElementsByName('_csrf')[0].content;
-              request.set('_csrf', document.getElementsByName('_csrf')[0].content);
+              //request.set('_csrf', document.getElementsByName('_csrf')[0].content);
               request.send(data);
             }
             

@@ -1,96 +1,80 @@
-import React from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import TextField from '@material-ui/core/TextField';
+import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { makeStyles } from '@material-ui/core/styles';
 
-const LoginForm = props => {
-  const { handleSubmit, pristine, reset, submitting } = props;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& .MuiTextField-root': {
+      paddingBottom: theme.spacing(2),
+      
+    },
+  send_btn: {
+    margin: theme.spacing(1),
+    
+  }
+  },
+}));
+
+
+const LoginForm = ({login}) => {
+  const classes = useStyles();
+  const { errors, handleSubmit, watch, control, reset } = useForm({});
+  const onSubmit = values => {
+    login(values);
+  }
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>First Name</label>
-        <div>
-          <Field
-            name="firstName"
-            component="input"
-            type="text"
-            placeholder="First Name"
+      <form className={classes.root} onSubmit={e => e.preventDefault()}>
+       <Controller
+        name="email"
+        control={control}
+        rules={{
+          required: "You must specify an email"
+        }}
+        as={
+          <TextField
+              error={errors.email}
+              name="email"
+              type="email"
+              label="Email"
+              id="standard-error-helper-text"
+              helperText={errors.email ? errors.email.message : ""}
+              variant="outlined"
+              size="small"
+              fullWidth
+            />
+      }
+      />
+
+      <Controller
+        name="password"
+        control={control}
+        rules={{
+          required: "You must specify a password",
+          //validate: value => value === watch('password') || "Passwords don't match."
+        }}
+        as={
+          <TextField
+            error={errors.password}
+            name="password"
+            type="password"
+            label="Password"
+            id="standard-error-helper-text"
+            variant="outlined"
+            helperText={errors.password ? errors.password.message : ""}
+            size="small"
+            fullWidth
           />
-        </div>
-      </div>
-      <div>
-        <label>Last Name</label>
-        <div>
-          <Field
-            name="lastName"
-            component="input"
-            type="text"
-            placeholder="Last Name"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Email</label>
-        <div>
-          <Field
-            name="email"
-            component="input"
-            type="email"
-            placeholder="Email"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Sex</label>
-        <div>
-          <label>
-            <Field name="sex" component="input" type="radio" value="male" />
-            {' '}
-            Male
-          </label>
-          <label>
-            <Field name="sex" component="input" type="radio" value="female" />
-            {' '}
-            Female
-          </label>
-        </div>
-      </div>
-      <div>
-        <label>Favorite Color</label>
-        <div>
-          <Field name="favoriteColor" component="select">
-            <option />
-            <option value="ff0000">Red</option>
-            <option value="00ff00">Green</option>
-            <option value="0000ff">Blue</option>
-          </Field>
-        </div>
-      </div>
-      <div>
-        <label htmlFor="employed">Employed</label>
-        <div>
-          <Field
-            name="employed"
-            id="employed"
-            component="input"
-            type="checkbox"
-          />
-        </div>
-      </div>
-      <div>
-        <label>Notes</label>
-        <div>
-          <Field name="notes" component="textarea" />
-        </div>
-      </div>
-      <div>
-        <button type="submit" disabled={pristine || submitting}>Submit</button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
-      </div>
+        }
+      />
+
+
+      <Button className="btn_save" type="submit" onClick={handleSubmit(onSubmit)}>Se connecter</Button>
     </form>
   );
 };
 
-export default reduxForm({
-  form: 'simple', // a unique identifier for this form
-})(LoginForm);
+export default LoginForm;

@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
 import './Categorie.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import { Container, Row, Col, Button, Form, FormGroup, Label, Input, FormText, ButtonGroup } from 'reactstrap';
-import { FaRegHeart, FaHeart} from "react-icons/fa";
-import noImage from '../../Assets/images/no-image.png';
+import Skeleton from '@material-ui/lab/Skeleton';
+import Grid from '@material-ui/core/Grid';
+
 import SearchForm from './SearchForm';
-import { GET_REGION } from '../Commons/reducers/region/RegionActions';
-import { GET_CATEGORIE } from '../Commons/reducers/categorie/CategorieActions';
-import NoResultFound from '../notFound/NoResultFound';
-import { SEARCH_ANNONCE } from '../Commons/reducers/annonce/MyAnnonceActions';
 import * as categorieReducer from './CategorieReducer';
 import * as homeReducer from '../Home/HomeReducer';
-import MobileFilter from './MobileFilter';
+import * as annonceReducer from '../Annonce/AnnonceReducer';
+import AnnonceCard from './AnnonceCard';
+import { HeadSlider } from './HeadSlider';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Loading from '../Commons/loading/Loading';
+
+
 const queryString = require('query-string');
 const moment = require('moment');
 moment.locale('fr');
@@ -39,8 +41,6 @@ class Categorie extends Component {
 
 
         this.searchAnnonce();
-        var myFavorite = localStorage.getItem('myFavorite');
-        var favoriteArr = [];
         // if(myFavorite) {
         //     myFavorite = JSON.parse(myFavorite);
         //     for(var fav in myFavorite) {
@@ -55,6 +55,7 @@ class Categorie extends Component {
     UNSAFE_componentWillMount() {
         this.props.getAllCategories();
         this.props.getAllRegions();
+        this.props.getAllAnnonces();
     }
 
     searchAnnonce() {
@@ -108,237 +109,78 @@ class Categorie extends Component {
         // })
     }
     filterValue(value) {
-        if(value.categorie) {
-            // this.setState({
-            //     categorieSlide: value.categorie.image_name,
-            //     categorieSlideName: value.categorie.name
-            // })
+        if(Object.keys(value).length) {
+            this.props.annonceAdvancedSearch(value);
         }
-        this.searchAnnonce();
     }
 
     render() {
-        const base_urrl = "http://localhost:3000";
-        const { categorieSlide, categorieSlideName } = this.state;
-        const { regions, annonces } = this.props;
+        const { regions, annonces, categories, search, getCommunesById, communes, openFilter, closeFilterFunc, annonceAdvancedSearch } = this.props;
+        //var annonces = [];
         return(
-            <div className="body_container">
-                <div className="mobile-filter-block">
-                    {/* <Row>
-                        <Input 
-                            type="text" 
-                            name="title" 
-                            onChange={this.handleChange}
-                            id="title" 
-                            placeholder="Que recherchez-vous ?"/>
-                    </Row> */}
-                </div>
-                <div className="categorie-slide">
-                    <img src={base_urrl + "/images/categorieSlides/" + categorieSlide}></img>
-                    <div className="categorie-slide-title">
-                        <span>
-                            <strong>{categorieSlideName}</strong>
-                                <p>Il y a actuellement <span>{annonces && annonces.length}</span> en ligne.</p>
-                        </span>
-                    </div>
-                </div>
-                <SearchForm
-                    getFilterValue={this.filterValue}
-                    regions= {regions}
-                    history= {this.props.history}
-                />
-             <div className="container">
-                <Row>
-                    <Col xs={8}>
-                    
-                    <div className="tab-pane" id="tab6">
-                        <div className="sch-product-list">
-
-                            {annonces.length > 0 && annonces.map(annonce =>{
-                                return(
-                                    <div className="list-annonce">
-                                        <div className="sch-product-item">
-                                            <Row>
-                                                <Col xs={4}>
-                                                        {annonce.images.length ?
-                                                          <div className="sch-product-images">
-                                                              <img className="sch-img-1" src={base_urrl + annonce.images[0].path} />
-                                                                <div className="sch-product-new-label">
-                                                                <span>
-                                                                {annonce.images.length} <FontAwesomeIcon icon="image"/> 
-                                                                </span>
-                                                                </div>
-                                                          </div>
-                                                        :
-                                                        <div className="sch-product-images">
-                                                            <img className="sch-img-1" src={noImage} />
-                                                        </div>  
-                                                        }
-                                                </Col>
-                                                <Col xs={8}>
-                                                <div className="sch-product-info">
-                                                        <Row>
-                                                            <Col xs={9}>
-                                                                <div className="sch-title">
-                                                                  <a onClick={() => this.annonceDetail(annonce)}>{annonce.title}</a> 
-                                                                </div>
-                                                            </Col>
-                                                            <Col xs={3}>
-                                                                <div className="sch-favorite">
-                                                                   {this.state.favorite.indexOf(annonce.id) >= 0 ?
-                                                                     <FaHeart onClick={() =>this.handleFavorite(annonce, 'delete')} size="1.1em"/> :  <FaRegHeart onClick={() =>this.handleFavorite(annonce, 'add')} size="1.2em"/> 
-                                                                    }
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="sch-price">
-                                                            {annonce.price} €
-                                                        </div>
-                                                        <div className="sch-name-description">
-                                                            <Row>
-                                                            <span>
-                                                                {annonce.commune.nom_complet} | {annonce.commune.code_postal}
-                                                                </span>
-                                                            </Row>
-                                                            <Row>
-                                                                <div className="sch-description">
-                                                                    {annonce.categorie.name} 
-                                                                </div>
-                                                            </Row>
-                                                            <Row>
-                                                                <div className="sch-description">
-                                                                    {moment(annonce.createdAt).format('l')} à {moment(annonce.createdAt).format('LT')}
-                                                                </div>
-                                                            </Row>
-                                                        </div>
-                                                    
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        
-                                        
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                            {/* {annonces && annonces.length == 0 && 
-                            this.props.history.push('/notResultFound')
-                            } */}
-                            
-                        
-                    </div>
-                </div>
-                    </Col>
-                    <Col xs={3}>
-                        <div className="sidebar">
-
-                        </div>
-                    </Col>
-                </Row>
+            <Fragment>
+            <CssBaseline />
+            <HeadSlider/>
+            <SearchForm spacing={2}
+                getFilterValue={this.filterValue}
+                regions= {regions}
+                categories={categories}
+                history= {this.props.history}
+                search={annonceAdvancedSearch}
+                getCommunesById={getCommunesById}
+                communes={communes}
+                openFilter={openFilter}
+                closeFilterFunc={closeFilterFunc}
+            />
+            <Container style={{position: openFilter ? 'fixed': ''}}>
+                <Grid container >
+                    <Grid item xs={12} sm={7}>
+                        {annonces.length > 0 ?
+                                <AnnonceCard annonces={annonces} {...this.props}/>
+                                :
+                                <Loading />
+                            }
+                    </Grid>
+                <Grid item xs={12} sm={5}></Grid>
+                </Grid>
+            </Container>
+            </Fragment>
+            // <div className="body_container">
+            //     <div className="categorie-slide">
+            //         <img src={base_urrl + "/images/categorieSlides/" + categorieSlide}></img>
+            //         <div className="categorie-slide-title">
+            //             <span>
+            //                 <strong>{categorieSlideName}</strong>
+            //                     <p>Il y a actuellement <span>{annonces && annonces.length}</span> en ligne.</p>
+            //             </span>
+            //         </div>
+            //     </div>
+               
                 
-                <Row>
-                <div className="tab-pane-mobile" id="tab6-mobile">
-                        <div className="sch-product-list">
-
-                            {annonces.length > 0 && annonces.map(annonce =>{
-                                return(
-                                    <div className="list-annonce">
-                                        <div className="sch-product-item">
-                                            <Row>
-                                                <Col xs={4}>
-                                                        {annonce.images.length ?
-                                                          <div className="sch-product-images">
-                                                              <img className="sch-img-1" src={base_urrl + annonce.images[0].path} />
-                                                                <div className="sch-product-new-label">
-                                                                <span>
-                                                                {annonce.images.length} <FontAwesomeIcon icon="image"/> 
-                                                                </span>
-                                                                </div>
-                                                          </div>
-                                                        :
-                                                        <div className="sch-product-images">
-                                                            <img className="sch-img-1" src={noImage} />
-                                                        </div>  
-                                                        }
-                                                </Col>
-                                                <Col xs={8}>
-                                                <div className="sch-product-info">
-                                                        <Row>
-                                                            <Col xs={9}>
-                                                                <div className="sch-title">
-                                                                  <a onClick={() => this.annonceDetail(annonce)}>{annonce.title}</a> 
-                                                                </div>
-                                                            </Col>
-                                                            <Col xs={3}>
-                                                                <div className="sch-favorite">
-                                                                   {this.state.favorite.indexOf(annonce.id) >= 0 ?
-                                                                     <FaHeart onClick={() =>this.handleFavorite(annonce, 'delete')} size="1.1em"/> :  <FaRegHeart onClick={() =>this.handleFavorite(annonce, 'add')} size="1em"/> 
-                                                                    }
-                                                                </div>
-                                                            </Col>
-                                                        </Row>
-                                                        <div className="sch-price">
-                                                            {annonce.price} €
-                                                        </div>
-                                                        <div className="sch-name-description">
-                                                            <Row>
-                                                            <span>
-                                                                {annonce.commune.commune_name} | {annonce.commune.postale_code}
-                                                                </span>
-                                                            </Row>
-                                                            <Row>
-                                                                <div className="sch-description">
-                                                                    {annonce.categorie.name} 
-                                                                </div>
-                                                            </Row>
-                                                            <Row>
-                                                                <div className="sch-description">
-                                                                    {moment(annonce.createdAt).format('l')} à {moment(annonce.createdAt).format('LT')}
-                                                                </div>
-                                                            </Row>
-                                                        </div>
-                                                    
-                                                    </div>
-                                                </Col>
-                                            </Row>
-                                        
-                                        
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                            {/* {annonces && annonces.length == 0 && 
-                            this.props.history.push('/notResultFound')
-                            } */}
-                            
-                        
-                    </div>
-                </div>
-                </Row>
-                
-            </div>
-            {/* <MobileFilter/> */}
-            </div>    
         )
     }
 }
 
 const mapStateToProps = function(state) {
-    debugger
     return {
-        categories : state.categorieReducer.categories,
-        regions : state.regionReducer.regions,
-        annonces: state.annonceReducer.annonces
+        categories : state.homeReducer.categories,
+        regions : state.homeReducer.regions,
+        annonces: state.annonceReducer.annonces,
+        communes: state.annonceReducer.communes,
+        openFilter: state.commonReducer.openFilter
     }
   }
 const mapDispatchToProps = function(dispatch) {
-    debugger
     return {
         getAllCategories: () =>  dispatch({type: 'API_CALL', payload : homeReducer.getCategories()}),
         getAllRegions: () => dispatch({type: 'API_CALL', payload : homeReducer.getRegions()}),
         getAnnonces: () => dispatch({type: 'API_CALL', payload : categorieReducer.getAnnonces()}),
+        annonceAdvancedSearch: (data) => dispatch({type: 'API_CALL', payload : annonceReducer.annonceAdvancedSearch(data)}),
+        getAllAnnonces: () => dispatch({type: 'API_CALL', payload : annonceReducer.getAllAnnonces()}),
+        getCommunesById: data => dispatch({type: 'API_CALL', payload : annonceReducer.getCommunesById(data)}),
+        closeFilterFunc: () => dispatch({type: 'CLOSE_MOBILE_FILTER', payload: null})
       }
-}
 
+    }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Categorie);

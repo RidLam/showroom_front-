@@ -6,10 +6,15 @@ export const GET_REGION_PENDING = 'GET_REGION_PENDING';
 export const GET_REGION_SUCCESS = 'GET_REGION_SUCCESS';
 export const GET_REGION_ERROR = 'GET_REGION_ERROR';
 
+export const GET_DEPARTEMENT_PENDING = 'GET_DEPARTEMENT_PENDING';
+export const GET_DEPARTEMENT_SUCCESS = 'GET_DEPARTEMENT_SUCCESS';
+export const GET_DEPARTEMENT_ERROR = 'GET_DEPARTEMENT_ERROR';
+
 const initialState = {
     pending: false,
     categories: [],
     regions: [],
+    departements: [],
     error: null
 }
 
@@ -51,6 +56,24 @@ export default function homeReducer(state = initialState, action) {
                 pending: false,
                 error: action.payload.error
             }
+        case GET_DEPARTEMENT_PENDING: 
+            return {
+                ...state,
+                pending: true
+            }
+        case GET_DEPARTEMENT_SUCCESS:
+            return {
+                ...state,
+                pending: false,
+                departements: action.payload.response
+            }
+        case GET_DEPARTEMENT_ERROR:
+            return {
+                ...state,
+                pending: false,
+                error: action.payload.error
+            }
+
         default: 
             return state;
     }
@@ -71,3 +94,23 @@ export function getRegions() {
         data: {}
       };
 }
+
+export function getDepartementById(id) {
+    return {
+        types: [GET_DEPARTEMENT_PENDING, GET_DEPARTEMENT_SUCCESS, GET_DEPARTEMENT_ERROR],
+        api:  {type: 'post',path: 'departements/getById'},
+        data: {id}
+      };
+}
+
+
+function objectToParams(object) {
+    let str = '';
+    for (const key in object) {
+      if (str !== '') {
+        str += '&';
+      }
+      str += key + '=' + encodeURIComponent(object[key]);
+    }
+    return str;
+  }

@@ -4,262 +4,54 @@
 */
 
 @media (min-width: 1281px) {
-    #tab6-mobile {
-        display: none;
-    }
-    #tab6 {
-        padding-top: 15px;
-    }
-    #tab6 .sch-product-list .sch-product-item {
-        display: inline-block;
-        margin-bottom: 10px;
-        width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.16);
-        box-shadow: 0 2px 8px rgba(0,0,0,.16);
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-images {
-        display: inline-block;
-        width: 100%;
-        height: 175px;
-        position: relative;
-        background: rgba(0,0,0,0.2);
-        float:left;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        height: 175px;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-1{
-        /*display: none;*/
-        
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-2{
-        display: inline-block;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-img-1 {
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 100%;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        float: left;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-        object-fit: contain;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-img-2 {
-        display:none;
-        width: 100%;
-        height:190px;
-        object-fit:contain;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label, #tab6 .sch-product-list .sch-product-item .sch-product-new-label {
-        text-align: center;
-        color: #fff;
-        background-color:rgba(0,0,0,0.4);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        height: 16px;
-        width: 42px;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        transition: all .3s;
-        border-bottom-left-radius: 40px 30px;
-        border-top-left-radius: 40px 30px;
-        border-bottom-right-radius: 40px 30px;
-        border-top-right-radius: 40px 30px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label a, #tab6 .sch-product-list .sch-product-item .sch-product-new-label a{
-        color: #000;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label {
-        left: auto;
-        right: 10px;
-        background-color: #b4d0e7;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-info {
-        width: 98%;
-        float: left;
-        position: relative;
-        padding: 8px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #1a1a1a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title:hover {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        cursor: pointer;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-favorite {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-        float: right;
-    }
-    
-    .sch-price {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-       
-    }
-    
-    #tab6 .sch-product-list {
-        padding: 30px 0 30px 0;
-        
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name {
-        position: relative;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name a {
-        font-size: 16px;
-        color: #222;
-        font-weight: bold;
-        display: inline-block;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-description {
-        margin-top: 10px;
-        color: #555;
-        font-size: 14px;
-        line-height: 18px;
-        font-weight: 300;
-    }
-   
-   
-    #tab6 .sch-product-list .sch-color-item-element, #tab6 .sch-product-list .sch-size-item-element {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        float: left;
-        cursor: pointer;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        background:#aaa;
-    }
-    #tab6 .sch-product-list .sch-color-item-element.active,
-    #tab6 .sch-product-list .sch-color-item-element:hover,
-    #tab6 .sch-product-list .sch-size-item-element.active,
-    #tab6 .sch-product-list .sch-size-item-element:hover {
-        background:red;
-    }
-    #tab6 .sch-product-list .sch-size-item-element {
-        background: #34b1da;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        text-align: center;
-        font-size: 12px;
-        line-height: 30px;
-        color: #fff;
-    }
+   /*Head slider*/
 
-
- 
-    
-    .filter-info {
-        padding: 12px;
-    }
-    .filter-options {
-        float: right;
-    }
-    
-    .filter-options Button {
-        border: #ddd solid 2px;
-    }
-    
-    .filter-options Button:hover {
-        border: #ddd solid 2px;
-        background-color:rgba(0,0,0,0.2);
-    }
-     
-    .categorie-slide {
-        background-image: url('../../Assets/images/store_cover.jpg'); 
-        height: 290px;
-        width: 100%;
-        display: table;
-        text-align: center;
-        position: relative;
-        background-repeat: no-repeat;
-    }
-    .categorie-slide img {
-        width: 100%;
-        height: 100%;
-    }
-    .categorie-slide-title {
-        background-color: rgba(0,0,0,0.2);
-        vertical-align: middle;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-    }
-    .categorie-slide-title strong {
-        font-size: 45px;
-        color: white;
-    }
-    .categorie-slide-title p {
-        color: white;
-        font-size: 25px;
-    }
-    .categorie-slide-title p span {
-        background-color: #bb225a;
-        padding: 2px 5px 2px 5px;
-        border-radius: 4px;
-    }
-    
-    .body_container {
-        margin: 30% auto;
-    }
-    
-    
+#head-slider {
+    height: 250px;
+    width: 100%;
+    background-color: blueviolet;
+    margin-top: 57px;
 }
+#head-slider img {
+    width: 100%;
+    height: 100%;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    vertical-align: middle;
+    max-width: 100%;
+    position: relative;
+    float: left;
+    background: #f2f2f2;
+    padding: 0;
+    text-align: center;
+    cursor: pointer;
+    object-fit: cover;
+}
+
+#head-slider-title{
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    padding: 10px;
+    position: absolute;
+    top: 13%;
+    text-align: center;
+    line-height: 2;
+   
+}
+#head-slider-title strong, #head-slider-title p {
+    color: white;
+    font-size: 18px;
+}
+
+#head-slider-title p span {
+    background-color: #bb225a;
+    padding: 2px 14px 2px 14px;
+    border-radius: 25px;
+}
+  
+}
+
 
 /* 
   ##Device = Laptops, Desktops
@@ -267,48 +59,13 @@
 */
 
 @media (min-width: 1025px) and (max-width: 1280px) {
-    #tab6-mobile {
-        display: none;
-    }
-    #tab6 {
-        padding-top: 15px;
-    }
-    #tab6 .sch-product-list .sch-product-item {
-        display: inline-block;
-        margin-bottom: 10px;
+    #head-slider {
+        height: 250px;
         width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.16);
-        box-shadow: 0 2px 8px rgba(0,0,0,.16);
+        background-color: blueviolet;
+        margin-top: 57px;
     }
-    #tab6 .sch-product-list .sch-product-item .sch-product-images {
-        display: inline-block;
-        width: 100%;
-        height: 175px;
-        position: relative;
-        background: rgba(0,0,0,0.2);
-        float:left;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        height: 175px;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-1{
-        /*display: none;*/
-        
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-2{
-        display: inline-block;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-img-1 {
-        position: relative;
-        float: left;
+    #head-slider img {
         width: 100%;
         height: 100%;
         background-position: 50% 50%;
@@ -318,208 +75,34 @@
         max-width: 100%;
         position: relative;
         float: left;
+        background: #f2f2f2;
         padding: 0;
         text-align: center;
         cursor: pointer;
-        object-fit: contain;
+        object-fit: cover;
     }
-    #tab6 .sch-product-list .sch-product-item .sch-img-2 {
-        display:none;
+    
+    #head-slider-title{
+        background-color: rgba(0, 0, 0, 0.5);
         width: 100%;
-        height:190px;
-        object-fit:contain;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label, #tab6 .sch-product-list .sch-product-item .sch-product-new-label {
-        text-align: center;
-        color: #fff;
-        background-color:rgba(0,0,0,0.4);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        height: 16px;
-        width: 42px;
+        padding: 10px;
         position: absolute;
-        right: 5px;
-        top: 5px;
-        transition: all .3s;
-        border-bottom-left-radius: 40px 30px;
-        border-top-left-radius: 40px 30px;
-        border-bottom-right-radius: 40px 30px;
-        border-top-right-radius: 40px 30px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label a, #tab6 .sch-product-list .sch-product-item .sch-product-new-label a{
-        color: #000;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label {
-        left: auto;
-        right: 10px;
-        background-color: #b4d0e7;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-info {
-        width: 98%;
-        float: left;
-        position: relative;
-        padding: 8px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #1a1a1a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title:hover {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        cursor: pointer;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-favorite {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-        float: right;
-    }
-    
-    .sch-price {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
+        top: 13%;
+        text-align: center;
+        line-height: 2;
        
     }
-    
-    #tab6 .sch-product-list {
-        padding: 30px 0 30px 0;
-        
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name {
-        position: relative;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name a {
-        font-size: 16px;
-        color: #222;
-        font-weight: bold;
-        display: inline-block;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-description {
-        margin-top: 10px;
-        color: #555;
-        font-size: 14px;
-        line-height: 18px;
-        font-weight: 300;
-    }
-   
-   
-    #tab6 .sch-product-list .sch-color-item-element, #tab6 .sch-product-list .sch-size-item-element {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        float: left;
-        cursor: pointer;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        background:#aaa;
-    }
-    #tab6 .sch-product-list .sch-color-item-element.active,
-    #tab6 .sch-product-list .sch-color-item-element:hover,
-    #tab6 .sch-product-list .sch-size-item-element.active,
-    #tab6 .sch-product-list .sch-size-item-element:hover {
-        background:red;
-    }
-    #tab6 .sch-product-list .sch-size-item-element {
-        background: #34b1da;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        text-align: center;
-        font-size: 12px;
-        line-height: 30px;
-        color: #fff;
-    }
-
-
- 
-    
-    .filter-info {
-        padding: 12px;
-    }
-    .filter-options {
-        float: right;
-    }
-    
-    .filter-options Button {
-        border: #ddd solid 2px;
-    }
-    
-    .filter-options Button:hover {
-        border: #ddd solid 2px;
-        background-color:rgba(0,0,0,0.2);
-    }
-     
-    .categorie-slide {
-        background-image: url('../../Assets/images/store_cover.jpg'); 
-        height: 290px;
-        width: 100%;
-        display: table;
-        text-align: center;
-        position: relative;
-        background-repeat: no-repeat;
-    }
-    .categorie-slide img {
-        width: 100%;
-        height: 100%;
-    }
-    .categorie-slide-title {
-        background-color: rgba(0,0,0,0.2);
-        vertical-align: middle;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-    }
-    .categorie-slide-title strong {
-        font-size: 45px;
+    #head-slider-title strong, #head-slider-title p {
         color: white;
+        font-size: 18px;
     }
-    .categorie-slide-title p {
-        color: white;
-        font-size: 25px;
-    }
-    .categorie-slide-title p span {
+    
+    #head-slider-title p span {
         background-color: #bb225a;
-        padding: 2px 5px 2px 5px;
-        border-radius: 4px;
+        padding: 2px 14px 2px 14px;
+        border-radius: 25px;
     }
-    
-    .body_container {
-        margin: 30% auto;
-    }
+  
   
 }
 
@@ -529,48 +112,14 @@
 */
 
 @media (min-width: 768px) and (max-width: 1024px) {
-    #tab6-mobile {
-        display: none;
-    }
-    #tab6 {
-        padding-top: 15px;
-    }
-    #tab6 .sch-product-list .sch-product-item {
-        display: inline-block;
-        margin-bottom: 10px;
+  
+    #head-slider {
+        height: 250px;
         width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.16);
-        box-shadow: 0 2px 8px rgba(0,0,0,.16);
+        background-color: blueviolet;
+        margin-top: 60px;
     }
-    #tab6 .sch-product-list .sch-product-item .sch-product-images {
-        display: inline-block;
-        width: 100%;
-        height: 175px;
-        position: relative;
-        background: rgba(0,0,0,0.2);
-        float:left;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        height: 175px;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-1{
-        /*display: none;*/
-        
-    }
-    #tab6 .sch-product-list .sch-product-item:hover .sch-img-2{
-        display: inline-block;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-img-1 {
-        position: relative;
-        float: left;
+    #head-slider img {
         width: 100%;
         height: 100%;
         background-position: 50% 50%;
@@ -580,205 +129,33 @@
         max-width: 100%;
         position: relative;
         float: left;
+        background: #f2f2f2;
         padding: 0;
         text-align: center;
         cursor: pointer;
-        object-fit: contain;
+        object-fit: cover;
     }
-    #tab6 .sch-product-list .sch-product-item .sch-img-2 {
-        display:none;
+    
+    #head-slider-title{
+        background-color: rgba(0, 0, 0, 0.5);
         width: 100%;
-        height:190px;
-        object-fit:contain;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label, #tab6 .sch-product-list .sch-product-item .sch-product-new-label {
-        text-align: center;
-        color: #fff;
-        background-color:rgba(0,0,0,0.4);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        height: 16px;
-        width: 42px;
+        padding: 10px;
         position: absolute;
-        right: 5px;
-        top: 5px;
-        transition: all .3s;
-        border-bottom-left-radius: 40px 30px;
-        border-top-left-radius: 40px 30px;
-        border-bottom-right-radius: 40px 30px;
-        border-top-right-radius: 40px 30px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label a, #tab6 .sch-product-list .sch-product-item .sch-product-new-label a{
-        color: #000;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-sale-label {
-        left: auto;
-        right: 10px;
-        background-color: #b4d0e7;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-product-info {
-        width: 98%;
-        float: left;
-        position: relative;
-        padding: 8px;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #1a1a1a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-title:hover {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        cursor: pointer;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-favorite {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-        float: right;
-    }
-    
-    .sch-price {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
+        top: 13%;
+        text-align: center;
+        line-height: 2;
        
     }
-    
-    #tab6 .sch-product-list {
-        padding: 30px 0 30px 0;
-        
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name {
-        position: relative;
-    }
-    #tab6 .sch-product-list .sch-product-item .sch-name a {
-        font-size: 16px;
-        color: #222;
-        font-weight: bold;
-        display: inline-block;
-    }
-    
-    #tab6 .sch-product-list .sch-product-item .sch-description {
-        margin-top: 10px;
-        color: #555;
-        font-size: 14px;
-        line-height: 18px;
-        font-weight: 300;
-    }
-   
-    
-    #tab6 .sch-product-list .sch-color-item-element, #tab6 .sch-product-list .sch-size-item-element {
-        width: 30px;
-        height: 30px;
-        margin-right: 10px;
-        float: left;
-        cursor: pointer;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        background:#aaa;
-    }
-    
-    #tab6 .sch-product-list .sch-size-item-element {
-        background: #34b1da;
-        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-        text-align: center;
-        font-size: 12px;
-        line-height: 30px;
-        color: #fff;
-    }
-    .sch-title a {
+    #head-slider-title strong, #head-slider-title p {
+        color: white;
         font-size: 18px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-   
-    .filter-info {
-        padding: 12px;
-    }
-    .filter-options {
-        float: right;
     }
     
-    .filter-options Button {
-        border: #ddd solid 2px;
-    }
-    
-    .filter-options Button:hover {
-        border: #ddd solid 2px;
-        background-color:rgba(0,0,0,0.2);
-    }
-     
-    .categorie-slide {
-         background-image: url('../../Assets/images/store_cover.jpg'); 
-        height: 290px;
-        width: 100%;
-        display: table;
-        text-align: center;
-        position: relative;
-    }
-    .categorie-slide img {
-        width: 100%;
-        height: 100%;
-    }
-    .categorie-slide-title {
-        background-color: rgba(0,0,0,0.2);
-        vertical-align: middle;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-    }
-    .categorie-slide-title strong {
-        font-size: 45px;
-        color: white;
-    }
-    .categorie-slide-title p {
-        color: white;
-        font-size: 25px;
-    }
-    .categorie-slide-title p span {
+    #head-slider-title p span {
         background-color: #bb225a;
-        padding: 2px 5px 2px 5px;
-        border-radius: 4px;
+        padding: 2px 14px 2px 14px;
+        border-radius: 25px;
     }
-    
-    .body_container {
-        margin: 30% auto;
-    }
-    
   
 }
 
@@ -788,7 +165,7 @@
 */
 
 @media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
-  
+   
   
   
 }
@@ -799,224 +176,9 @@
 */
 
 @media (min-width: 481px) and (max-width: 767px) {
-    #tab6-mobile {
-        padding: 15px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item {
-        display: inline-block;
-        margin-bottom: 10px;
-        width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.16);
-        box-shadow: 0 2px 8px rgba(0,0,0,.16);
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-images {
-        display: inline-block;
-        width: 100%;
-        height: 175px;
-        position: relative;
-        background: rgba(0,0,0,0.2);
-        float:left;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        height: 175px;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item:hover .sch-img-1{
-        /*display: none;*/
-        
-    }
-    #tab6-mobile .sch-product-list .sch-product-item:hover .sch-img-2{
-        display: inline-block;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-img-1 {
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 100%;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        float: left;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-        object-fit: contain;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-img-2 {
-        display:none;
-        width: 100%;
-        height:190px;
-        object-fit:contain;
-    }
-    
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label, #tab6-mobile .sch-product-list .sch-product-item .sch-product-new-label {
-        text-align: center;
-        color: #fff;
-        background-color:rgba(0,0,0,0.4);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        height: 16px;
-        width: 42px;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        transition: all .3s;
-        border-bottom-left-radius: 40px 30px;
-        border-top-left-radius: 40px 30px;
-        border-bottom-right-radius: 40px 30px;
-        border-top-right-radius: 40px 30px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label a, #tab6-mobile .sch-product-list .sch-product-item .sch-product-new-label a{
-        color: #000;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label {
-        left: auto;
-        right: 10px;
-        background-color: #b4d0e7;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-info {
-        width: 98%;
-        float: left;
-        position: relative;
-        padding: 2px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-title {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #1a1a1a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-title:hover {
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        cursor: pointer;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    .sch-title a {
-        font-size: 18px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-    
-    #tab6-mobile .sch-product-list .sch-product-item .sch-favorite {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-        float: right;
-    }
-    
-    .sch-price {
-        font-size: 18px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-       
-    }
-    
-    #tab6-mobile .sch-product-list {
-        padding: 30px 0 30px 0;
-        
-    }
-    .sch-name-description {
-        padding-left: 10px;
-    }
-   
-    .filter-info {
-        padding: 12px;
-    }
-    .filter-options {
-        float: right;
-    }
-    
-    .filter-options Button {
-        border: #ddd solid 2px;
-    }
-    
-    .filter-options Button:hover {
-        border: #ddd solid 2px;
-        background-color:rgba(0,0,0,0.2);
-    }
-     
-    .categorie-slide {
-         background-image: url('../../Assets/images/store_cover.jpg'); 
-        height: 290px;
-        width: 100%;
-        display: table;
-        text-align: center;
-        position: relative;
-    }
-    .categorie-slide img {
-        width: 100%;
-        height: 100%;
-    }
-    .categorie-slide-title {
-        background-color: rgba(0,0,0,0.2);
-        vertical-align: middle;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-    }
-    .categorie-slide-title strong {
-        font-size: 45px;
-        color: white;
-    }
-    .categorie-slide-title p {
-        color: white;
-        font-size: 25px;
-    }
-    .categorie-slide-title p span {
-        background-color: #bb225a;
-        padding: 2px 5px 2px 5px;
-        border-radius: 4px;
-    }
-    
-    .body_container {
-        margin: 30% auto;
-    }
-    .tab-pane {
+    #head-slider {
         display: none;
     }
-    .sidebar {
-        display: none;
-    }
-    
   
 }
 
@@ -1026,226 +188,9 @@
 */
 
 @media (min-width: 320px) and (max-width: 480px) {
-    #tab6-mobile {
-        padding: 15px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item {
-        display: inline-block;
-        margin-bottom: 10px;
-        width: 100%;
-        background: #fff;
-        border-radius: 10px;
-        -webkit-box-shadow: 0 2px 8px rgba(0,0,0,.16);
-        box-shadow: 0 2px 8px rgba(0,0,0,.16);
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-images {
-        display: inline-block;
-        width: 100%;
-        height: 175px;
-        position: relative;
-        background: rgba(0,0,0,0.2);
-        float:left;
-        border-top-left-radius: 10px;
-        border-bottom-left-radius: 10px;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        height: 175px;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item:hover .sch-img-1{
-        /*display: none;*/
-        
-    }
-    #tab6-mobile .sch-product-list .sch-product-item:hover .sch-img-2{
-        display: inline-block;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-img-1 {
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 100%;
-        background-position: 50% 50%;
-        background-repeat: no-repeat;
-        background-size: cover;
-        vertical-align: middle;
-        max-width: 100%;
-        position: relative;
-        float: left;
-        padding: 0;
-        text-align: center;
-        cursor: pointer;
-        object-fit: contain;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-img-2 {
-        display:none;
-        width: 100%;
-        height:190px;
-        object-fit:contain;
-    }
-    
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label, #tab6-mobile .sch-product-list .sch-product-item .sch-product-new-label {
-        text-align: center;
-        color: #fff;
-        background-color:rgba(0,0,0,0.4);
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
-        height: 16px;
-        width: 42px;
-        position: absolute;
-        right: 5px;
-        top: 5px;
-        transition: all .3s;
-        border-bottom-left-radius: 40px 30px;
-        border-top-left-radius: 40px 30px;
-        border-bottom-right-radius: 40px 30px;
-        border-top-right-radius: 40px 30px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label a, #tab6-mobile .sch-product-list .sch-product-item .sch-product-new-label a{
-        color: #000;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-sale-label {
-        left: auto;
-        right: 10px;
-        background-color: #b4d0e7;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-product-info {
-        width: 98%;
-        float: left;
-        position: relative;
-        padding: 2px;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-title {
-        font-size: 25px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #1a1a1a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    #tab6-mobile .sch-product-list .sch-product-item .sch-title:hover {
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        cursor: pointer;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-    }
-    .sch-title a {
-        font-size: 18px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-    }
-    
-    #tab6-mobile .sch-product-list .sch-product-item .sch-favorite {
-        font-size: 20px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        margin-bottom: 20px;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-        float: right;
-    }
-    
-    .sch-price {
-        font-size: 18px;
-        line-height: normal;
-        color: #34b1da;
-        position: relative;
-        transition: all .2s ease-in;
-        vertical-align: top;
-        color: #bb225a;
-        font-weight: 600;
-        overflow: hidden;
-       
-    }
-    
-    #tab6-mobile .sch-product-list {
-        padding: 30px 0 30px 0;
-        
-    }
-    .sch-name-description {
-        padding-left: 10px;
-    }
-   
-    .filter-info {
-        padding: 12px;
-    }
-    .filter-options {
-        float: right;
-    }
-    
-    .filter-options Button {
-        border: #ddd solid 2px;
-    }
-    
-    .filter-options Button:hover {
-        border: #ddd solid 2px;
-        background-color:rgba(0,0,0,0.2);
-    }
-     
-    .categorie-slide {
-         background-image: url('../../Assets/images/store_cover.jpg'); 
-        height: 290px;
-        width: 100%;
-        display: table;
-        text-align: center;
-        position: relative;
-    }
-    .categorie-slide img {
-        width: 100%;
-        height: 100%;
-    }
-    .categorie-slide-title {
-        background-color: rgba(0,0,0,0.2);
-        vertical-align: middle;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 100%;
-        transform: translate(-50%, -50%);
-    }
-    .categorie-slide-title strong {
-        font-size: 45px;
-        color: white;
-    }
-    .categorie-slide-title p {
-        color: white;
-        font-size: 25px;
-    }
-    .categorie-slide-title p span {
-        background-color: #bb225a;
-        padding: 2px 5px 2px 5px;
-        border-radius: 4px;
-    }
-    
-    .body_container {
-        margin: 30% auto;
-    }
-    .tab-pane {
+    #head-slider {
         display: none;
     }
-    .sidebar {
-        display: none;
-    }
-    .mobile-filter-block {
-        
-    }
-    
+  
   
 }

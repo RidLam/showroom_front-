@@ -5,7 +5,6 @@ import pays_de_la_loire from '../../Assets/images/pays-de-la-loire.png';
 import corse from '../../Assets/images/corse.png';
 import outre_mer from '../../Assets/images/outre-mer.png';
 import bretagne from '../../Assets/images/bretagne.png';
-import FilterView from './FilterView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { Route } from 'react-router-dom';

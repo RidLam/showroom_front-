@@ -1,15 +1,20 @@
 import React , { Component } from 'react';
-import { Col, Button, Form, FormGroup, Label, Input, FormText ,Container, Row, FormFeedback  } from 'reactstrap';
+import { Button, FormGroup  } from 'reactstrap';
 import './login.css';
-import login_picture from '../../../Assets/images/connexion.jpg';
 import FacebookLogin from 'react-facebook-login';
 import { FaFacebookF } from 'react-icons/fa';
 import { Link, Redirect } from 'react-router-dom';
-import { AvForm, AvField, AvGroup, AvInput, AvFeedback, AvRadioGroup, AvRadio, AvCheckboxGroup, AvCheckbox } from 'availity-reactstrap-validation';
-import { Field, reduxForm } from 'redux-form';
+
+
+
 import axios from 'axios';
 import { connect } from 'react-redux';
 import * as userReducer from './UserReducer';
+import { validate } from './ValidateForm';
+import LoginForm from './LoginForm';
+import Alert from '@material-ui/lab/Alert';
+
+
 
 
 
@@ -19,63 +24,90 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            email: '',
-            password: '',
-            formErrors: {},
-            emailValid: null,
-            passwordValid: null,
-            isValid: true,
-            formValid: null
+            email: null,
+            password: null,
+            form: {
+                name: 'loginForm',
+                errors: {},
+                values: {},
+                isValid: false
+            },
+            values :{}
+            
         }
 
     this.responseFacebook = this.responseFacebook.bind(this);
     this.redirectToLogin = this.redirectToLogin.bind(this);
     this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.formValues = this.formValues.bind(this);
     }
 
-    handleLoginSubmit(event, errors, values) {
-        if(!errors.length) {
+    handleLoginSubmit(values) {
+        if(Object.keys(values).length) {
             var user = {email: values.email, password: values.password};
             this.props.login(user);
-        } 
+        }else {
+            console.log("error");
+        }
+    }
+   
+   
+    handleChange(event) {
+        var name = event.target.name;
+        var value = event.target.value;
+        var myValues = this.formValues(name, value);
+        var errors = validate(myValues);
+        
+        this.setState(prevState => ({
+            form: {                  
+                ...prevState.form,    
+                values: myValues,
+                errors: errors       
+            }
+        }))
     }
     
-    
 
-    // UNSAFE_componentWillUpdate(nexProps, nextState) {
-    //     console.log(nexProps);
-    //     if(nexProps.isAuthenticated) {
-    //          window.location.href = "/";
-    //     }
+    UNSAFE_componentWillUpdate(nexProps, nextState) {
+        console.log(nexProps);
+        if(nexProps.isAuthenticated) {
+             window.location.href = "/";
+        }
        
-    //   }
+      }
 
-    //   validateField(fieldName, value) {
-    //     let fieldValidationErrors = this.state.formErrors;
-    //     let emailValid = this.state.emailValid;
-    //     let passwordValid = this.state.passwordValid;
-    //     let isValid = this.state.isValid;
-      
-    //     switch(fieldName) {
-    //       case 'email':
-    //         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-    //         fieldValidationErrors.email = emailValid ? '' : 'Email is invalid';
-    //         isValid =  false;
-    //         break;
-    //       case 'password':
-    //         passwordValid = value.length >= 6;
-    //         fieldValidationErrors.password = passwordValid ? '': 'Password is too short';
-    //         isValid =  false;
-    //         break;
-    //       default:
-    //         break;
-    //     }
-    //     this.setState({formErrors: fieldValidationErrors,
-    //                     emailValid: emailValid,
-    //                     passwordValid: passwordValid,
-    //                     isValid: this.validateForm()
-    //                   }, this.validateForm);
-    //   }
+      formValues(fieldName, value) {
+        var values = this.state.values;
+        values[fieldName] = value;
+
+        // if(isRequired &&  !value) {
+        //     form.errors[fieldName] = {empty: true, invalid: true};
+        //     form.values[fieldName] = null;
+        //     form.isValid = false;
+        // }else if(value) {
+        //     if(pattern) {
+        //         //var regex =  RegExp(pattern, 'g')
+        //         var isMatched = new RegExp(pattern).test(value);
+        //         if(isMatched) {
+        //             form.values[fieldName] =  value;
+        //             form.errors[fieldName] = {empty: false, invalid: false}
+        //             form.isValid =  true;
+        //         }else {
+        //             form.values[fieldName] =  value;
+        //             form.errors[fieldName] = {empty: false, invalid: true}
+        //             form.isValid =  false;
+        //         }
+        //     }else {
+        //         form.values[fieldName] =  value;
+        //         form.errors[fieldName] = {empty: false, invalid: false}
+        //         form.isValid =  true;
+        //     }
+        // }
+
+        return values;
+       
+      }
 
       
     redirectToLogin() {
@@ -121,65 +153,46 @@ class Login extends Component {
 
     render() {
         const icon = <FaFacebookF color="#fff" size="1.2em"/>;
-        const { handleSubmit, pristine, reset, submitting } = this.props;
+        const {login, success, message } = this.props;
         return(
             <div className="login_container">
-                {this.props.userDetails && this.props.userDetails.success &&
-                        this.props.history.push('/')
-                    }
-                <div className="floatleft">
-               
-                    <div className="login_left">
-                                <div className="login_form">
-                                <AvForm onSubmit={this.handleLoginSubmit}>
-                                <AvGroup>
-                                <AvInput name="email" type="email" label="" required placeholder="Email"/>
-                                    <AvFeedback>Email est requis</AvFeedback>
-                                </AvGroup>
-                                <AvGroup>
-                                    <AvInput name="password" type="password" required placeholder="Mot de passe"/>
-                                    <AvFeedback>Password est requis</AvFeedback>
-                                </AvGroup>
-                                
-                                <FormGroup>
-                                    <Button className="btn_save">Se connecter</Button>
-                                </FormGroup>
-                                </AvForm>
-
-                               
-                            <div className="forget_password">
-                                <a href="/recoverPassword">Mot de passe oublié?</a>
-                            </div>
-                            <div className="or_facebook">
-                                <p>Ou</p>
-                            </div>
-                            <FormGroup  className="facebook_login">
-                            <FacebookLogin
-                                appId="482248032399115"
-                                autoLoad={false}
-                                icon={icon}
-                                size="small"
-                                fields="name,email,picture,first_name,last_name"
-                                textButton="Facebook"
-                                onClick={this.responseFacebook}
-                                callback={() => this.responseFacebook}
+            {this.props.userDetails && this.props.userDetails.success &&
+            this.props.history.push('/')
+            }
+            <div className="floatleft">
+                <div className="login_left">
+                {success == false &&
+                     <Alert variant="filled" severity="error">
+                         {message}
+                     </Alert>
+                }
+                    <div className="login_form">
+                       <LoginForm
+                            login={login}
+                       />
+                        <div className="forget_password">
+                            <a href="/auth/forget-password">Mot de passe oublié?</a>
+                        </div>
+                        <div className="or_facebook">
+                            <p>Ou</p>
+                        </div>
+                        <FormGroup className="facebook_login">
+                            <FacebookLogin appId="482248032399115" autoLoad={false}icon={icon}size="small" fields="name,email,picture,first_name,last_name" textButton="Facebook" onClick={this.responseFacebook}callback={() => this.responseFacebook}
                                 />
-                            
-                        </FormGroup>
-                        <FormGroup  className="btn_create_account">
-                                <Link  exact  to="/auth/register">
+                            </FormGroup>
+                            <FormGroup className="btn_create_account">
+                                <Link exact  to="/auth/register">
                                     <Button>Creer un compte </Button>
                                 </Link>
-                        </FormGroup>
+                            </FormGroup>
                         </div>
-                        </div>
-                
+                    </div>
                 </div>
                 <div className="floatright">
                     <div className="login_image">
                     </div>
                 </div>
-            </div>   
+            </div>  
         )
     }
 }
@@ -190,6 +203,8 @@ const mapStateToProps = function(state) {
         isAuthenticated : state.userReducer.isAuthenticated,
         token : state.userReducer.token,
         refreshToken : state.userReducer.refreshToken,
+        success: state.userReducer.success,
+        message: state.userReducer.message,
     }
   }
 const mapDispatchToProps = function(dispatch) {
